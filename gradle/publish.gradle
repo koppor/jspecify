@@ -1,6 +1,19 @@
 // run `./gradlew publishToMavenLocal` to install artifact to your Local Maven Repository
 
+ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
+
 publishing {
+    repositories {
+        maven {
+            def releaseRepo = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+            def snapshotRepo = "https://oss.sonatype.org/content/repositories/snapshots/"
+            url = isReleaseVersion ? releaseRepo : snapshotRepo
+            credentials {
+                username = project.hasProperty('ossrhUsername') ? ossrhUsername : "Unknown user"
+                password = project.hasProperty('ossrhPassword') ? ossrhPassword : "Unknown password"
+            }
+        }
+    }
     publications {
         mavenJava(MavenPublication) {
             pom {
@@ -28,3 +41,12 @@ publishing {
 // compile module-info.java with Java9, and others with Java8
 // https://github.com/java9-modularity/gradle-modules-plugin#separate-compilation-of-module-infojava
 modularity.mixedJavaRelease 8
+
+signing {
+    useGpgCmd()
+    sign publishing.publications.mavenJava
+}
+
+tasks.withType(Sign) {
+    onlyIf { isReleaseVersion }
+}
