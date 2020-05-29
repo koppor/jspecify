@@ -256,8 +256,8 @@ nullness of its element type <code class="docutils literal notranslate"><span cl
 <div class="section" id="null-aware-context">
 <h2>Null-aware context<a class="headerlink" href="#null-aware-context" title="Permalink to this headline">¶</a></h2>
 <p>To determine whether a type usage appears in a null-aware context:</p>
-<p>Look for a <code class="docutils literal notranslate"><span class="pre">&#64;NullAware</span></code> annotation on any of the containing scopes
-surrounding the type usage.</p>
+<p>Look for an <code class="docutils literal notranslate"><span class="pre">&#64;org.jspecify.annotations.NullAware</span></code> annotation on any of
+the containing scopes surrounding the type usage.</p>
 <p>Class members are contained by classes, which may be contained by other
 class members or classes, and top-level classes are contained by
 packages, which may be contained by modules.</p>
@@ -265,8 +265,9 @@ packages, which may be contained by modules.</p>
 <div><p>This concept of “containing scopes” is different from the concept of
 “containing types” described under <a class="reference external" href="#containment">Containment</a>.</p>
 </div></blockquote>
-<p>If a <code class="docutils literal notranslate"><span class="pre">&#64;NullAware</span></code> annotation exists on one of these scopes, then the
-type usage is in a null-aware context. Otherwise, it is not.</p>
+<p>If an <code class="docutils literal notranslate"><span class="pre">&#64;org.jspecify.annotations.NullAware</span></code> annotation exists on one
+of these scopes, then the type usage is in a null-aware context.
+Otherwise, it is not.</p>
 </div>
 <div class="section" id="augmented-type-of-a-type-usage-in-code">
 <span id="augmented-type-of-usage"></span><h2>Augmented type of a type usage in code<a class="headerlink" href="#augmented-type-of-a-type-usage-in-code" title="Permalink to this headline">¶</a></h2>
@@ -282,8 +283,9 @@ for a type usage, this section covers only how to determine its
 <p>To determine the additional nullness, apply the following rules in
 order. Once one condition is met, skip the remaining conditions.</p>
 <ul class="simple">
-<li><p>If the type usage is annotated with <code class="docutils literal notranslate"><span class="pre">&#64;Nullable</span></code>, its additional
-nullness is <code class="docutils literal notranslate"><span class="pre">UNION_NULL</span></code>.</p></li>
+<li><p>If the type usage is annotated with
+<code class="docutils literal notranslate"><span class="pre">&#64;org.jspecify.annotations.Nullable</span></code>, its additional nullness is
+<code class="docutils literal notranslate"><span class="pre">UNION_NULL</span></code>.</p></li>
 <li><p>If the type usage appears in a <a class="reference external" href="#null-aware-context">null-aware
 context</a>, its additional nullness is
 <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code>.</p></li>
