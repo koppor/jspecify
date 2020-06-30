@@ -562,12 +562,15 @@ path</a> to any type whose base
 type is the same as the base type of <code class="docutils literal notranslate"><span class="pre">F</span></code>.</p></li>
 </ul>
 <p>Nullness subtyping (and thus subtyping itself) is <em>not</em> transitive.</p>
-<p>(In fact, our nullness-delegating subtyping rules (and
-<a class="reference external" href="#containment">containment</a> rules) should <em>also</em> <a class="reference external" href="https://groups.google.com/d/msg/jspecify-dev/yPnkx_GSb0Q/hLgS_431AQAJ">not be
-transitive</a>.
-Fortunately, we expect that implementations will naturally do “what we
-mean” instead of following the spec exactly, so we have not yet fixed
-the spec to be fully correct.)</p>
+<p>(Contrast this with our <a class="reference external" href="#nullness-delegating-subtyping">nullness-delegating
+subtyping</a> rules and
+<a class="reference external" href="#containment">containment</a> rules: Each of those is defined as a
+transitive closure. However, technically speaking, <a class="reference external" href="https://groups.google.com/d/msg/jspecify-dev/yPnkx_GSb0Q/hLgS_431AQAJ">there are cases in
+which those should not be transitive,
+either</a>.
+Fortunately, this “mostly transitive” behavior is exactly the behavior
+that implementations are likely to produce naturally. Maybe someday we
+will find a way to specify this fully correctly.)</p>
 </div>
 <div class="section" id="null-inclusive-under-every-parameterization">
 <h2>Null-inclusive under every parameterization<a class="headerlink" href="#null-inclusive-under-every-parameterization" title="Permalink to this headline">¶</a></h2>
