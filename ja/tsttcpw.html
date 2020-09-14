@@ -36,7 +36,8 @@
 
     
     <link rel="index" title="索引" href="genindex.html" />
-    <link rel="search" title="検索" href="search.html" /> 
+    <link rel="search" title="検索" href="search.html" />
+    <link rel="prev" title="jspecify: 静的解析のための標準化されたJavaアノテーション" href="index.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -81,38 +82,38 @@
               
             
             
-              <!-- Local TOC -->
-              <div class="local-toc"><ul>
-<li><a class="reference internal" href="#">The Simplest(?) Thing That Could Possibly Work for subtyping</a><ul>
-<li><a class="reference internal" href="#references-to-concepts-defined-by-this-spec">References to concepts defined by this spec</a></li>
-<li><a class="reference internal" href="#additional-nullness">Additional nullness</a></li>
-<li><a class="reference internal" href="#augmented-type">Augmented type</a></li>
-<li><a class="reference internal" href="#null-aware-context">Null-aware context</a></li>
-<li><a class="reference internal" href="#augmented-type-of-a-type-usage-in-code">Augmented type of a type usage in code</a></li>
-<li><a class="reference internal" href="#augmented-type-of-an-intersection-type">Augmented type of an intersection type</a></li>
-<li><a class="reference internal" href="#unioning-an-augmented-type-with-an-additional-nullness">Unioning an augmented type with an additional nullness</a></li>
-<li><a class="reference internal" href="#bound-of-an-unbounded-wildcard">Bound of an “unbounded” wildcard</a></li>
-<li><a class="reference internal" href="#bound-of-an-object-bounded-type-parameter">Bound of an <code class="docutils literal notranslate"><span class="pre">Object</span></code>-bounded type parameter</a></li>
-<li><a class="reference internal" href="#substitution">Substitution</a></li>
-<li><a class="reference internal" href="#augmented-null-types">Augmented null types</a></li>
-<li><a class="reference internal" href="#the-least-convenient-world-and-the-most-convenient-world">The least convenient world and the most convenient world</a><ul>
-<li><a class="reference internal" href="#propagating-the-most-least-convenient-world">Propagating the most/least convenient world</a></li>
+              <p class="caption"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">The Simplest(?) Thing That Could Possibly Work for subtyping</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#references-to-concepts-defined-by-this-spec">References to concepts defined by this spec</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#additional-nullness">Additional nullness</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#augmented-type">Augmented type</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#null-aware-context">Null-aware context</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#augmented-type-of-a-type-usage-in-code">Augmented type of a type usage in code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#augmented-type-of-an-intersection-type">Augmented type of an intersection type</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#unioning-an-augmented-type-with-an-additional-nullness">Unioning an augmented type with an additional nullness</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#bound-of-an-unbounded-wildcard">Bound of an “unbounded” wildcard</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#bound-of-an-object-bounded-type-parameter">Bound of an <code class="docutils literal notranslate"><span class="pre">Object</span></code>-bounded type parameter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#substitution">Substitution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#augmented-null-types">Augmented null types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#the-least-convenient-world-and-the-most-convenient-world">The least convenient world and the most convenient world</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#propagating-the-most-least-convenient-world">Propagating the most/least convenient world</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#same-type">Same type</a></li>
-<li><a class="reference internal" href="#subtyping">Subtyping</a></li>
-<li><a class="reference internal" href="#nullness-delegating-subtyping-rules-for-java">Nullness-delegating subtyping rules for Java</a></li>
-<li><a class="reference internal" href="#nullness-subtyping">Nullness subtyping</a></li>
-<li><a class="reference internal" href="#null-inclusive-under-every-parameterization">Null-inclusive under every parameterization</a></li>
-<li><a class="reference internal" href="#null-exclusive-under-every-parameterization">Null-exclusive under every parameterization</a></li>
-<li><a class="reference internal" href="#nullness-subtype-establishing-path">Nullness-subtype-establishing path</a></li>
-<li><a class="reference internal" href="#nullness-subtype-establishing-direct-supertype-edges">Nullness-subtype-establishing direct-supertype edges</a></li>
-<li><a class="reference internal" href="#containment">Containment</a></li>
-<li><a class="reference internal" href="#capture-conversion">Capture conversion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#same-type">Same type</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#subtyping">Subtyping</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#nullness-delegating-subtyping-rules-for-java">Nullness-delegating subtyping rules for Java</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#nullness-subtyping">Nullness subtyping</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#null-inclusive-under-every-parameterization">Null-inclusive under every parameterization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#null-exclusive-under-every-parameterization">Null-exclusive under every parameterization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#nullness-subtype-establishing-path">Nullness-subtype-establishing path</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#nullness-subtype-establishing-direct-supertype-edges">Nullness-subtype-establishing direct-supertype edges</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#containment">Containment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#capture-conversion">Capture conversion</a></li>
 </ul>
 </li>
 </ul>
-</div>
+
             
           
         </div>
@@ -693,6 +694,13 @@ types.”</a>)</p></li>
            
           </div>
           <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="jspecify: 静的解析のための標準化されたJavaアノテーション" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
   
 
   <hr/>
