@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>The Simplest(?) Thing That Could Possibly Work for subtyping &mdash; jspecify  documentation</title>
+  <title>The Simplest(?) Thing That Could Possibly Work for subtyping &mdash; JSpecify  documentation</title>
   
 
   
@@ -36,7 +36,7 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="jspecify: Standard Java annotations for static analysis" href="index.html" /> 
+    <link rel="prev" title="JSpecify: Standard Java annotations for static analysis" href="index.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -50,7 +50,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home" alt="Documentation Home"> jspecify
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> JSpecify
           
 
           
@@ -126,7 +126,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="index.html">jspecify</a>
+          <a href="index.html">JSpecify</a>
         
       </nav>
 
@@ -178,7 +178,7 @@
             
   <div class="section" id="the-simplest-thing-that-could-possibly-work-for-subtyping">
 <h1>The Simplest(?) Thing That Could Possibly Work for subtyping<a class="headerlink" href="#the-simplest-thing-that-could-possibly-work-for-subtyping" title="Permalink to this headline">¶</a></h1>
-<p><strong>This is not “the jspecify spec.” This is an initial attempt to
+<p><strong>This is not “the JSpecify spec.” This is an initial attempt to
 formally specify only a subset of the rules we’ll need for a subset of
 features we wish to cover. Additionally, it deviates from some of our
 current working decisions in an effort to remain simple.</strong></p>
@@ -276,7 +276,7 @@ Otherwise, it is not.</p>
 </div>
 <div class="section" id="augmented-type-of-a-type-usage-in-code">
 <span id="augmented-type-of-usage"></span><h2>Augmented type of a type usage in code<a class="headerlink" href="#augmented-type-of-a-type-usage-in-code" title="Permalink to this headline">¶</a></h2>
-<p>For most type usages in source code or bytecode on which jspecify
+<p>For most type usages in source code or bytecode on which JSpecify
 nullness annotations are structurally valid, this section defines how to
 determine their <a class="reference external" href="#augmented-type">augmented types</a>. Note, however,
 that rules for specific cases below take precedence over the general
@@ -392,7 +392,7 @@ additional nullness is <code class="docutils literal notranslate"><span class="p
 <div><p>In both cases, we specify a bound that does not exist in the source
 or bytecode, deviating from the JLS. Because the base type of the
 bound is <code class="docutils literal notranslate"><span class="pre">Object</span></code>, this should produce no user-visible differences
-except to tools that implement jspecify nullness analysis.</p>
+except to tools that implement JSpecify nullness analysis.</p>
 </div></blockquote>
 <p>Whenever a JLS rule refers specifically to <code class="docutils literal notranslate"><span class="pre">&lt;?&gt;</span></code>, disregard it, and
 instead apply the rules for <code class="docutils literal notranslate"><span class="pre">&lt;?</span> <span class="pre">extends</span> <span class="pre">T&gt;</span></code>, where <code class="docutils literal notranslate"><span class="pre">T</span></code> has a base
@@ -404,14 +404,14 @@ type of <code class="docutils literal notranslate"><span class="pre">Object</spa
 of 2 ways:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">&lt;T&gt;</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">&lt;T</span> <span class="pre">extends</span> <span class="pre">Object&gt;</span></code> with no jspecify nullness type annotations on
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;T</span> <span class="pre">extends</span> <span class="pre">Object&gt;</span></code> with no JSpecify nullness type annotations on
 the bound</p></li>
 </ul>
 <p>See <a class="reference external" href="https://docs.oracle.com/javase/specs/jls/se14/html/jls-4.html#jls-4.4">JLS
 4.4</a>.</p>
 <p>In bytecode, <code class="docutils literal notranslate"><span class="pre">&lt;T&gt;</span></code> and <code class="docutils literal notranslate"><span class="pre">&lt;T</span> <span class="pre">extends</span> <span class="pre">Object&gt;</span></code> are both represented as
 a type parameter with only a single upper bound, <code class="docutils literal notranslate"><span class="pre">Object</span></code>, and no
-jspecify nullness type annotations on the bound.</p>
+JSpecify nullness type annotations on the bound.</p>
 <p>If an <code class="docutils literal notranslate"><span class="pre">Object</span></code>-bounded type parameter appears in a <a class="reference external" href="#null-aware-context">null-aware
 context</a>, then its bound has a <a class="reference external" href="https://docs.google.com/document/d/1KQrBxwaVIPIac_6SCf--w-vZBeHkTvtaqPSU_icIccc/edit#bookmark=kix.k81vs7t5p45i">base
 type</a>
@@ -697,7 +697,7 @@ types.”</a>)</p></li>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
       
-        <a href="index.html" class="btn btn-neutral float-left" title="jspecify: Standard Java annotations for static analysis" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="index.html" class="btn btn-neutral float-left" title="JSpecify: Standard Java annotations for static analysis" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -707,7 +707,7 @@ types.”</a>)</p></li>
   <div role="contentinfo">
     <p>
         
-        &copy; Copyright 2020, The jspecify Authors
+        &copy; Copyright 2020, The JSpecify Authors
 
     </p>
   </div>
