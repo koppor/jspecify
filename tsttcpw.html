@@ -182,6 +182,29 @@
 formally specify only a subset of the rules we’ll need for a subset of
 features we wish to cover. Additionally, it deviates from some of our
 current working decisions in an effort to remain simple.</strong></p>
+<blockquote>
+<div><p class="rubric" id="high-level-overview">High-level overview</p>
+<p>It may be that some people will use this doc to guide their
+implementations in the near future. Please don’t hesitate to let
+cpovirk know of any confusing bits.</p>
+<p>I should probably preemptively clarify at least one thing. In this
+doc, I have tried to distinguish explicitly between 3 “kinds of
+nullability” of a given type usage. Each kind is derived (at least in
+part) from the previous:</p>
+<ol class="arabic simple">
+<li><p>What annotation (if any) appears directly on that type usage?</p></li>
+<li><p>What is the <a class="reference external" href="#additional-nullness">additional nullness</a> of that
+type usage?</p></li>
+<li><p>For that type usage…</p>
+<ul class="simple">
+<li><p>Is it safe to assume that is not <code class="docutils literal notranslate"><span class="pre">null</span></code>?</p></li>
+<li><p>Is it safe to put a <code class="docutils literal notranslate"><span class="pre">null</span></code> into it?</p></li>
+<li><p>neither (as in “parametric nullness”)</p></li>
+<li><p>both (as in “unspecified nullness” in “lenient mode”)</p></li>
+</ul>
+</li>
+</ol>
+</div></blockquote>
 <div class="section" id="references-to-concepts-defined-by-this-spec">
 <span id="concept-references"></span><h2>References to concepts defined by this spec<a class="headerlink" href="#references-to-concepts-defined-by-this-spec" title="Permalink to this headline">¶</a></h2>
 <p>When a rule in this spec refers to any concept that is defined in this
