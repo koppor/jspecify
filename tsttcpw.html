@@ -337,10 +337,13 @@ example, if one type declares a method whose return type is annotated
 <code class="docutils literal notranslate"><span class="pre">&#64;Nullable</span></code>, and if another type overrides that method but does not
 declare the return type as <code class="docutils literal notranslate"><span class="pre">&#64;Nullable</span></code>, then the override’s return
 type will <em>not</em> have nullness operator <code class="docutils literal notranslate"><span class="pre">UNION_NULL</span></code>.</p>
-<p>These rules never produce the fourth nullness operator,
-<code class="docutils literal notranslate"><span class="pre">MINUS_NULL</span></code>. However, if tool authors prefer, they can safely
-produce <code class="docutils literal notranslate"><span class="pre">MINUS_NULL</span></code> in any case in which it is equivalent to
-<code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code>. For example, there is no difference between a
+<p>The rules here never produce the fourth nullness operator,
+<code class="docutils literal notranslate"><span class="pre">MINUS_NULL</span></code>. (It will appear later in
+<a class="reference external" href="#substitution">substitution</a>. Additionally, we expect for tool
+authors to produce <code class="docutils literal notranslate"><span class="pre">MINUS_NULL</span></code> based on the results of null checks
+in implementation code.) However, if tool authors prefer, they can
+safely produce <code class="docutils literal notranslate"><span class="pre">MINUS_NULL</span></code> in any case in which it is equivalent
+to <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code>. For example, there is no difference between a
 <code class="docutils literal notranslate"><span class="pre">String</span></code> with <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code> and a <code class="docutils literal notranslate"><span class="pre">String</span></code> with <code class="docutils literal notranslate"><span class="pre">MINUS_NULL</span></code>.</p>
 </div></blockquote>
 </div>
