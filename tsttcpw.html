@@ -290,7 +290,7 @@ of its element type <code class="docutils literal notranslate"><span class="pre"
 <div class="section" id="null-aware-context">
 <h2>Null-aware context<a class="headerlink" href="#null-aware-context" title="Permalink to this headline">¶</a></h2>
 <p>To determine whether a type usage appears in a null-aware context:</p>
-<p>Look for an <code class="docutils literal notranslate"><span class="pre">&#64;org.jspecify.nullness.NullAware</span></code> annotation on any of
+<p>Look for an <code class="docutils literal notranslate"><span class="pre">&#64;org.jspecify.nullness.NullMarked</span></code> annotation on any of
 the enclosing scopes surrounding the type usage.</p>
 <p>Class members are enclosed by classes, which may be enclosed by other
 class members or classes. and top-level classes are enclosed by
@@ -303,7 +303,7 @@ packages, which may be enclosed by modules.</p>
 Java compiler
 API</a>.</p>
 </div></blockquote>
-<p>If an <code class="docutils literal notranslate"><span class="pre">&#64;org.jspecify.nullness.NullAware</span></code> annotation exists on one of
+<p>If an <code class="docutils literal notranslate"><span class="pre">&#64;org.jspecify.nullness.NullMarked</span></code> annotation exists on one of
 these scopes, then the type usage is in a null-aware context. Otherwise,
 it is not.</p>
 </div>
