@@ -87,15 +87,13 @@
               <p class="caption"><span class="caption-text">コンテンツ</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">JSpecify spec outline</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#about-this-document">About this document</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#general">General</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#the-type-use-annotations">The type-use annotations</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#recognized-locations">Recognized locations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#the-type-use-annotation">The type-use annotation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#recognized-locations-for-type-use-annotations">Recognized locations for type-use annotations</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#the-defaulting-annotations">The defaulting annotations</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#recognized-locations-declaration">Recognized locations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#the-declaration-annotation">The declaration annotation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#recognized-locations-for-declaration-annotations">Recognized locations for declaration annotations</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#semantics">Semantics</a><ul>
@@ -209,8 +207,8 @@
             
   <div class="section" id="jspecify-spec-outline">
 <h1>JSpecify spec outline<a class="headerlink" href="#jspecify-spec-outline" title="このヘッドラインへのパーマリンク">¶</a></h1>
-<div class="section" id="about-this-document">
-<h2>About this document<a class="headerlink" href="#about-this-document" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<blockquote>
+<div><p class="rubric" id="about-this-document">About this document</p>
 <p>This document summarizes our current thinking for proposing a set of
 nullness annotations. <strong>Nothing here is “set in stone” yet.</strong></p>
 <p><strong>As of March 2021, this doc is currently two docs concatenated
@@ -221,14 +219,12 @@ concepts/glossary</a>
 document in order to understand this material correctly. There are
 numerous other documents in our <a class="reference external" href="https://drive.google.com/drive/folders/1vZl1odNCBncVaN7EwlwfqI05T_CHIqN-">shared
 folder</a>.</p>
-</div>
-<div class="section" id="overview">
-<h2>Overview<a class="headerlink" href="#overview" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<p>We propose a set of type annotations to specify the intended nullness of
-individual type usages. At a high level, our proposed semantics is
-similar to existing tools’ treatment of nullness type annotations. We
-treat nullness annotations as purely compile-time type refinements
-without effect on runtime semantics. Besides the typical
+<p class="rubric" id="overview">Overview</p>
+<p>We propose a type annotation to specify the nullness of individual
+type usages. At a high level, our proposed semantics is similar to
+existing tools’ treatment of nullness type annotations. We treat
+nullness annotations as purely compile-time type refinements without
+effect on runtime semantics. Besides the typical
 “<a class="reference external" href="https://docs.google.com/document/d/1KQrBxwaVIPIac_6SCf--w-vZBeHkTvtaqPSU_icIccc/edit#bookmark=id.ejpb5ee0msjt">nullable</a>”
 and
 “<a class="reference external" href="https://docs.google.com/document/d/1KQrBxwaVIPIac_6SCf--w-vZBeHkTvtaqPSU_icIccc/edit#bookmark=id.8wgyiwyvi49f">non-nullable</a>”
@@ -237,59 +233,107 @@ nullness</a>”,
 which typically arise from unannotated code, and allow for (with
 optional warnings if desired) type checks involving “unspecified
 nullness” to succeed even when they are unsound.</p>
-<p>To avoid excessive annotation overhead in hand-written Java code while
-clearly distinguishing annotated from legacy code, we also propose a set
-of explicit defaulting annotations. In the absence of a defaulting
+<p>To avoid excessive annotation overhead in hand-written Java code
+while clearly distinguishing annotated from legacy code, we also
+propose a declaration annotation, with semantics similar to existing
+tools’ semantics of “non-null by default.” In the absence of that
 annotation, type usages will be considered of “unspecified nullness.”</p>
-<p>We give <a class="reference external" href="#semantics">semantics</a> to these annotations independent of
-particular tools. We don’t specify what tools must do with that semantic
-information, nor do we forbid them from adding to it (e.g., with flow
-typing in implementation code). We merely define how to interpret our
-annotations in method, field, and class declarations. This approach
-gives documented meaning to annotations appearing in declarations while
-allowing Java code authors to use their normal toolchain to compile code
-(though we do recommend code authors use additional tools to minimize
-the chance of incorrect annotations). Crucially, this approach also
-allows any tool to interpret annotations that appear in Java bytecode
-produced by other tools.</p>
+<p>We give <a class="reference external" href="#semantics">semantics</a> to these annotations independent
+of particular tools. We don’t specify what tools must do with that
+semantic information, nor do we forbid them from adding to it (e.g.,
+with flow typing in implementation code). We merely define how to
+interpret our annotations in method, field, and class declarations.
+This approach gives documented meaning to annotations appearing in
+declarations while allowing Java code authors to use their normal
+toolchain to compile code (though we do recommend code authors use
+additional tools to minimize the chance of incorrect annotations).
+Crucially, this approach also allows any tool to interpret
+annotations that appear in Java bytecode produced by other tools.</p>
 <p><strong>Note:</strong> we have adopted precise meanings for the terms used in this
 document; it will be necessary to read (or refer to) the
 <a class="reference external" href="https://docs.google.com/document/d/1KQrBxwaVIPIac_6SCf--w-vZBeHkTvtaqPSU_icIccc/edit">glossary</a>
 document in order to interpret this information correctly.</p>
-</div>
+</div></blockquote>
 <div class="section" id="general">
 <h2>General<a class="headerlink" href="#general" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<p>The package name will be <code class="docutils literal notranslate"><span class="pre">org.jspecify.nullness</span></code>.
-[<a class="reference external" href="https://github.com/jspecify/jspecify/issues/1">#1</a>]</p>
-<p>We will release one canonical artifact, in which all annotations have
-runtime retention.
+<ul class="simple">
+<li><p>The package name is <code class="docutils literal notranslate"><span class="pre">org.jspecify.nullness</span></code>.
+[<a class="reference external" href="https://github.com/jspecify/jspecify/issues/1">#1</a>]</p></li>
+<li><p>The JPMS module name is <code class="docutils literal notranslate"><span class="pre">org.jspecify</span></code>.
+[<a class="reference external" href="https://github.com/jspecify/jspecify/issues/181">#181</a>]</p></li>
+<li><p>The Maven artifact is <code class="docutils literal notranslate"><span class="pre">org.jspecify:jspecify</span></code>.
+[<a class="reference external" href="https://github.com/jspecify/jspecify/issues/181">#181</a>]</p></li>
+</ul>
+<p>All annotations have runtime retention.
 [<a class="reference external" href="https://github.com/jspecify/jspecify/issues/28">#28</a>] None of the
-annotations defined in this document will be marked
+annotations are marked
 <a class="reference external" href="https://docs.oracle.com/en/java/javase/14/docs/api/java.base/java/lang/annotation/Repeatable.html">repeatable</a>.</p>
 </div>
-<div class="section" id="the-type-use-annotations">
-<h2>The type-use annotations<a class="headerlink" href="#the-type-use-annotations" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<p>We will provide a single parameterless type-use annotation called
-<code class="docutils literal notranslate"><span class="pre">&#64;Nullable</span></code>.</p>
-<div class="section" id="recognized-locations">
-<span id="recognized-locations-type-use"></span><h3>Recognized locations<a class="headerlink" href="#recognized-locations" title="このヘッドラインへのパーマリンク">¶</a></h3>
-<p>The set of type-use annotations are specified to be <em>recognized</em> in the
-set of circumstances detailed below. Where annotations are recognized,
-semantic violations are of course still possible.</p>
+<div class="section" id="the-type-use-annotation">
+<h2>The type-use annotation<a class="headerlink" href="#the-type-use-annotation" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>We provide a parameterless type-use annotation called <code class="docutils literal notranslate"><span class="pre">&#64;Nullable</span></code>.</p>
+<div class="section" id="recognized-locations-for-type-use-annotations">
+<h3>Recognized locations for type-use annotations<a class="headerlink" href="#recognized-locations-for-type-use-annotations" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>Our type-use annotation is specified to be <em>recognized</em> in the
+circumstances detailed below. An annotation in a recognized location has
+the semantics described in this spec. The spec does not assign meaning
+to annotations in unrecognized locations.</p>
+<blockquote>
+<div><p>Of course, when an annotation appears in an recognized location, that
+does not make it “correct”: It may specify a type that a tool can
+identify as <em>incompatible</em> with the type that the tool requires for
+that particular location, given the information it has about related
+code from annotations and other sources.</p>
+</div></blockquote>
+<ul>
+<li><p>Unrecognized when applied to any component of a type usage in
+<a class="reference external" href="https://docs.google.com/document/d/1KQrBxwaVIPIac_6SCf--w-vZBeHkTvtaqPSU_icIccc/edit#bookmark=id.cjuxrgo7keqs">implementation
+code</a>:</p>
 <ul class="simple">
-<li><p>Unrecognized on type usages that are <a class="reference external" href="https://docs.google.com/document/d/1KQrBxwaVIPIac_6SCf--w-vZBeHkTvtaqPSU_icIccc/edit#bookmark=id.2m67iuk50zcb">categorically
-non-nullable</a>
-(this supersedes all rules that follow):
+<li><p>A local variable type.</p></li>
+<li><p>The type in a cast expression.</p></li>
+<li><p>An array or object creation expression.</p></li>
+<li><p>An explicit type argument supplied to a generic method or
+constructor (including via a member reference), or to an instance
+creation expression for a generic class.</p></li>
+</ul>
+</li>
+<li><p>Unrecognized when applied to a class declaration.
+[<a class="reference external" href="https://github.com/jspecify/jspecify/issues/7">#7</a>]</p>
+<blockquote>
+<div><p>For example, <code class="docutils literal notranslate"><span class="pre">public</span> <span class="pre">&#64;Nullable</span> <span class="pre">class</span> <span class="pre">Foo</span> <span class="pre">{}</span></code> is unrecognized.</p>
+</div></blockquote>
+</li>
+<li><p>Unrecognized on type usages that are intrinsically non-nullable:
 [<a class="reference external" href="https://github.com/jspecify/jspecify/issues/17">#17</a>]</p>
 <ul>
 <li><p>When the annotated type usage is of any primitive type.</p></li>
-<li><p>For an outer type used as a component type in an inner type
-expression.</p></li>
-<li><p>In a <a class="reference external" href="https://docs.google.com/document/d/1KQrBxwaVIPIac_6SCf--w-vZBeHkTvtaqPSU_icIccc/edit#bookmark=id.d00h1zvk0vt3">non-nullable type
-context</a>.</p></li>
-<li><p>Note that the following rules still apply to any non-root
-component types of such type usages.</p></li>
+<li><p>For the outer type that qualifies an inner type.</p>
+<blockquote>
+<div><p>For example, <code class="docutils literal notranslate"><span class="pre">&#64;Nullable</span> <span class="pre">Foo.Bar</span></code> is unrecognized because the
+outer type <code class="docutils literal notranslate"><span class="pre">Foo</span></code> is intrinsically non-nullable.</p>
+</div></blockquote>
+</li>
+<li><p>In any of the following non-nullable type contexts:</p>
+<ul class="simple">
+<li><p>supertype in a class declaration</p></li>
+<li><p>thrown exception type</p></li>
+<li><p>enum constant declaration</p></li>
+<li><p>receiver parameter type</p></li>
 </ul>
+</li>
+</ul>
+<p>But note that the following rules still apply to any non-root
+component types of such type usages.</p>
+</li>
+<li><p>Unrecognized on any component of a receiver parameter type.
+[<a class="reference external" href="https://github.com/jspecify/jspecify/issues/157">#157</a>]</p>
+<blockquote>
+<div><p>This partially overlaps with the rule about non-nullable type
+contexts above: Both rules cover an annotation on the
+intrinsically non-nullable top-level type, but this rule extends
+that to <em>all</em> components of the type.</p>
+</div></blockquote>
 </li>
 <li><p>Otherwise, recognized on any
 <a class="reference external" href="https://docs.google.com/document/d/1KQrBxwaVIPIac_6SCf--w-vZBeHkTvtaqPSU_icIccc/edit#bookmark=kix.j1ewrpknx869">non-root</a>
@@ -299,79 +343,72 @@ context</a>.</p>
 <li><p>This may be a <a class="reference external" href="https://docs.google.com/document/d/1KQrBxwaVIPIac_6SCf--w-vZBeHkTvtaqPSU_icIccc/edit#bookmark=id.3gm7aajjj46m">type
 argument</a>,
 explicit wildcard bound, array component type, or the type used in
-a variadic parameter declaration.</p></li>
-<li><p>For example, the annotation in <code class="docutils literal notranslate"><span class="pre">Iterator&lt;&#64;Nullable</span> <span class="pre">String&gt;</span></code> is
-always recognized.</p></li>
+a variadic parameter declaration.</p>
+<blockquote>
+<div><p>For example, the annotation in <code class="docutils literal notranslate"><span class="pre">Iterator&lt;&#64;Nullable</span> <span class="pre">String&gt;</span></code>
+is always recognized.</p>
+</div></blockquote>
+</li>
 <li><p>Exception: Annotations on a type parameter or wildcard <em>itself</em>
-are unrecognized. (Annotation on their <em>bounds</em> are still
-recognized.)
+are unrecognized.
 [<a class="reference external" href="https://github.com/jspecify/jspecify/issues/19">#19</a>,
-<a class="reference external" href="https://github.com/jspecify/jspecify/issues/31">#31</a>]</p></li>
+<a class="reference external" href="https://github.com/jspecify/jspecify/issues/31">#31</a>]</p>
+<blockquote>
+<div><p>Annotations on their <em>bounds</em> are still recognized.</p>
+</div></blockquote>
+</li>
 </ul>
 </li>
 <li><p>Recognized in the following type contexts (including when the type
 usage is a <a class="reference external" href="https://docs.google.com/document/d/1KQrBxwaVIPIac_6SCf--w-vZBeHkTvtaqPSU_icIccc/edit#bookmark=id.uxek2gfsybvo">type
 variable</a>,
-regardless of its bound):
+regardless of the corresponding type parameter’s bound):
 [<a class="reference external" href="https://github.com/jspecify/jspecify/issues/17">#17</a>]</p>
 <ul>
 <li><p>Return type of a method.</p></li>
-<li><p>Formal parameter type (of a method, constructor, or lambda
-expression).</p></li>
+<li><p>Formal parameter type of a method or constructor.</p></li>
 <li><p>Field type.</p></li>
-<li><p>Type parameter upper bound (but, again, <em>not</em> the type parameter
-itself)
-[<a class="reference external" href="https://github.com/jspecify/jspecify/issues/60">#60</a>].</p></li>
-</ul>
+<li><p>Type parameter upper bound.
+[<a class="reference external" href="https://github.com/jspecify/jspecify/issues/60">#60</a>]</p>
+<blockquote>
+<div><p>But, again, <em>not</em> the type parameter itself.</p>
+</div></blockquote>
 </li>
-<li><p>Unrecognized when applied to a class declaration.
-[<a class="reference external" href="https://github.com/jspecify/jspecify/issues/7">#7</a>]</p>
-<ul>
-<li><p>For example, <code class="docutils literal notranslate"><span class="pre">public</span> <span class="pre">&#64;Nullable</span> <span class="pre">class</span> <span class="pre">Foo</span> <span class="pre">{}</span></code> is not allowed.</p></li>
-</ul>
-</li>
-<li><p>Except as already indicated, unrecognized when applying to a type
-usage in <a class="reference external" href="https://docs.google.com/document/d/1KQrBxwaVIPIac_6SCf--w-vZBeHkTvtaqPSU_icIccc/edit#bookmark=id.cjuxrgo7keqs">implementation
-code</a>:</p>
-<ul>
-<li><p>A local variable type.</p></li>
-<li><p>The type in a cast expression.</p></li>
-<li><p>An array or object creation expression.</p></li>
-<li><p>An explicit type argument supplied to a generic method or
-constructor (including via a member reference), or to an instance
-creation expression for a generic class.</p></li>
-<li><p>TODO(cpovirk): This should probably include local variables’ type
-arguments, their array component types, and perhaps other cases.</p></li>
 </ul>
 </li>
 </ul>
-<p>Tools are encouraged to treat an unrecognized annotation in Java source
-code as an error unless they define semantics for that location. In
-bytecode, unrecognized annotations may be best ignored (again, unless a
-tool defines semantics for them).</p>
+<blockquote>
+<div><p>Tools are encouraged to treat an unrecognized annotation in Java
+source code as an error unless they define semantics for that
+location – and especially to treat annotations on intrinsically
+non-nullable locations as an error. In bytecode, unrecognized
+annotations may be best ignored (again, unless a tool defines
+semantics for them).</p>
+</div></blockquote>
 </div>
 </div>
-<div class="section" id="the-defaulting-annotations">
-<h2>The defaulting annotations<a class="headerlink" href="#the-defaulting-annotations" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<p>We will provide a single parameterless declaration annotation called
+<div class="section" id="the-declaration-annotation">
+<h2>The declaration annotation<a class="headerlink" href="#the-declaration-annotation" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>We provide a single parameterless declaration annotation called
 <code class="docutils literal notranslate"><span class="pre">&#64;NullMarked</span></code>.
 [<a class="reference external" href="https://github.com/jspecify/jspecify/issues/5">#5</a>,
 <a class="reference external" href="https://github.com/jspecify/jspecify/issues/87">#87</a>]</p>
-<div class="section" id="recognized-locations-declaration">
-<span id="id1"></span><h3>Recognized locations<a class="headerlink" href="#recognized-locations-declaration" title="このヘッドラインへのパーマリンク">¶</a></h3>
-<p>The set of defaulting annotations are recognized when applied to:</p>
+<div class="section" id="recognized-locations-for-declaration-annotations">
+<h3>Recognized locations for declaration annotations<a class="headerlink" href="#recognized-locations-for-declaration-annotations" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>Our declaration annotation is specified to be <em>recognized</em> when applied
+to the locations listed below:</p>
 <ul class="simple">
 <li><p>A <em>named</em> class.</p></li>
-<li><p>A package. [<em>debated</em>
-<a class="reference external" href="https://github.com/jspecify/jspecify/issues/34">#34</a>]</p></li>
-<li><p>A module. [<em>debated</em>
-<a class="reference external" href="https://github.com/jspecify/jspecify/issues/34">#34</a>]</p></li>
-<li><p><em>Not</em> a method
+<li><p>A package. [<a class="reference external" href="https://github.com/jspecify/jspecify/issues/34">#34</a>]</p></li>
+<li><p>A module. [<a class="reference external" href="https://github.com/jspecify/jspecify/issues/34">#34</a>]</p></li>
+</ul>
+<blockquote>
+<div><p><em>Not</em> a method
 [<a class="reference external" href="https://github.com/jspecify/jspecify/issues/43">#43</a>],
 constructor
 [<a class="reference external" href="https://github.com/jspecify/jspecify/issues/43">#43</a>], or field
-[<a class="reference external" href="https://github.com/jspecify/jspecify/issues/50">#50</a>]. <em>debated</em></p></li>
-</ul>
+[<a class="reference external" href="https://github.com/jspecify/jspecify/issues/50">#50</a>].</p>
+</div></blockquote>
 </div>
 </div>
 <div class="section" id="semantics">
@@ -474,8 +511,8 @@ by packages, which may be contained by modules.</p></li>
 annotation is in effect.</p></li>
 </ul>
 <p>We call any type usage that itself carries a
-<a class="reference external" href="#recognized-locations-type-use">recognized</a> type-use annotation
-<strong>explicitly annotated</strong>.</p>
+<a class="reference external" href="#recognized-locations-for-type-use-annotations">recognized</a> type-use
+annotation <strong>explicitly annotated</strong>.</p>
 </div>
 <div class="section" id="parameterized-types">
 <h3>Parameterized types<a class="headerlink" href="#parameterized-types" title="このヘッドラインへのパーマリンク">¶</a></h3>
