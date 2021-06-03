@@ -1,16 +1,24 @@
-JSpecify spec
-=============
+JSpecify nullness spec draft
+============================
 
 This document is our draft specification for the semantics of a set of
 nullness annotations.
 
-   .. rubric:: High-level overview
-      :name: high-level-overview
+   .. rubric:: Advice to readers
+      :name: advice-to-readers
 
-   I should probably preemptively clarify at least one thing. In this
-   doc, I have tried to distinguish explicitly between 3 “kinds of
-   nullability” of a given type usage. Each kind is derived (at least in
-   part) from the previous:
+   For someone new to our nullness annotations, this document does not
+   make a good introduction. This document is targeted more at tool
+   authors or advanced users. For new users, we are working on
+   additional documentation, including Javadoc, a User Guide, and a FAQ.
+
+   .. rubric:: The world “nullable”
+      :name: the-world-nullable
+
+   In this doc, I aim not to refer to whether a type “is nullable.”
+   Instead, I draw some distinctions, creating roughly 3 kinds of “Is it
+   nullable?” questions we can ask for any given type usage. Each kind
+   is derived (at least in part) from the previous:
 
    1. What annotation (if any) appears directly on that type usage?
    2. What is the `nullness operator <#nullness-operator>`__ of that
@@ -19,17 +27,51 @@ nullness annotations.
 
       -  Is it safe to assume that is not ``null``?
       -  Is it safe to put a ``null`` into it?
-      -  neither (as in “parametric nullness”)
-      -  both (as in “unspecified nullness” in “lenient mode”)
+      -  neither (what we sometimes call “parametric nullness”)
+      -  both (as can happen with ``UNSPECIFIED`` under lenient tools)
 
-   TODO(cpovirk): Link to my “Don’t say ‘nullable’” doc once I write it.
+   .. rubric:: The scope of this spec
+      :name: the-scope-of-this-spec
 
-General
--------
+   This spec does not address *when* tools must apply a given check. For
+   example, it does not state when tools must apply the
+   `subtyping <#subtyping>`__ check.
+
+   We expect that tools will typically apply them in the same cases that
+   they apply standard Java checks. For example, if code contains the
+   parameterized type ``List<@Nullable Foo>``, we would expect tools to
+   check that ``@Nullable Foo`` is a subtype of the bound of the type
+   parameter of ``List``.
+
+   However, this is up to tool authors. In fact, JSpecify annotations
+   can be used even by tools that are not “nullness checkers” at all.
+   For example, a tool that lists the members of an API could show the
+   nullness of each type in the API, without any checking that those
+   types are “correct.”
+
+Normative and non-normative sections
+------------------------------------
+
+This document contains some non-normative comments to emphasize points
+or to anticipate likely questions. Those comments are set off as block
+quotes.
+
+   This is an example of a non-normative comment.
+
+This document also links to other documents. Those documents are
+non-normative.
+
+   As of this writing, we know that this spec is not entirely
+   sufficient: It sometimes relies on references to other documents
+   (like the glossary). We will need to fix this by copying those
+   definitions here.
+
+Details common to all annotations
+---------------------------------
 
 -  The package name is ``org.jspecify.nullness``.
    [`#1 <https://github.com/jspecify/jspecify/issues/1>`__]
--  The JPMS module name is ``org.jspecify``.
+-  The Java module name is ``org.jspecify``.
    [`#181 <https://github.com/jspecify/jspecify/issues/181>`__]
 -  The Maven artifact is ``org.jspecify:jspecify``.
    [`#181 <https://github.com/jspecify/jspecify/issues/181>`__]
@@ -47,16 +89,10 @@ We provide a parameterless type-use annotation called ``@Nullable``.
 Recognized locations for type-use annotations
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Our type-use annotation is specified to be *recognized* in the
-circumstances detailed below. An annotation in a recognized location has
-the semantics described in this spec. The spec does not assign meaning
-to annotations in unrecognized locations.
-
-   Of course, when an annotation appears in an recognized location, that
-   does not make it “correct”: It may specify a type that a tool can
-   identify as *incompatible* with the type that the tool requires for
-   that particular location, given the information it has about related
-   code from annotations and other sources.
+A location is a *recognized* location for our type-use annotation in the
+circumstances detailed below. A type at recognized location has the
+semantics described in this spec. The spec does not assign semantics to
+types in other locations, nor to any annotations on such types.
 
 -  Unrecognized when applied to any component of a type usage in
    `implementation
@@ -68,6 +104,14 @@ to annotations in unrecognized locations.
    -  An explicit type argument supplied to a generic method or
       constructor (including via a member reference), or to an instance
       creation expression for a generic class.
+
+   ..
+
+      In practice, we expect that tools will treat annotations in most
+      of the above locations much like they treat annotations in other
+      locations. Still, this spec does not concern itself with
+      implementation code: We believe that the most important domain for
+      us to focus on is that of APIs.
 
 -  Unrecognized when applied to a class declaration.
    [`#7 <https://github.com/jspecify/jspecify/issues/7>`__]
@@ -113,14 +157,16 @@ to annotations in unrecognized locations.
       a variadic parameter declaration.
 
          For example, the annotation in ``Iterator<@Nullable String>``
-         is always recognized.
+         is always recognized, aside from the exception for
+         implementation code discussed above.
 
-   -  Exception: Annotations on a type parameter or wildcard *itself*
-      are unrecognized.
+   -  Exception: Annotations on a type-parameter declaration or a
+      wildcard *itself* are unrecognized.
       [`#19 <https://github.com/jspecify/jspecify/issues/19>`__,
       `#31 <https://github.com/jspecify/jspecify/issues/31>`__]
 
-         Annotations on their *bounds* are still recognized.
+         Annotations on their *bounds* can still be recognized. So too
+         can annotations on a *type-variable usage*.
 
 -  Recognized in the following type contexts (including when the type
    usage is a `type
@@ -143,7 +189,7 @@ to annotations in unrecognized locations.
 
    Tools are encouraged to treat an unrecognized annotation in Java
    source code as an error unless they define semantics for that
-   location – and especially to treat annotations on intrinsically
+   location — and especially to treat annotations on intrinsically
    non-nullable locations as an error. In bytecode, unrecognized
    annotations may be best ignored (again, unless a tool defines
    semantics for them).
@@ -218,18 +264,6 @@ and a `nullness operator <#nullness-operator>`__ corresponding to *each*
 of its `type
 components <https://docs.google.com/document/d/1KQrBxwaVIPIac_6SCf--w-vZBeHkTvtaqPSU_icIccc/edit#bookmark=kix.g7gl9fwq1tt5>`__.
 
-   This differs from our current `glossary
-   definition <https://docs.google.com/document/d/1KQrBxwaVIPIac_6SCf--w-vZBeHkTvtaqPSU_icIccc/edit#bookmark=id.367l48xhsikk>`__,
-   which is written in terms of a “nullness” for each component, not a
-   “nullness operator.” Still, the glossary’s concept of the “nullness”
-   of a type is derivable from the type’s nullness operator. Notably,
-   the glossary’s “nullable” type is our `least convenient
-   world <#multiple-worlds>`__\ ’s `trusted null-inclusive under every
-   parameterization <#trusted-null-inclusive-under-every-parameterization>`__,
-   and the glossary’s “non-nullable” type is our least convenient
-   world’s `trusted null-exclusive under every
-   parameterization <#trusted-null-exclusive-under-every-parameterization>`__.
-
 For our purposes, base types (and thus augmented types) include not just
 class and interface types, array types, and type variables but also
 `intersection types <#intersection-types>`__ and the null type. This is
@@ -279,9 +313,9 @@ packages, which may be enclosed by modules.
    Java compiler
    API <https://docs.oracle.com/en/java/javase/14/docs/api/java.compiler/javax/lang/model/element/Element.html#getEnclosingElement()>`__.
 
-If an ``@org.jspecify.nullness.NullMarked`` annotation exists on one of
-these scopes, then the type usage is in a null-marked scope. Otherwise,
-it is not.
+If one of those scopes is directly annotated with
+``@org.jspecify.nullness.NullMarked``, then the type usage is in a
+null-marked scope. Otherwise, it is not.
 
 .. _augmented-type-of-usage:
 
@@ -472,62 +506,79 @@ This produces multiple null types:
 
       This may be relevant only in implementation code.
 
-.. _multiple-worlds:
+Multiple “worlds”
+-----------------
 
-The least convenient world and the most convenient world
---------------------------------------------------------
+Some of the rules in this spec come in 2 versions: One version requires
+a property to hold “in all worlds,” and the other requires it to hold
+only “in some world.”
 
-Some of the rules in this spec come in 2 versions, 1 for “the least
-convenient world” and 1 for “the most convenient world.”
-
-Tools may implement either or both versions of the rules.
+Tool authors may wish to implement either or both versions of the rules.
 
    Our goal is to allow tools and their users to choose their desired
-   level of strictness in the presence of ``UNSPECIFIED``. “The least
-   convenient world” usually assumes that types are incompatible unless
-   it has enough information to prove they are compatible; “the most
-   convenient world” assumes that types are compatible unless it has
-   enough information to prove they are incompatible.
+   level of strictness in the presence of ``UNSPECIFIED``. The basic
+   idea is that, every time a tool encounters a type component with the
+   nullness operator ``UNSPECIFIED``, it forks off 2 “worlds”: 1 in
+   which the operator is ``UNION_NULL`` and 1 in which it is
+   ``NO_CHANGE``.
 
-   Thus, strict tools may want to implement the least-convenient-world
-   version of rules, and lenient tools may wish to implement the
-   most-convenient-world version. Or a tool might implement both and let
-   users select which rules to apply.
+   Since we lack a nullness specification for the type, we assume that
+   either of the resulting worlds may be the “correct” specification.
+   The all-worlds version of a rule, by requiring types to be compatible
+   in all possible worlds, holds that types are incompatible unless it
+   has enough information to prove they are compatible. The some-world
+   version, by requiring types to be compatible only in *some* world,
+   holds that types are compatible unless it has enough information to
+   prove they are incompatible. (By behaving “optimistically,” the
+   some-world checking behaves much like Kotlin’s checking of “platform
+   types.”)
 
-   Another possibility is for a tool to implement both versions and to
-   use that to distinguish between “errors” and “warnings.” Such a tool
-   might run each check first in the least convenient world and then, if
-   the check fails, run it again in the most convenient world. If the
-   check fails in both worlds, the tool would produce an error. If it
-   passes only because of the most convenient interpretation, the tool
-   would produce a warning.
+   Thus, strict tools may want to implement the all-worlds version of
+   rules, and lenient tools may wish to implement the some-world
+   version. Or a tool might implement both and let users select which
+   rules to apply.
 
-The main body of each section describes the *least*-convenient-world
-rule. If the most-convenient-world rule differs, the differences are
-explained at the end.
+   Yet another possibility is for a tool to implement both versions and
+   to use that to distinguish between “errors” and “warnings.” Such a
+   tool might run each check first in the all-worlds version and then,
+   if the check fails, run it again in the some-world version. If the
+   check fails in both cases, the tool would produce an error. If it
+   passes only because of the some-world version, the tool would produce
+   a warning.
+
+The main body of each section of the spec describes the all-worlds rule.
+If the some-world rule differs, the differences are explained at the
+end.
+
+   A small warning: To implement the full some-world rules, a tool must
+   also implement at least part of the all-worlds rules. Those rules are
+   required as part of `substitution <#substitution>`__.
 
 .. _propagating-multiple-worlds:
 
-Propagating the most/least convenient world
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Propagating the choice of world
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-When one rule in this spec refers to another, it refers to the rule for
-the same “world.” For example, when the rules for
+When one rule in this spec refers to another, it refers to the same
+version of the rule. For example, when the rules for
 `containment <#containment>`__ refer to the rules for
-`subtyping <#subtyping>`__, the most-convenient-world containment check
-applies the most-convenient-world subtyping check, and the
-least-convenient-world containment check applies the
-least-convenient-world subtyping check.
+`subtyping <#subtyping>`__, the some-world containment check applies the
+some-world subtyping check, and the all-worlds containment check applies
+the all-worlds subtyping check.
 
-This applies even if a rule says it is the same for both worlds: It
-means “the same except that any other rules are applied in the
-corresponding world.”
+This meta-rule applies except when a rule refers explicitly to a
+particular version of another rule.
 
 Same type
 ---------
 
 ``S`` and ``T`` are the same type if ``S`` is a `subtype <#subtyping>`__
 of ``T`` and ``T`` is a subtype of ``S``.
+
+The same-type check is *not* defined to be reflexive or transitive.
+
+   For more discussion of reflexive and transitive checks, see the
+   comments under `nullness subtyping <#nullness-subtyping>`__.
 
 Subtyping
 ---------
@@ -585,7 +636,8 @@ are met:
    path <#nullness-subtype-establishing-path>`__ to any type whose base
    type is the same as the base type of ``F``.
 
-Nullness subtyping (and thus subtyping itself) is *not* transitive.
+Nullness subtyping (and thus subtyping itself) is *not* defined to be
+reflexive or transitive.
 
 (Contrast this with our `nullness-delegating
 subtyping <#nullness-delegating-subtyping>`__ rules and
@@ -597,13 +649,22 @@ Fortunately, this “mostly transitive” behavior is exactly the behavior
 that implementations are likely to produce naturally. Maybe someday we
 will find a way to specify this fully correctly.)
 
-Nullness subtyping (and thus subtyping itself) is *not* reflexive.
+   Subtyping does end up being transitive when the check is required to
+   hold in `all worlds <#multiple-worlds>`__. And it does end up being
+   reflexive when the check is required to hold only in `some
+   world <#multiple-worlds>`__. We don’t state those properties as rules
+   for 2 reasons: First, they arise naturally from the definitions.
+   Second, we don’t want to suggest that subtyping is reflexive and
+   transitive under both versions of the rule.
 
-   It does end up being reflexive in the `most convenient
-   world <#multiple-worlds>`__. We don’t state that as a rule for 2
-   reasons: First, it arises naturally from the definitions in that
-   world. Second, we don’t want to suggest that subtyping is reflexive
-   in the `least convenient world <#multiple-worlds>`__.
+   Yes, it’s pretty terrible for something called “subtyping” not to be
+   reflexive or transitive. A more accurate name for this concept would
+   be “consistent,” a term used in gradual typing. However, we use
+   “subtyping” anyway. In our defense, we need to name multiple
+   concepts, including not just subtyping but also
+   `same-type <#same-type>`__ checks and `containment <#containment>`__.
+   If we were to coin a new term for each, tool authors would need to
+   mentally map between those terms and the analogous Java terms.
 
 Trusted null-inclusive under every parameterization
 ---------------------------------------------------
@@ -615,9 +676,8 @@ meets either of the following conditions:
 -  It is an `intersection type <#intersection-types>`__ whose elements
    all are trusted null-inclusive under every parameterization.
 
-**Most convenient world:** The rule is the same except that the
-requirement for “``UNION_NULL``” is loosened to “``UNION_NULL`` or
-``UNSPECIFIED``.”
+**Some-world version:** The rule is the same except that the requirement
+for “``UNION_NULL``” is loosened to “``UNION_NULL`` or ``UNSPECIFIED``.”
 
 Trusted null-exclusive under every parameterization
 ---------------------------------------------------
@@ -653,7 +713,7 @@ following hold:
       nullness-subtype-establishing path to itself — as long as it has
       one of the required nullness operators.
 
-**Most convenient world:** The rules are the same except that the
+**Some-world version:** The rules are the same except that the
 requirement for “``NO_CHANGE`` or ``MINUS_NULL``” is loosened to
 “``NO_CHANGE``, ``MINUS_NULL``, or ``UNSPECIFIED``.”
 
@@ -682,12 +742,12 @@ Lower-bound rule:
 
    TODO(cpovirk): What if the lower bound has some other nullness
    operator? I’m pretty sure that we want to allow ``UNSPECIFIED`` in
-   the most convenient world (as we did before my recent edits), and we
-   may want to allow more.
+   the some-world version (as we did before my recent edits), and we may
+   want to allow more.
 
 -  otherwise: no nodes
 
-**Most convenient world:** The rules are the same except that the
+**Some-world version:** The rules are the same except that the
 requirements for “``NO_CHANGE`` or ``MINUS_NULL``” are loosened to
 “``NO_CHANGE``, ``MINUS_NULL``, or ``UNSPECIFIED``.”
 
@@ -713,7 +773,7 @@ We add to them as follows:
    the rule applies if and only if this spec defines the 2 types to be
    the `same type <#same-type>`__.
 
-**Most convenient world:** The rules are the same except that the
+**Some-world version:** The rules are the same except that the
 requirement for “``UNION_NULL``” is loosened to “``UNION_NULL`` or
 ``UNSPECIFIED``.”
 
@@ -742,15 +802,15 @@ is ``Pᵢ``, replace ``V`` with the result of the following operation:
 
 -  If ``V`` is `trusted null-exclusive under every
    parameterization <#trusted-null-exclusive-under-every-parameterization>`__
-   in the `least convenient world <#multiple-worlds>`__, then replace it
-   with the result of `applying <#applying-operator>`__ ``MINUS_NULL``
-   to ``Aᵢ``.
+   in `all worlds <#multiple-worlds>`__, then replace it with the result
+   of `applying <#applying-operator>`__ ``MINUS_NULL`` to ``Aᵢ``.
 
-      This is the one instance in which a rule references another rule
-      to be run under a *different* “world.” Normally, all rules are run
-      `under the same “world.” <#propagating-multiple-worlds>`__ But in
-      this instance, the null-exclusivity rule (and all rules that it in
-      turn applies) are always run in the least convenient world.
+      This is the one instance in which a rule specifically refers to
+      the `all-worlds <#multiple-worlds>`__ version of another rule.
+      Normally, `a rule “propagates” its version to other
+      rules <#propagating-multiple-worlds>`__. But in this instance, the
+      null-exclusivity rule (and all rules that it in turn applies) are
+      the `all-worlds <#multiple-worlds>`__ versions.
 
    ..
 
@@ -759,11 +819,11 @@ is ``Pᵢ``, replace ``V`` with the result of the following operation:
       that class. Its builder will have an element type whose `nullness
       operator <#nullness-operator>`__ is ``UNSPECIFIED``. Without this
       special case, ``builder.add(objectUnionNull)`` would pass the
-      subtyping check in the `most convenient
-      world <#multiple-worlds>`__. This would happen even though we have
-      enough information to know that the parameter to ``add`` is
-      universally null-exclusive — even in the most convenient world.
-      The special case here makes that subtyping check fail.
+      subtyping check in the `some-world <#multiple-worlds>`__ version.
+      This would happen even though we have enough information to know
+      that the parameter to ``add`` is universally null-exclusive,
+      regardless of world. The special case here makes that subtyping
+      check fail, as desired.
 
 -  Otherwise, replace ``V`` with the result of applying the nullness
    operator of ``V`` to ``Aᵢ``.

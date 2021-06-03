@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>JSpecify spec &mdash; JSpecify  ドキュメント</title>
+  <title>JSpecify nullness spec draft &mdash; JSpecify  ドキュメント</title>
   
 
   
@@ -87,8 +87,9 @@
               <p class="caption"><span class="caption-text">コンテンツ</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="design-overview.html">JSpecify design overview</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">JSpecify spec</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#general">General</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">JSpecify nullness spec draft</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#normative-and-non-normative-sections">Normative and non-normative sections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#details-common-to-all-annotations">Details common to all annotations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#the-type-use-annotation">The type-use annotation</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#recognized-locations-for-type-use-annotations">Recognized locations for type-use annotations</a></li>
 </ul>
@@ -106,8 +107,8 @@
 <li class="toctree-l2"><a class="reference internal" href="#bound-of-an-unbounded-wildcard">Bound of an “unbounded” wildcard</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#bound-of-an-object-bounded-type-parameter">Bound of an <code class="docutils literal notranslate"><span class="pre">Object</span></code>-bounded type parameter</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#augmented-null-types">Augmented null types</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#the-least-convenient-world-and-the-most-convenient-world">The least convenient world and the most convenient world</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#propagating-the-most-least-convenient-world">Propagating the most/least convenient world</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#multiple-worlds">Multiple “worlds”</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#propagating-the-choice-of-world">Propagating the choice of world</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#same-type">Same type</a></li>
@@ -172,7 +173,7 @@
     
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
-      <li>JSpecify spec</li>
+      <li>JSpecify nullness spec draft</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -191,16 +192,21 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="jspecify-spec">
-<h1>JSpecify spec<a class="headerlink" href="#jspecify-spec" title="このヘッドラインへのパーマリンク">¶</a></h1>
+  <div class="section" id="jspecify-nullness-spec-draft">
+<h1>JSpecify nullness spec draft<a class="headerlink" href="#jspecify-nullness-spec-draft" title="このヘッドラインへのパーマリンク">¶</a></h1>
 <p>This document is our draft specification for the semantics of a set of
 nullness annotations.</p>
 <blockquote>
-<div><p class="rubric" id="high-level-overview">High-level overview</p>
-<p>I should probably preemptively clarify at least one thing. In this
-doc, I have tried to distinguish explicitly between 3 “kinds of
-nullability” of a given type usage. Each kind is derived (at least in
-part) from the previous:</p>
+<div><p class="rubric" id="advice-to-readers">Advice to readers</p>
+<p>For someone new to our nullness annotations, this document does not
+make a good introduction. This document is targeted more at tool
+authors or advanced users. For new users, we are working on
+additional documentation, including Javadoc, a User Guide, and a FAQ.</p>
+<p class="rubric" id="the-world-nullable">The world “nullable”</p>
+<p>In this doc, I aim not to refer to whether a type “is nullable.”
+Instead, I draw some distinctions, creating roughly 3 kinds of “Is it
+nullable?” questions we can ask for any given type usage. Each kind
+is derived (at least in part) from the previous:</p>
 <ol class="arabic simple">
 <li><p>What annotation (if any) appears directly on that type usage?</p></li>
 <li><p>What is the <a class="reference external" href="#nullness-operator">nullness operator</a> of that
@@ -209,19 +215,49 @@ type usage?</p></li>
 <ul class="simple">
 <li><p>Is it safe to assume that is not <code class="docutils literal notranslate"><span class="pre">null</span></code>?</p></li>
 <li><p>Is it safe to put a <code class="docutils literal notranslate"><span class="pre">null</span></code> into it?</p></li>
-<li><p>neither (as in “parametric nullness”)</p></li>
-<li><p>both (as in “unspecified nullness” in “lenient mode”)</p></li>
+<li><p>neither (what we sometimes call “parametric nullness”)</p></li>
+<li><p>both (as can happen with <code class="docutils literal notranslate"><span class="pre">UNSPECIFIED</span></code> under lenient tools)</p></li>
 </ul>
 </li>
 </ol>
-<p>TODO(cpovirk): Link to my “Don’t say ‘nullable’” doc once I write it.</p>
+<p class="rubric" id="the-scope-of-this-spec">The scope of this spec</p>
+<p>This spec does not address <em>when</em> tools must apply a given check. For
+example, it does not state when tools must apply the
+<a class="reference external" href="#subtyping">subtyping</a> check.</p>
+<p>We expect that tools will typically apply them in the same cases that
+they apply standard Java checks. For example, if code contains the
+parameterized type <code class="docutils literal notranslate"><span class="pre">List&lt;&#64;Nullable</span> <span class="pre">Foo&gt;</span></code>, we would expect tools to
+check that <code class="docutils literal notranslate"><span class="pre">&#64;Nullable</span> <span class="pre">Foo</span></code> is a subtype of the bound of the type
+parameter of <code class="docutils literal notranslate"><span class="pre">List</span></code>.</p>
+<p>However, this is up to tool authors. In fact, JSpecify annotations
+can be used even by tools that are not “nullness checkers” at all.
+For example, a tool that lists the members of an API could show the
+nullness of each type in the API, without any checking that those
+types are “correct.”</p>
 </div></blockquote>
-<div class="section" id="general">
-<h2>General<a class="headerlink" href="#general" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="normative-and-non-normative-sections">
+<h2>Normative and non-normative sections<a class="headerlink" href="#normative-and-non-normative-sections" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>This document contains some non-normative comments to emphasize points
+or to anticipate likely questions. Those comments are set off as block
+quotes.</p>
+<blockquote>
+<div><p>This is an example of a non-normative comment.</p>
+</div></blockquote>
+<p>This document also links to other documents. Those documents are
+non-normative.</p>
+<blockquote>
+<div><p>As of this writing, we know that this spec is not entirely
+sufficient: It sometimes relies on references to other documents
+(like the glossary). We will need to fix this by copying those
+definitions here.</p>
+</div></blockquote>
+</div>
+<div class="section" id="details-common-to-all-annotations">
+<h2>Details common to all annotations<a class="headerlink" href="#details-common-to-all-annotations" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <ul class="simple">
 <li><p>The package name is <code class="docutils literal notranslate"><span class="pre">org.jspecify.nullness</span></code>.
 [<a class="reference external" href="https://github.com/jspecify/jspecify/issues/1">#1</a>]</p></li>
-<li><p>The JPMS module name is <code class="docutils literal notranslate"><span class="pre">org.jspecify</span></code>.
+<li><p>The Java module name is <code class="docutils literal notranslate"><span class="pre">org.jspecify</span></code>.
 [<a class="reference external" href="https://github.com/jspecify/jspecify/issues/181">#181</a>]</p></li>
 <li><p>The Maven artifact is <code class="docutils literal notranslate"><span class="pre">org.jspecify:jspecify</span></code>.
 [<a class="reference external" href="https://github.com/jspecify/jspecify/issues/181">#181</a>]</p></li>
@@ -236,17 +272,10 @@ annotations are marked
 <p>We provide a parameterless type-use annotation called <code class="docutils literal notranslate"><span class="pre">&#64;Nullable</span></code>.</p>
 <div class="section" id="recognized-locations-for-type-use-annotations">
 <h3>Recognized locations for type-use annotations<a class="headerlink" href="#recognized-locations-for-type-use-annotations" title="このヘッドラインへのパーマリンク">¶</a></h3>
-<p>Our type-use annotation is specified to be <em>recognized</em> in the
-circumstances detailed below. An annotation in a recognized location has
-the semantics described in this spec. The spec does not assign meaning
-to annotations in unrecognized locations.</p>
-<blockquote>
-<div><p>Of course, when an annotation appears in an recognized location, that
-does not make it “correct”: It may specify a type that a tool can
-identify as <em>incompatible</em> with the type that the tool requires for
-that particular location, given the information it has about related
-code from annotations and other sources.</p>
-</div></blockquote>
+<p>A location is a <em>recognized</em> location for our type-use annotation in the
+circumstances detailed below. A type at recognized location has the
+semantics described in this spec. The spec does not assign semantics to
+types in other locations, nor to any annotations on such types.</p>
 <ul>
 <li><p>Unrecognized when applied to any component of a type usage in
 <a class="reference external" href="https://docs.google.com/document/d/1KQrBxwaVIPIac_6SCf--w-vZBeHkTvtaqPSU_icIccc/edit#bookmark=id.cjuxrgo7keqs">implementation
@@ -259,6 +288,13 @@ code</a>:</p>
 constructor (including via a member reference), or to an instance
 creation expression for a generic class.</p></li>
 </ul>
+<blockquote>
+<div><p>In practice, we expect that tools will treat annotations in most
+of the above locations much like they treat annotations in other
+locations. Still, this spec does not concern itself with
+implementation code: We believe that the most important domain for
+us to focus on is that of APIs.</p>
+</div></blockquote>
 </li>
 <li><p>Unrecognized when applied to a class declaration.
 [<a class="reference external" href="https://github.com/jspecify/jspecify/issues/7">#7</a>]</p>
@@ -308,15 +344,17 @@ explicit wildcard bound, array component type, or the type used in
 a variadic parameter declaration.</p>
 <blockquote>
 <div><p>For example, the annotation in <code class="docutils literal notranslate"><span class="pre">Iterator&lt;&#64;Nullable</span> <span class="pre">String&gt;</span></code>
-is always recognized.</p>
+is always recognized, aside from the exception for
+implementation code discussed above.</p>
 </div></blockquote>
 </li>
-<li><p>Exception: Annotations on a type parameter or wildcard <em>itself</em>
-are unrecognized.
+<li><p>Exception: Annotations on a type-parameter declaration or a
+wildcard <em>itself</em> are unrecognized.
 [<a class="reference external" href="https://github.com/jspecify/jspecify/issues/19">#19</a>,
 <a class="reference external" href="https://github.com/jspecify/jspecify/issues/31">#31</a>]</p>
 <blockquote>
-<div><p>Annotations on their <em>bounds</em> are still recognized.</p>
+<div><p>Annotations on their <em>bounds</em> can still be recognized. So too
+can annotations on a <em>type-variable usage</em>.</p>
 </div></blockquote>
 </li>
 </ul>
@@ -342,7 +380,7 @@ regardless of the corresponding type parameter’s bound):
 <blockquote>
 <div><p>Tools are encouraged to treat an unrecognized annotation in Java
 source code as an error unless they define semantics for that
-location – and especially to treat annotations on intrinsically
+location — and especially to treat annotations on intrinsically
 non-nullable locations as an error. In bytecode, unrecognized
 annotations may be best ignored (again, unless a tool defines
 semantics for them).</p>
@@ -409,19 +447,6 @@ type</a>
 and a <a class="reference external" href="#nullness-operator">nullness operator</a> corresponding to <em>each</em>
 of its <a class="reference external" href="https://docs.google.com/document/d/1KQrBxwaVIPIac_6SCf--w-vZBeHkTvtaqPSU_icIccc/edit#bookmark=kix.g7gl9fwq1tt5">type
 components</a>.</p>
-<blockquote>
-<div><p>This differs from our current <a class="reference external" href="https://docs.google.com/document/d/1KQrBxwaVIPIac_6SCf--w-vZBeHkTvtaqPSU_icIccc/edit#bookmark=id.367l48xhsikk">glossary
-definition</a>,
-which is written in terms of a “nullness” for each component, not a
-“nullness operator.” Still, the glossary’s concept of the “nullness”
-of a type is derivable from the type’s nullness operator. Notably,
-the glossary’s “nullable” type is our <a class="reference external" href="#multiple-worlds">least convenient
-world</a>’s <a class="reference external" href="#trusted-null-inclusive-under-every-parameterization">trusted null-inclusive under every
-parameterization</a>,
-and the glossary’s “non-nullable” type is our least convenient
-world’s <a class="reference external" href="#trusted-null-exclusive-under-every-parameterization">trusted null-exclusive under every
-parameterization</a>.</p>
-</div></blockquote>
 <p>For our purposes, base types (and thus augmented types) include not just
 class and interface types, array types, and type variables but also
 <a class="reference external" href="#intersection-types">intersection types</a> and the null type. This is
@@ -466,9 +491,9 @@ packages, which may be enclosed by modules.</p>
 Java compiler
 API</a>.</p>
 </div></blockquote>
-<p>If an <code class="docutils literal notranslate"><span class="pre">&#64;org.jspecify.nullness.NullMarked</span></code> annotation exists on one of
-these scopes, then the type usage is in a null-marked scope. Otherwise,
-it is not.</p>
+<p>If one of those scopes is directly annotated with
+<code class="docutils literal notranslate"><span class="pre">&#64;org.jspecify.nullness.NullMarked</span></code>, then the type usage is in a
+null-marked scope. Otherwise, it is not.</p>
 </div>
 <div class="section" id="augmented-type-of-a-type-usage-appearing-in-code">
 <span id="augmented-type-of-usage"></span><h2>Augmented type of a type usage appearing in code<a class="headerlink" href="#augmented-type-of-a-type-usage-appearing-in-code" title="このヘッドラインへのパーマリンク">¶</a></h2>
@@ -642,51 +667,70 @@ the null reference</p></li>
 </li>
 </ul>
 </div>
-<div class="section" id="the-least-convenient-world-and-the-most-convenient-world">
-<span id="multiple-worlds"></span><h2>The least convenient world and the most convenient world<a class="headerlink" href="#the-least-convenient-world-and-the-most-convenient-world" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<p>Some of the rules in this spec come in 2 versions, 1 for “the least
-convenient world” and 1 for “the most convenient world.”</p>
-<p>Tools may implement either or both versions of the rules.</p>
+<div class="section" id="multiple-worlds">
+<h2>Multiple “worlds”<a class="headerlink" href="#multiple-worlds" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>Some of the rules in this spec come in 2 versions: One version requires
+a property to hold “in all worlds,” and the other requires it to hold
+only “in some world.”</p>
+<p>Tool authors may wish to implement either or both versions of the rules.</p>
 <blockquote>
 <div><p>Our goal is to allow tools and their users to choose their desired
-level of strictness in the presence of <code class="docutils literal notranslate"><span class="pre">UNSPECIFIED</span></code>. “The least
-convenient world” usually assumes that types are incompatible unless
-it has enough information to prove they are compatible; “the most
-convenient world” assumes that types are compatible unless it has
-enough information to prove they are incompatible.</p>
-<p>Thus, strict tools may want to implement the least-convenient-world
-version of rules, and lenient tools may wish to implement the
-most-convenient-world version. Or a tool might implement both and let
-users select which rules to apply.</p>
-<p>Another possibility is for a tool to implement both versions and to
-use that to distinguish between “errors” and “warnings.” Such a tool
-might run each check first in the least convenient world and then, if
-the check fails, run it again in the most convenient world. If the
-check fails in both worlds, the tool would produce an error. If it
-passes only because of the most convenient interpretation, the tool
-would produce a warning.</p>
+level of strictness in the presence of <code class="docutils literal notranslate"><span class="pre">UNSPECIFIED</span></code>. The basic
+idea is that, every time a tool encounters a type component with the
+nullness operator <code class="docutils literal notranslate"><span class="pre">UNSPECIFIED</span></code>, it forks off 2 “worlds”: 1 in
+which the operator is <code class="docutils literal notranslate"><span class="pre">UNION_NULL</span></code> and 1 in which it is
+<code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code>.</p>
+<p>Since we lack a nullness specification for the type, we assume that
+either of the resulting worlds may be the “correct” specification.
+The all-worlds version of a rule, by requiring types to be compatible
+in all possible worlds, holds that types are incompatible unless it
+has enough information to prove they are compatible. The some-world
+version, by requiring types to be compatible only in <em>some</em> world,
+holds that types are compatible unless it has enough information to
+prove they are incompatible. (By behaving “optimistically,” the
+some-world checking behaves much like Kotlin’s checking of “platform
+types.”)</p>
+<p>Thus, strict tools may want to implement the all-worlds version of
+rules, and lenient tools may wish to implement the some-world
+version. Or a tool might implement both and let users select which
+rules to apply.</p>
+<p>Yet another possibility is for a tool to implement both versions and
+to use that to distinguish between “errors” and “warnings.” Such a
+tool might run each check first in the all-worlds version and then,
+if the check fails, run it again in the some-world version. If the
+check fails in both cases, the tool would produce an error. If it
+passes only because of the some-world version, the tool would produce
+a warning.</p>
 </div></blockquote>
-<p>The main body of each section describes the <em>least</em>-convenient-world
-rule. If the most-convenient-world rule differs, the differences are
-explained at the end.</p>
-<div class="section" id="propagating-the-most-least-convenient-world">
-<span id="propagating-multiple-worlds"></span><h3>Propagating the most/least convenient world<a class="headerlink" href="#propagating-the-most-least-convenient-world" title="このヘッドラインへのパーマリンク">¶</a></h3>
-<p>When one rule in this spec refers to another, it refers to the rule for
-the same “world.” For example, when the rules for
+<p>The main body of each section of the spec describes the all-worlds rule.
+If the some-world rule differs, the differences are explained at the
+end.</p>
+<blockquote>
+<div><p>A small warning: To implement the full some-world rules, a tool must
+also implement at least part of the all-worlds rules. Those rules are
+required as part of <a class="reference external" href="#substitution">substitution</a>.</p>
+</div></blockquote>
+<div class="section" id="propagating-the-choice-of-world">
+<span id="propagating-multiple-worlds"></span><h3>Propagating the choice of world<a class="headerlink" href="#propagating-the-choice-of-world" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>When one rule in this spec refers to another, it refers to the same
+version of the rule. For example, when the rules for
 <a class="reference external" href="#containment">containment</a> refer to the rules for
-<a class="reference external" href="#subtyping">subtyping</a>, the most-convenient-world containment check
-applies the most-convenient-world subtyping check, and the
-least-convenient-world containment check applies the
-least-convenient-world subtyping check.</p>
-<p>This applies even if a rule says it is the same for both worlds: It
-means “the same except that any other rules are applied in the
-corresponding world.”</p>
+<a class="reference external" href="#subtyping">subtyping</a>, the some-world containment check applies the
+some-world subtyping check, and the all-worlds containment check applies
+the all-worlds subtyping check.</p>
+<p>This meta-rule applies except when a rule refers explicitly to a
+particular version of another rule.</p>
 </div>
 </div>
 <div class="section" id="same-type">
 <h2>Same type<a class="headerlink" href="#same-type" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">S</span></code> and <code class="docutils literal notranslate"><span class="pre">T</span></code> are the same type if <code class="docutils literal notranslate"><span class="pre">S</span></code> is a <a class="reference external" href="#subtyping">subtype</a>
 of <code class="docutils literal notranslate"><span class="pre">T</span></code> and <code class="docutils literal notranslate"><span class="pre">T</span></code> is a subtype of <code class="docutils literal notranslate"><span class="pre">S</span></code>.</p>
+<p>The same-type check is <em>not</em> defined to be reflexive or transitive.</p>
+<blockquote>
+<div><p>For more discussion of reflexive and transitive checks, see the
+comments under <a class="reference external" href="#nullness-subtyping">nullness subtyping</a>.</p>
+</div></blockquote>
 </div>
 <div class="section" id="subtyping">
 <h2>Subtyping<a class="headerlink" href="#subtyping" title="このヘッドラインへのパーマリンク">¶</a></h2>
@@ -743,7 +787,8 @@ parameterization</a>.</p></li>
 path</a> to any type whose base
 type is the same as the base type of <code class="docutils literal notranslate"><span class="pre">F</span></code>.</p></li>
 </ul>
-<p>Nullness subtyping (and thus subtyping itself) is <em>not</em> transitive.</p>
+<p>Nullness subtyping (and thus subtyping itself) is <em>not</em> defined to be
+reflexive or transitive.</p>
 <p>(Contrast this with our <a class="reference external" href="#nullness-delegating-subtyping">nullness-delegating
 subtyping</a> rules and
 <a class="reference external" href="#containment">containment</a> rules: Each of those is defined as a
@@ -753,13 +798,22 @@ either</a>.
 Fortunately, this “mostly transitive” behavior is exactly the behavior
 that implementations are likely to produce naturally. Maybe someday we
 will find a way to specify this fully correctly.)</p>
-<p>Nullness subtyping (and thus subtyping itself) is <em>not</em> reflexive.</p>
 <blockquote>
-<div><p>It does end up being reflexive in the <a class="reference external" href="#multiple-worlds">most convenient
-world</a>. We don’t state that as a rule for 2
-reasons: First, it arises naturally from the definitions in that
-world. Second, we don’t want to suggest that subtyping is reflexive
-in the <a class="reference external" href="#multiple-worlds">least convenient world</a>.</p>
+<div><p>Subtyping does end up being transitive when the check is required to
+hold in <a class="reference external" href="#multiple-worlds">all worlds</a>. And it does end up being
+reflexive when the check is required to hold only in <a class="reference external" href="#multiple-worlds">some
+world</a>. We don’t state those properties as rules
+for 2 reasons: First, they arise naturally from the definitions.
+Second, we don’t want to suggest that subtyping is reflexive and
+transitive under both versions of the rule.</p>
+<p>Yes, it’s pretty terrible for something called “subtyping” not to be
+reflexive or transitive. A more accurate name for this concept would
+be “consistent,” a term used in gradual typing. However, we use
+“subtyping” anyway. In our defense, we need to name multiple
+concepts, including not just subtyping but also
+<a class="reference external" href="#same-type">same-type</a> checks and <a class="reference external" href="#containment">containment</a>.
+If we were to coin a new term for each, tool authors would need to
+mentally map between those terms and the analogous Java terms.</p>
 </div></blockquote>
 </div>
 <div class="section" id="trusted-null-inclusive-under-every-parameterization">
@@ -771,9 +825,8 @@ meets either of the following conditions:</p>
 <li><p>It is an <a class="reference external" href="#intersection-types">intersection type</a> whose elements
 all are trusted null-inclusive under every parameterization.</p></li>
 </ul>
-<p><strong>Most convenient world:</strong> The rule is the same except that the
-requirement for “<code class="docutils literal notranslate"><span class="pre">UNION_NULL</span></code>” is loosened to “<code class="docutils literal notranslate"><span class="pre">UNION_NULL</span></code> or
-<code class="docutils literal notranslate"><span class="pre">UNSPECIFIED</span></code>.”</p>
+<p><strong>Some-world version:</strong> The rule is the same except that the requirement
+for “<code class="docutils literal notranslate"><span class="pre">UNION_NULL</span></code>” is loosened to “<code class="docutils literal notranslate"><span class="pre">UNION_NULL</span></code> or <code class="docutils literal notranslate"><span class="pre">UNSPECIFIED</span></code>.”</p>
 </div>
 <div class="section" id="trusted-null-exclusive-under-every-parameterization">
 <h2>Trusted null-exclusive under every parameterization<a class="headerlink" href="#trusted-null-exclusive-under-every-parameterization" title="このヘッドラインへのパーマリンク">¶</a></h2>
@@ -810,7 +863,7 @@ one of the required nullness operators.</p>
 </div></blockquote>
 </li>
 </ul>
-<p><strong>Most convenient world:</strong> The rules are the same except that the
+<p><strong>Some-world version:</strong> The rules are the same except that the
 requirement for “<code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code> or <code class="docutils literal notranslate"><span class="pre">MINUS_NULL</span></code>” is loosened to
 “<code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code>, <code class="docutils literal notranslate"><span class="pre">MINUS_NULL</span></code>, or <code class="docutils literal notranslate"><span class="pre">UNSPECIFIED</span></code>.”</p>
 </div>
@@ -836,12 +889,12 @@ is the same as <code class="docutils literal notranslate"><span class="pre">T</s
 <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code>: the type variable <code class="docutils literal notranslate"><span class="pre">P</span></code></p>
 <p>TODO(cpovirk): What if the lower bound has some other nullness
 operator? I’m pretty sure that we want to allow <code class="docutils literal notranslate"><span class="pre">UNSPECIFIED</span></code> in
-the most convenient world (as we did before my recent edits), and we
-may want to allow more.</p>
+the some-world version (as we did before my recent edits), and we may
+want to allow more.</p>
 </li>
 <li><p>otherwise: no nodes</p></li>
 </ul>
-<p><strong>Most convenient world:</strong> The rules are the same except that the
+<p><strong>Some-world version:</strong> The rules are the same except that the
 requirements for “<code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code> or <code class="docutils literal notranslate"><span class="pre">MINUS_NULL</span></code>” are loosened to
 “<code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code>, <code class="docutils literal notranslate"><span class="pre">MINUS_NULL</span></code>, or <code class="docutils literal notranslate"><span class="pre">UNSPECIFIED</span></code>.”</p>
 </div>
@@ -866,7 +919,7 @@ if the nullness operator of the <code class="docutils literal notranslate"><span
 the rule applies if and only if this spec defines the 2 types to be
 the <a class="reference external" href="#same-type">same type</a>.</p></li>
 </ul>
-<p><strong>Most convenient world:</strong> The rules are the same except that the
+<p><strong>Some-world version:</strong> The rules are the same except that the
 requirement for “<code class="docutils literal notranslate"><span class="pre">UNION_NULL</span></code>” is loosened to “<code class="docutils literal notranslate"><span class="pre">UNION_NULL</span></code> or
 <code class="docutils literal notranslate"><span class="pre">UNSPECIFIED</span></code>.”</p>
 </div>
@@ -894,15 +947,15 @@ is <code class="docutils literal notranslate"><span class="pre">Pᵢ</span></cod
 <ul>
 <li><p>If <code class="docutils literal notranslate"><span class="pre">V</span></code> is <a class="reference external" href="#trusted-null-exclusive-under-every-parameterization">trusted null-exclusive under every
 parameterization</a>
-in the <a class="reference external" href="#multiple-worlds">least convenient world</a>, then replace it
-with the result of <a class="reference external" href="#applying-operator">applying</a> <code class="docutils literal notranslate"><span class="pre">MINUS_NULL</span></code>
-to <code class="docutils literal notranslate"><span class="pre">Aᵢ</span></code>.</p>
+in <a class="reference external" href="#multiple-worlds">all worlds</a>, then replace it with the result
+of <a class="reference external" href="#applying-operator">applying</a> <code class="docutils literal notranslate"><span class="pre">MINUS_NULL</span></code> to <code class="docutils literal notranslate"><span class="pre">Aᵢ</span></code>.</p>
 <blockquote>
-<div><p>This is the one instance in which a rule references another rule
-to be run under a <em>different</em> “world.” Normally, all rules are run
-<a class="reference external" href="#propagating-multiple-worlds">under the same “world.”</a> But in
-this instance, the null-exclusivity rule (and all rules that it in
-turn applies) are always run in the least convenient world.</p>
+<div><p>This is the one instance in which a rule specifically refers to
+the <a class="reference external" href="#multiple-worlds">all-worlds</a> version of another rule.
+Normally, <a class="reference external" href="#propagating-multiple-worlds">a rule “propagates” its version to other
+rules</a>. But in this instance, the
+null-exclusivity rule (and all rules that it in turn applies) are
+the <a class="reference external" href="#multiple-worlds">all-worlds</a> versions.</p>
 </div></blockquote>
 <blockquote>
 <div><p>This special case improves behavior in “the
@@ -910,11 +963,11 @@ turn applies) are always run in the least convenient world.</p>
 that class. Its builder will have an element type whose <a class="reference external" href="#nullness-operator">nullness
 operator</a> is <code class="docutils literal notranslate"><span class="pre">UNSPECIFIED</span></code>. Without this
 special case, <code class="docutils literal notranslate"><span class="pre">builder.add(objectUnionNull)</span></code> would pass the
-subtyping check in the <a class="reference external" href="#multiple-worlds">most convenient
-world</a>. This would happen even though we have
-enough information to know that the parameter to <code class="docutils literal notranslate"><span class="pre">add</span></code> is
-universally null-exclusive — even in the most convenient world.
-The special case here makes that subtyping check fail.</p>
+subtyping check in the <a class="reference external" href="#multiple-worlds">some-world</a> version.
+This would happen even though we have enough information to know
+that the parameter to <code class="docutils literal notranslate"><span class="pre">add</span></code> is universally null-exclusive,
+regardless of world. The special case here makes that subtyping
+check fail, as desired.</p>
 </div></blockquote>
 </li>
 <li><p>Otherwise, replace <code class="docutils literal notranslate"><span class="pre">V</span></code> with the result of applying the nullness
