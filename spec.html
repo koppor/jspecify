@@ -114,8 +114,8 @@
 <li class="toctree-l2"><a class="reference internal" href="#subtyping">Subtyping</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#nullness-delegating-subtyping-rules-for-java">Nullness-delegating subtyping rules for Java</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#nullness-subtyping">Nullness subtyping</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#trusted-null-inclusive-under-every-parameterization">Trusted null-inclusive under every parameterization</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#trusted-null-exclusive-under-every-parameterization">Trusted null-exclusive under every parameterization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#null-inclusive-under-every-parameterization">Null-inclusive under every parameterization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#null-exclusive-under-every-parameterization">Null-exclusive under every parameterization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#nullness-subtype-establishing-path">Nullness-subtype-establishing path</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#nullness-subtype-establishing-direct-supertype-edges">Nullness-subtype-establishing direct-supertype edges</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#containment">Containment</a></li>
@@ -200,14 +200,15 @@ nullness annotations.</p>
 <p>For someone new to our nullness annotations, this document does not
 make a good introduction. This document is targeted more at tool
 authors or advanced users. For new users, we are working on
-additional documentation, including Javadoc, a User Guide, and a FAQ.</p>
+additional documentation, including Javadoc, a User Guide, and a FAQ.
+At the moment, you can see our <a class="reference external" href="design-overview">design overview</a>.</p>
 <p class="rubric" id="the-world-nullable">The world “nullable”</p>
 <p>In this doc, I aim not to refer to whether a type “is nullable.”
 Instead, I draw some distinctions, creating roughly 3 kinds of “Is it
 nullable?” questions we can ask for any given type usage. Each kind
 is derived (at least in part) from the previous:</p>
 <ol class="arabic simple">
-<li><p>What annotation (if any) appears directly on that type usage?</p></li>
+<li><p>Does <code class="docutils literal notranslate"><span class="pre">&#64;Nullable</span></code> appear directly on that type usage?</p></li>
 <li><p>What is the <a class="reference external" href="#nullness-operator">nullness operator</a> of that
 type usage?</p></li>
 <li><p>For that type usage…</p>
@@ -247,8 +248,12 @@ non-normative.</p>
 <blockquote>
 <div><p>As of this writing, we know that this spec is not entirely
 sufficient: It sometimes relies on references to other documents
-(like the glossary). We will need to fix this by copying those
-definitions here.</p>
+(like the
+<a class="reference external" href="https://docs.google.com/document/d/1KQrBxwaVIPIac_6SCf--w-vZBeHkTvtaqPSU_icIccc/edit">glossary</a>).
+We will need to fix this by copying those definitions here.</p>
+<p>(Incidentally, I don’t recommend trying to read through the glossary
+as part of reviewing this doc: The glossary includes many concepts
+that we don’t need here, and we have not maintained it recently.)</p>
 </div></blockquote>
 </div>
 <div class="section" id="details-common-to-all-annotations">
@@ -272,15 +277,16 @@ annotations are marked
 <div class="section" id="recognized-locations-for-type-use-annotations">
 <h3>Recognized locations for type-use annotations<a class="headerlink" href="#recognized-locations-for-type-use-annotations" title="Permalink to this headline">¶</a></h3>
 <p>A location is a <em>recognized</em> location for our type-use annotation in the
-circumstances detailed below. A type at recognized location has the
+circumstances detailed below. A type at a recognized location has the
 semantics described in this spec. The spec does not assign semantics to
 types in other locations, nor to any annotations on such types.</p>
 <ul>
-<li><p>Unrecognized when applied to any component of a type usage in
+<li><p>Unrecognized location: any component of a type usage in
 <a class="reference external" href="https://docs.google.com/document/d/1KQrBxwaVIPIac_6SCf--w-vZBeHkTvtaqPSU_icIccc/edit#bookmark=id.cjuxrgo7keqs">implementation
 code</a>:</p>
 <ul class="simple">
 <li><p>A local variable type.</p></li>
+<li><p>An exception parameter.</p></li>
 <li><p>The type in a cast expression.</p></li>
 <li><p>An array or object creation expression.</p></li>
 <li><p>An explicit type argument supplied to a generic method or
@@ -288,30 +294,33 @@ constructor (including via a member reference), or to an instance
 creation expression for a generic class.</p></li>
 </ul>
 <blockquote>
-<div><p>In practice, we expect that tools will treat annotations in most
-of the above locations much like they treat annotations in other
-locations. Still, this spec does not concern itself with
-implementation code: We believe that the most important domain for
-us to focus on is that of APIs.</p>
+<div><p>In practice, we expect that tools will treat types (and their
+annotations) in <em>most</em> of the above locations much like they treat
+types in other locations. Still, this spec does not concern itself
+with implementation code: We believe that the most important
+domain for us to focus on is that of APIs.</p>
 </div></blockquote>
 </li>
-<li><p>Unrecognized when applied to a class declaration.
+<li><p>Unrecognized location: a class declaration.
 [<a class="reference external" href="https://github.com/jspecify/jspecify/issues/7">#7</a>]</p>
 <blockquote>
-<div><p>For example, <code class="docutils literal notranslate"><span class="pre">public</span> <span class="pre">&#64;Nullable</span> <span class="pre">class</span> <span class="pre">Foo</span> <span class="pre">{}</span></code> is unrecognized.</p>
+<div><p>For example, the annotation in <code class="docutils literal notranslate"><span class="pre">public</span> <span class="pre">&#64;Nullable</span> <span class="pre">class</span> <span class="pre">Foo</span> <span class="pre">{}</span></code>
+is in an unrecognized location.</p>
 </div></blockquote>
 </li>
-<li><p>Unrecognized on type usages that are intrinsically non-nullable:
+<li><p>Unrecognized location: any type usage that is intrinsically
+non-nullable:
 [<a class="reference external" href="https://github.com/jspecify/jspecify/issues/17">#17</a>]</p>
 <ul>
-<li><p>When the annotated type usage is of any primitive type.</p></li>
-<li><p>For the outer type that qualifies an inner type.</p>
+<li><p>A type usage of a primitive type.</p></li>
+<li><p>The outer type that qualifies an inner type.</p>
 <blockquote>
-<div><p>For example, <code class="docutils literal notranslate"><span class="pre">&#64;Nullable</span> <span class="pre">Foo.Bar</span></code> is unrecognized because the
-outer type <code class="docutils literal notranslate"><span class="pre">Foo</span></code> is intrinsically non-nullable.</p>
+<div><p>For example, the annotation in <code class="docutils literal notranslate"><span class="pre">&#64;Nullable</span> <span class="pre">Foo.Bar</span></code> is in an
+unrecognized location because the outer type <code class="docutils literal notranslate"><span class="pre">Foo</span></code> is
+intrinsically non-nullable.</p>
 </div></blockquote>
 </li>
-<li><p>In any of the following non-nullable type contexts:</p>
+<li><p>Any of the following type contexts:</p>
 <ul class="simple">
 <li><p>supertype in a class declaration</p></li>
 <li><p>thrown exception type</p></li>
@@ -320,19 +329,22 @@ outer type <code class="docutils literal notranslate"><span class="pre">Foo</spa
 </ul>
 </li>
 </ul>
-<p>But note that the following rules still apply to any non-root
-component types of such type usages.</p>
+<blockquote>
+<div><p>But note that the following rules, while they do not apply to
+intrinsically non-nullable type usages themselves, still apply to
+any other <em>component</em> types of such type usages.</p>
+</div></blockquote>
 </li>
-<li><p>Unrecognized on any component of a receiver parameter type.
+<li><p>Unrecognized location: any component of a receiver parameter type.
 [<a class="reference external" href="https://github.com/jspecify/jspecify/issues/157">#157</a>]</p>
 <blockquote>
 <div><p>This partially overlaps with the rule about non-nullable type
-contexts above: Both rules cover an annotation on the
-intrinsically non-nullable top-level type, but this rule extends
-that to <em>all</em> components of the type.</p>
+contexts above: Both rules cover the intrinsically non-nullable
+top-level type, but this rule extends that to <em>all</em> components of
+the type.</p>
 </div></blockquote>
 </li>
-<li><p>Otherwise, recognized on any
+<li><p>Recognized location (except where covered by the above rules): any
 <a class="reference external" href="https://docs.google.com/document/d/1KQrBxwaVIPIac_6SCf--w-vZBeHkTvtaqPSU_icIccc/edit#bookmark=kix.j1ewrpknx869">non-root</a>
 component type, regardless of the root type or surrounding <a class="reference external" href="https://docs.google.com/document/d/1KQrBxwaVIPIac_6SCf--w-vZBeHkTvtaqPSU_icIccc/edit#bookmark=kix.pfoww2aic35t">type
 context</a>.</p>
@@ -343,22 +355,22 @@ explicit wildcard bound, array component type, or the type used in
 a variadic parameter declaration.</p>
 <blockquote>
 <div><p>For example, the annotation in <code class="docutils literal notranslate"><span class="pre">Iterator&lt;&#64;Nullable</span> <span class="pre">String&gt;</span></code>
-is always recognized, aside from the exception for
-implementation code discussed above.</p>
+is always in a recognized location, aside from the exception
+for implementation code discussed above.</p>
 </div></blockquote>
 </li>
-<li><p>Exception: Annotations on a type-parameter declaration or a
-wildcard <em>itself</em> are unrecognized.
+<li><p>Exception: A type-parameter declaration or a wildcard <em>itself</em> is
+an unrecognized location.
 [<a class="reference external" href="https://github.com/jspecify/jspecify/issues/19">#19</a>,
 <a class="reference external" href="https://github.com/jspecify/jspecify/issues/31">#31</a>]</p>
 <blockquote>
-<div><p>Annotations on their <em>bounds</em> can still be recognized. So too
-can annotations on a <em>type-variable usage</em>.</p>
+<div><p>Their <em>bounds</em> can still be recognized locations. So too can
+<em>type-variable usages</em>.</p>
 </div></blockquote>
 </li>
 </ul>
 </li>
-<li><p>Recognized in the following type contexts (including when the type
+<li><p>Recognized location: any of the following (including when the type
 usage is a <a class="reference external" href="https://docs.google.com/document/d/1KQrBxwaVIPIac_6SCf--w-vZBeHkTvtaqPSU_icIccc/edit#bookmark=id.uxek2gfsybvo">type
 variable</a>,
 regardless of the corresponding type parameter’s bound):
@@ -377,12 +389,12 @@ regardless of the corresponding type parameter’s bound):
 </li>
 </ul>
 <blockquote>
-<div><p>Tools are encouraged to treat an unrecognized annotation in Java
-source code as an error unless they define semantics for that
-location — and especially to treat annotations on intrinsically
-non-nullable locations as an error. In bytecode, unrecognized
-annotations may be best ignored (again, unless a tool defines
-semantics for them).</p>
+<div><p>Tools are encouraged to issue an error for an annotation in an
+unrecognized location in source code unless they define semantics for
+that location — and especially to issue errors for annotations in
+intrinsically non-nullable locations. In bytecode, annotations in
+unrecognized locations may be best ignored (again, unless a tool
+defines semantics for them).</p>
 </div></blockquote>
 </div>
 </div>
@@ -468,10 +480,9 @@ refers specifically to the nullness operator of the type component that
 is the entire type <code class="docutils literal notranslate"><span class="pre">T</span></code>, without reference to the nullness operator of
 any other type components of <code class="docutils literal notranslate"><span class="pre">T</span></code>.</p>
 <blockquote>
-<div><p>For example, the nullness operator of <code class="docutils literal notranslate"><span class="pre">List&lt;&#64;Nullable</span> <span class="pre">Object&gt;</span></code>
-would be <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code> (at least in a <a class="reference external" href="#null-marked-scope">null-marked
-scope</a>), even though the nullness operator of
-its element type <code class="docutils literal notranslate"><span class="pre">Object</span></code> is <code class="docutils literal notranslate"><span class="pre">UNION_NULL</span></code>.</p>
+<div><p>For example, “the nullness operator of <code class="docutils literal notranslate"><span class="pre">List&lt;&#64;Nullable</span> <span class="pre">Object&gt;</span></code>”
+refers to the nullness of the list’s type, not that of its element
+type.</p>
 </div></blockquote>
 </div>
 <div class="section" id="null-marked-scope">
@@ -778,9 +789,9 @@ arguments with which a given generic type can be parameterized.</p>
 <p><code class="docutils literal notranslate"><span class="pre">A</span></code> is a nullness subtype of <code class="docutils literal notranslate"><span class="pre">F</span></code> if any of the following conditions
 are met:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">F</span></code> is <a class="reference external" href="#trusted-null-inclusive-under-every-parameterization">trusted null-inclusive under every
+<li><p><code class="docutils literal notranslate"><span class="pre">F</span></code> is <a class="reference external" href="#null-inclusive-under-every-parameterization">null-inclusive under every
 parameterization</a>.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">A</span></code> is <a class="reference external" href="#trusted-null-exclusive-under-every-parameterization">trusted null-exclusive under every
+<li><p><code class="docutils literal notranslate"><span class="pre">A</span></code> is <a class="reference external" href="#null-exclusive-under-every-parameterization">null-exclusive under every
 parameterization</a>.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">A</span></code> has a <a class="reference external" href="#nullness-subtype-establishing-path">nullness-subtype-establishing
 path</a> to any type whose base
@@ -815,22 +826,22 @@ If we were to coin a new term for each, tool authors would need to
 mentally map between those terms and the analogous Java terms.</p>
 </div></blockquote>
 </div>
-<div class="section" id="trusted-null-inclusive-under-every-parameterization">
-<h2>Trusted null-inclusive under every parameterization<a class="headerlink" href="#trusted-null-inclusive-under-every-parameterization" title="Permalink to this headline">¶</a></h2>
-<p>A type is trusted null-inclusive under every parameterization if it
-meets either of the following conditions:</p>
+<div class="section" id="null-inclusive-under-every-parameterization">
+<h2>Null-inclusive under every parameterization<a class="headerlink" href="#null-inclusive-under-every-parameterization" title="Permalink to this headline">¶</a></h2>
+<p>A type is null-inclusive under every parameterization if it meets either
+of the following conditions:</p>
 <ul class="simple">
 <li><p>Its <a class="reference external" href="#nullness-operator">nullness operator</a> is <code class="docutils literal notranslate"><span class="pre">UNION_NULL</span></code>.</p></li>
 <li><p>It is an <a class="reference external" href="#intersection-types">intersection type</a> whose elements
-all are trusted null-inclusive under every parameterization.</p></li>
+all are null-inclusive under every parameterization.</p></li>
 </ul>
 <p><strong>Some-world version:</strong> The rule is the same except that the requirement
 for “<code class="docutils literal notranslate"><span class="pre">UNION_NULL</span></code>” is loosened to “<code class="docutils literal notranslate"><span class="pre">UNION_NULL</span></code> or <code class="docutils literal notranslate"><span class="pre">UNSPECIFIED</span></code>.”</p>
 </div>
-<div class="section" id="trusted-null-exclusive-under-every-parameterization">
-<h2>Trusted null-exclusive under every parameterization<a class="headerlink" href="#trusted-null-exclusive-under-every-parameterization" title="Permalink to this headline">¶</a></h2>
-<p>A type is trusted null-exclusive under every parameterization if it has
-a <a class="reference external" href="#nullness-subtype-establishing-path">nullness-subtype-establishing
+<div class="section" id="null-exclusive-under-every-parameterization">
+<h2>Null-exclusive under every parameterization<a class="headerlink" href="#null-exclusive-under-every-parameterization" title="Permalink to this headline">¶</a></h2>
+<p>A type is null-exclusive under every parameterization if it has a
+<a class="reference external" href="#nullness-subtype-establishing-path">nullness-subtype-establishing
 path</a> to either of the
 following:</p>
 <ul>
@@ -944,10 +955,10 @@ parameter <code class="docutils literal notranslate"><span class="pre">Pᵢ</spa
 type</a>
 is <code class="docutils literal notranslate"><span class="pre">Pᵢ</span></code>, replace <code class="docutils literal notranslate"><span class="pre">V</span></code> with the result of the following operation:</p>
 <ul>
-<li><p>If <code class="docutils literal notranslate"><span class="pre">V</span></code> is <a class="reference external" href="#trusted-null-exclusive-under-every-parameterization">trusted null-exclusive under every
-parameterization</a>
-in <a class="reference external" href="#multiple-worlds">all worlds</a>, then replace it with the result
-of <a class="reference external" href="#applying-operator">applying</a> <code class="docutils literal notranslate"><span class="pre">MINUS_NULL</span></code> to <code class="docutils literal notranslate"><span class="pre">Aᵢ</span></code>.</p>
+<li><p>If <code class="docutils literal notranslate"><span class="pre">V</span></code> is <a class="reference external" href="#null-exclusive-under-every-parameterization">null-exclusive under every
+parameterization</a> in
+<a class="reference external" href="#multiple-worlds">all worlds</a>, then replace it with the result of
+<a class="reference external" href="#applying-operator">applying</a> <code class="docutils literal notranslate"><span class="pre">MINUS_NULL</span></code> to <code class="docutils literal notranslate"><span class="pre">Aᵢ</span></code>.</p>
 <blockquote>
 <div><p>This is the one instance in which a rule specifically refers to
 the <a class="reference external" href="#multiple-worlds">all-worlds</a> version of another rule.
