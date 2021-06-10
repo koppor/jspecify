@@ -792,14 +792,19 @@ arguments with which a given generic type can be parameterized.</p>
 </div></blockquote>
 <p><code class="docutils literal notranslate"><span class="pre">A</span></code> is a nullness subtype of <code class="docutils literal notranslate"><span class="pre">F</span></code> if any of the following conditions
 are met:</p>
-<ul class="simple">
+<ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">F</span></code> is <a class="reference external" href="#null-inclusive-under-every-parameterization">null-inclusive under every
 parameterization</a>.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">A</span></code> is <a class="reference external" href="#null-exclusive-under-every-parameterization">null-exclusive under every
 parameterization</a>.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">A</span></code> has a <a class="reference external" href="#nullness-subtype-establishing-path">nullness-subtype-establishing
 path</a> to any type whose base
-type is the same as the base type of <code class="docutils literal notranslate"><span class="pre">F</span></code>.</p></li>
+type is the same as the base type of <code class="docutils literal notranslate"><span class="pre">F</span></code>, and <code class="docutils literal notranslate"><span class="pre">F</span></code> does <em>not</em> have
+<a class="reference external" href="#nullness-operator">nullness operator</a> <code class="docutils literal notranslate"><span class="pre">MINUS_NULL</span></code>.</p>
+<blockquote>
+<div><p>The third case is necessary only for type-variable usages.</p>
+</div></blockquote>
+</li>
 </ul>
 <p>Nullness subtyping (and thus subtyping itself) is <em>not</em> defined to be
 reflexive or transitive.</p>
