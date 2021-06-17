@@ -192,6 +192,15 @@ $ <span class="o">(</span> <span class="nb">cd</span> docs <span class="o">&amp;
 </pre></div>
 </div>
 </div>
+<div class="section" id="how-to-view-the-built-pages-locally">
+<h2>How to view the built pages locally<a class="headerlink" href="#how-to-view-the-built-pages-locally" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>The easiest way I know of is to run Python's built-in webserver:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">cd</span> _build/html
+$ python3 -m http.server <span class="m">8000</span>
+</pre></div>
+</div>
+<p>Then the pages should appear at, e.g., http://yourhost:8000/design-overview.html</p>
+</div>
 <div class="section" id="commonmark-vs-restructuredtext">
 <h2>CommonMark vs. reStructuredText<a class="headerlink" href="#commonmark-vs-restructuredtext" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>These docs use reStructuredText (hence the <code class="docutils literal notranslate"><span class="pre">.rst</span></code> extension). If you are used to
