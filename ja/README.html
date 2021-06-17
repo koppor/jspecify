@@ -1,0 +1,251 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="ja" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Landing Pages &mdash; JSpecify  ドキュメント</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/translations.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="検索" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> JSpecify
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">コンテンツ</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="design-overview.html">JSpecify design overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spec.html">JSpecify nullness spec draft</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">JSpecify</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Landing Pages</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/README.md.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="tex2jax_ignore mathjax_ignore section" id="landing-pages">
+<h1>Landing Pages<a class="headerlink" href="#landing-pages" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<p>The docs will rebuild automatically after a commit. If you want to test locally,
+read on:</p>
+<div class="section" id="how-to-build">
+<h2>How to build<a class="headerlink" href="#how-to-build" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>To build this document, run the following commands:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">cd</span> path/to/jspecify
+$ docker build -t jspecify-sphinx docs
+$ docker run --rm -v <span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>/docs:/docs jspecify-sphinx make linkcheck
+$ docker run --rm -v <span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>/docs:/docs jspecify-sphinx make html
+</pre></div>
+</div>
+<p>To
+<a class="reference external" href="https://www.sphinx-doc.org/en/master/intl.html">translate the document into several languages</a>,
+generate <code class="docutils literal notranslate"><span class="pre">.po</span></code> files by following commands:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ docker run --rm -v <span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>/docs:/docs jspecify-sphinx make gettext
+$ docker run --rm -v <span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>/docs:/docs jspecify-sphinx sphinx-intl update -p _build/gettext -l ja
+</pre></div>
+</div>
+<p>After you finish updating <code class="docutils literal notranslate"><span class="pre">.po</span></code> files, run the following command to generate
+HTML files:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ docker run --rm -v <span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>/docs:/docs jspecify-sphinx make -e <span class="nv">SPHINXOPTS</span><span class="o">=</span><span class="s2">&quot;-D language=&#39;ja&#39;&quot;</span> html
+</pre></div>
+</div>
+</div>
+<div class="section" id="how-to-build-without-docker">
+<h2>How to build without Docker<a class="headerlink" href="#how-to-build-without-docker" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>Under Debian and Ubuntu, you may be able to run:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ sudo apt-get install python3-sphinx python3-sphinx-rtd-theme python3-pip
+$ pip install --upgrade myst-parser
+$ <span class="o">(</span> <span class="nb">cd</span> docs <span class="o">&amp;&amp;</span> make html <span class="o">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="commonmark-vs-restructuredtext">
+<h2>CommonMark vs. reStructuredText<a class="headerlink" href="#commonmark-vs-restructuredtext" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>These docs use reStructuredText (hence the <code class="docutils literal notranslate"><span class="pre">.rst</span></code> extension). If you are used to
+CommonMark (and similar flavors of Markdown, like
+<a class="reference external" href="https://github.github.com/gfm/">GitHub's</a>), you may want to use a converter
+that rewrites CommonMark to reStructuredText:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ pandoc --from<span class="o">=</span>markdown --to<span class="o">=</span>rst docs/foo.md --output<span class="o">=</span>docs/foo.rst
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2018-2021, The JSpecify Authors.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -163,7 +163,7 @@
       <li class="wy-breadcrumbs-aside">
         
           
-            <a href="_sources/design-overview.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/design-overview.md.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -176,135 +176,111 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="jspecify-design-overview">
+  <div class="tex2jax_ignore mathjax_ignore section" id="jspecify-design-overview">
 <h1>JSpecify design overview<a class="headerlink" href="#jspecify-design-overview" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="about-this-document">
 <h2>About this document<a class="headerlink" href="#about-this-document" title="Permalink to this headline">¶</a></h2>
-<p>This document summarizes our current thinking for proposing a set of
-nullness annotations. <strong>Nothing here is “set in stone” yet.</strong></p>
-<p>It will be very helpful to read or refer to the <a class="reference external" href="https://docs.google.com/document/d/1KQrBxwaVIPIac_6SCf--w-vZBeHkTvtaqPSU_icIccc/edit">core
-concepts/glossary</a>
-document in order to understand this material correctly. There are
-numerous other documents in our <a class="reference external" href="https://drive.google.com/drive/folders/1vZl1odNCBncVaN7EwlwfqI05T_CHIqN-">shared
-folder</a>.</p>
+<p>This document summarizes our current thinking for proposing a set of nullness
+annotations. <strong>Nothing here is “set in stone” yet.</strong></p>
+<p>It will be very helpful to read or refer to the
+<a class="reference external" href="https://docs.google.com/document/d/1KQrBxwaVIPIac_6SCf--w-vZBeHkTvtaqPSU_icIccc/edit">core concepts/glossary</a> document in order to understand this material
+correctly. There are numerous other documents in our <a class="reference external" href="https://drive.google.com/drive/folders/1vZl1odNCBncVaN7EwlwfqI05T_CHIqN-">shared folder</a>.</p>
 </div>
 <div class="section" id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
-<p>We propose a type annotation to specify the nullness of individual type
-usages. At a high level, our proposed semantics is similar to existing
-tools’ treatment of nullness type annotations. We treat nullness
-annotations as purely compile-time type refinements without effect on
-runtime semantics. Besides the typical
-“<a class="reference external" href="https://docs.google.com/document/d/1KQrBxwaVIPIac_6SCf--w-vZBeHkTvtaqPSU_icIccc/edit#bookmark=id.ejpb5ee0msjt">nullable</a>”
-and
-“<a class="reference external" href="https://docs.google.com/document/d/1KQrBxwaVIPIac_6SCf--w-vZBeHkTvtaqPSU_icIccc/edit#bookmark=id.8wgyiwyvi49f">non-nullable</a>”
-refinements, we distinguish values of “<a class="reference external" href="https://docs.google.com/document/d/1KQrBxwaVIPIac_6SCf--w-vZBeHkTvtaqPSU_icIccc/edit#bookmark=id.xb9w6p3ilsq3">unspecified
-nullness</a>”,
-which typically arise from unannotated code, and allow for (with
-optional warnings if desired) type checks involving “unspecified
+<p>We propose a type annotation to specify the nullness of individual type usages.
+At a high level, our proposed semantics is similar to existing tools’ treatment
+of nullness type annotations. We treat nullness annotations as purely
+compile-time type refinements without effect on runtime semantics. Besides the
+typical “<a class="reference external" href="https://docs.google.com/document/d/1KQrBxwaVIPIac_6SCf--w-vZBeHkTvtaqPSU_icIccc/edit#bookmark=id.ejpb5ee0msjt">nullable</a>” and “<a class="reference external" href="https://docs.google.com/document/d/1KQrBxwaVIPIac_6SCf--w-vZBeHkTvtaqPSU_icIccc/edit#bookmark=id.8wgyiwyvi49f">non-nullable</a>” refinements, we distinguish values of
+“<a class="reference external" href="https://docs.google.com/document/d/1KQrBxwaVIPIac_6SCf--w-vZBeHkTvtaqPSU_icIccc/edit#bookmark=id.xb9w6p3ilsq3">unspecified nullness</a>”, which typically arise from unannotated code, and allow
+for (with optional warnings if desired) type checks involving “unspecified
 nullness” to succeed even when they are unsound.</p>
-<p>To avoid excessive annotation overhead in hand-written Java code while
-clearly distinguishing annotated from legacy code, we also propose a
-declaration annotation, with semantics similar to existing tools’
-semantics of “non-null by default.” In the absence of that annotation,
-type usages will be considered of “unspecified nullness.”</p>
-<p>We give <a class="reference external" href="#semantics">semantics</a> to these annotations independent of
-particular tools. We don’t specify what tools must do with that semantic
-information, nor do we forbid them from adding to it (e.g., with flow
-typing in implementation code). We merely define how to interpret our
-annotations in method, field, and class declarations. This approach
-gives documented meaning to annotations appearing in declarations while
-allowing Java code authors to use their normal toolchain to compile code
-(though we do recommend code authors use additional tools to minimize
-the chance of incorrect annotations). Crucially, this approach also
-allows any tool to interpret annotations that appear in Java bytecode
-produced by other tools.</p>
-<p><strong>Note:</strong> we have adopted precise meanings for the terms used in this
-document; it will be necessary to read (or refer to) the
-<a class="reference external" href="https://docs.google.com/document/d/1KQrBxwaVIPIac_6SCf--w-vZBeHkTvtaqPSU_icIccc/edit">glossary</a>
-document in order to interpret this information correctly.</p>
+<p>To avoid excessive annotation overhead in hand-written Java code while clearly
+distinguishing annotated from legacy code, we also propose a declaration
+annotation, with semantics similar to existing tools’ semantics of “non-null by
+default.” In the absence of that annotation, type usages will be considered of
+“unspecified nullness.”</p>
+<p>We give <a class="reference external" href="#semantics">semantics</a> to these annotations independent of particular tools. We
+don’t specify what tools must do with that semantic information, nor do we
+forbid them from adding to it (e.g., with flow typing in implementation code).
+We merely define how to interpret our annotations in method, field, and class
+declarations. This approach gives documented meaning to annotations appearing in
+declarations while allowing Java code authors to use their normal toolchain to
+compile code (though we do recommend code authors use additional tools to
+minimize the chance of incorrect annotations). Crucially, this approach also
+allows any tool to interpret annotations that appear in Java bytecode produced
+by other tools.</p>
+<p><strong>Note:</strong> we have adopted precise meanings for the terms used in this document;
+it will be necessary to read (or refer to) the <a class="reference external" href="https://docs.google.com/document/d/1KQrBxwaVIPIac_6SCf--w-vZBeHkTvtaqPSU_icIccc/edit">glossary</a> document in order to
+interpret this information correctly.</p>
 </div>
 <div class="section" id="semantics">
 <h2>Semantics<a class="headerlink" href="#semantics" title="Permalink to this headline">¶</a></h2>
 <p>In this section, we discuss how type checking should play out.</p>
 <div class="section" id="type-hierarchy">
 <h3>Type hierarchy<a class="headerlink" href="#type-hierarchy" title="Permalink to this headline">¶</a></h3>
-<p>Our nullability annotations produce the following apparent type
-hierarchy [<a class="reference external" href="https://github.com/jspecify/jspecify/issues/80">#80</a>]:</p>
-<div class="line-block">
-<div class="line"><code class="docutils literal notranslate"><span class="pre">Foo</span></code> (written in the scope of <code class="docutils literal notranslate"><span class="pre">&#64;NullMarked</span></code>)</div>
-<div class="line"><code class="docutils literal notranslate"><span class="pre">⋖</span> <span class="pre">Foo</span></code> (written outside the scope of <code class="docutils literal notranslate"><span class="pre">&#64;NullMarked</span></code>)</div>
-<div class="line"><code class="docutils literal notranslate"><span class="pre">⋖</span> <span class="pre">&#64;Nullable</span> <span class="pre">Foo</span></code></div>
-</div>
-<p>It can be useful to conceptualize these similarly to <a class="reference external" href="https://en.wikipedia.org/wiki/Three-valued_logic">3-valued
-logic</a>
-[<a class="reference external" href="https://github.com/jspecify/jspecify/issues/33">#33</a>]. While that’s
-workable, it can be useful to instead define “unspecified nullness” as
-an existential quantification over the other two (which logically still
+<p>Our nullability annotations produce the following apparent type hierarchy
+[<a class="reference external" href="https://github.com/jspecify/jspecify/issues/80">#80</a>]:</p>
+<p><code class="docutils literal notranslate"><span class="pre">Foo</span></code> (written in the scope of <code class="docutils literal notranslate"><span class="pre">&#64;NullMarked</span></code>) <br />
+<code class="docutils literal notranslate"><span class="pre">⋖</span> <span class="pre">Foo</span></code> (written outside the scope of <code class="docutils literal notranslate"><span class="pre">&#64;NullMarked</span></code>) <br />
+<code class="docutils literal notranslate"><span class="pre">⋖</span> <span class="pre">&#64;Nullable</span> <span class="pre">Foo</span></code></p>
+<p>It can be useful to conceptualize these similarly to <a class="reference external" href="https://en.wikipedia.org/wiki/Three-valued_logic">3-valued logic</a> [<a class="reference external" href="https://github.com/jspecify/jspecify/issues/33">#33</a>].
+While that’s workable, it can be useful to instead define “unspecified nullness”
+as an existential quantification over the other two (which logically still
 validates the above hierarchy). Two unrelated occurrences of unspecified
-nullness can sometimes be represented as two different variables,
-similar to how the Java type system handles wildcards.</p>
-<p>The above rules make <code class="docutils literal notranslate"><span class="pre">&#64;Nullable</span> <span class="pre">Object</span></code> the top (least precise) type.
-(Note that <code class="docutils literal notranslate"><span class="pre">null</span></code> is <em>not</em> the bottom type.) Here are some more
-examples of subtyping, with types written in the scope of
-<code class="docutils literal notranslate"><span class="pre">&#64;NullMarked</span></code>:</p>
+nullness can sometimes be represented as two different variables, similar to how
+the Java type system handles wildcards.</p>
+<p>The above rules make <code class="docutils literal notranslate"><span class="pre">&#64;Nullable</span> <span class="pre">Object</span></code> the top (least precise) type. (Note that
+<code class="docutils literal notranslate"><span class="pre">null</span></code> is <em>not</em> the bottom type.) Here are some more examples of subtyping, with
+types written in the scope of <code class="docutils literal notranslate"><span class="pre">&#64;NullMarked</span></code>:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">String</span> <span class="pre">⋖</span> <span class="pre">Object</span> <span class="pre">⋖</span> <span class="pre">&#64;Nullable</span> <span class="pre">Object</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">String</span> <span class="pre">⋖</span> <span class="pre">&#64;Nullable</span> <span class="pre">String</span> <span class="pre">⋖</span> <span class="pre">&#64;Nullable</span> <span class="pre">Object</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">null</span> <span class="pre">⋖</span> <span class="pre">&#64;Nullable</span> <span class="pre">String</span> <span class="pre">⋖</span> <span class="pre">&#64;Nullable</span> <span class="pre">Object</span></code></p></li>
 </ul>
-<p>For a given set of types, we can define their <strong>glb</strong> (<em>greatest lower
-bound</em>) as a type from the given set that is at least as specific as all
-others. Similarly, the <strong>lub</strong> (<em>least upper bound</em>) of a set of types
-is a type from the set that is at most as specific as all others.</p>
-<p>Finally, a <strong>type check</strong> (e.g., to determine assignability) for a pair
-of <a class="reference external" href="#augmented-type">augmented types</a> includes validating <strong>both</strong>
-(a) a type check of the <a class="reference external" href="https://docs.google.com/document/d/1KQrBxwaVIPIac_6SCf--w-vZBeHkTvtaqPSU_icIccc/edit#bookmark=kix.k81vs7t5p45i">base
-types</a>,
-handled by the off-the-shelf compiler, and (b) a type check for
+<p>For a given set of types, we can define their <strong>glb</strong> (<em>greatest lower bound</em>)
+as a type from the given set that is at least as specific as all others.
+Similarly, the <strong>lub</strong> (<em>least upper bound</em>) of a set of types is a type from
+the set that is at most as specific as all others.</p>
+<p>Finally, a <strong>type check</strong> (e.g., to determine assignability) for a pair of
+<a class="reference external" href="#augmented-type">augmented types</a> includes validating <strong>both</strong> (a) a type check of the
+<a class="reference external" href="https://docs.google.com/document/d/1KQrBxwaVIPIac_6SCf--w-vZBeHkTvtaqPSU_icIccc/edit#bookmark=kix.k81vs7t5p45i">base types</a>, handled by the off-the-shelf compiler, and (b) a type check for
 nullability.</p>
 <ul class="simple">
-<li><p>This specification additionally encourages allowing type checks
-involving unspecified nullness to succeed even when they are
-<strong>unsound</strong> (optionally with warnings, similar to “unchecked
-conversions” in Java generics), such as the following
-[<a class="reference external" href="https://github.com/jspecify/jspecify/issues/33">#33</a>]:</p>
+<li><p>This specification additionally encourages allowing type checks involving
+unspecified nullness to succeed even when they are <strong>unsound</strong> (optionally
+with warnings, similar to “unchecked conversions” in Java generics), such as
+the following [<a class="reference external" href="https://github.com/jspecify/jspecify/issues/33">#33</a>]:</p>
 <ul>
-<li><p>a nullable type where a subtype of unspecified nullness is
+<li><p>a nullable type where a subtype of unspecified nullness is required</p></li>
+<li><p>a type of unspecified nullness where a subtype of a non-null type is
 required</p></li>
-<li><p>a type of unspecified nullness where a subtype of a non-null type
+<li><p>a type of unspecified nullness where a subtype of unspecified nullness
 is required</p></li>
-<li><p>a type of unspecified nullness where a subtype of unspecified
-nullness is required</p></li>
 </ul>
 </li>
-<li><p>For usability reasons, many tools will not generate generate
-warnings/errors when applying unsound rules like those above. Others
-may generate them optionally, likely with the warnings/errors off by
-default. Even when a tool does report these warnings/errors, we
-<strong>strongly</strong> encourage the tool to permit users to suppress these
-warnings without suppressing other soundness violations.</p></li>
-<li><p>When converting type components of parameterized types, their
-nullabilities should be considered invariant where their base types
-are.</p>
+<li><p>For usability reasons, many tools will not generate generate warnings/errors
+when applying unsound rules like those above. Others may generate them
+optionally, likely with the warnings/errors off by default. Even when a tool
+does report these warnings/errors, we <strong>strongly</strong> encourage the tool to
+permit users to suppress these warnings without suppressing other soundness
+violations.</p></li>
+<li><p>When converting type components of parameterized types, their nullabilities
+should be considered invariant where their base types are.</p>
 <ul>
-<li><p>This means that “list of nullable string” and “list of non-null
-string” are not convertible to each other, but “list of non-null
-string” is convertible to <code class="docutils literal notranslate"><span class="pre">List&lt;?</span> <span class="pre">extends</span> <span class="pre">&#64;Nullable</span> <span class="pre">String&gt;</span></code>.</p></li>
-<li><p>In addition, we encourage unsoundly allowing unspecified nullness
-to be “the same type” as any nullness, even for invariant type
-components
-[<a class="reference external" href="https://github.com/jspecify/jspecify/issues/33">#33</a>]. In
-particular, we encourage allowing the following type checks to
-succeed unsoundly (similar to raw type conversions)
-[<a class="reference external" href="https://github.com/jspecify/jspecify/issues/69">#69</a>]:</p>
+<li><p>This means that “list of nullable string” and “list of non-null string”
+are not convertible to each other, but “list of non-null string” is
+convertible to <code class="docutils literal notranslate"><span class="pre">List&lt;?</span> <span class="pre">extends</span> <span class="pre">&#64;Nullable</span> <span class="pre">String&gt;</span></code>.</p></li>
+<li><p>In addition, we encourage unsoundly allowing unspecified nullness to be
+“the same type” as any nullness, even for invariant type components
+[<a class="reference external" href="https://github.com/jspecify/jspecify/issues/33">#33</a>]. In particular, we encourage allowing the following type
+checks to succeed unsoundly (similar to raw type conversions) [<a class="reference external" href="https://github.com/jspecify/jspecify/issues/69">#69</a>]:</p>
 <ul>
-<li><p>“a list of <code class="docutils literal notranslate"><span class="pre">Bar</span></code> instances that are not null” is “the same
-type as” “a list of <code class="docutils literal notranslate"><span class="pre">Bar</span></code> instances that have unspecified
-nullness”</p></li>
-<li><p>“a list of <code class="docutils literal notranslate"><span class="pre">Bar</span></code> instances that are nullable” is “the same
-type as” “a list of <code class="docutils literal notranslate"><span class="pre">Bar</span></code> instances that have unspecified
-nullness”</p></li>
+<li><p>“a list of <code class="docutils literal notranslate"><span class="pre">Bar</span></code> instances that are not null” is “the same type as”
+“a list of <code class="docutils literal notranslate"><span class="pre">Bar</span></code> instances that have unspecified nullness”</p></li>
+<li><p>“a list of <code class="docutils literal notranslate"><span class="pre">Bar</span></code> instances that are nullable” is “the same type as”
+“a list of <code class="docutils literal notranslate"><span class="pre">Bar</span></code> instances that have unspecified nullness”</p></li>
 </ul>
 </li>
 </ul>
@@ -313,88 +289,71 @@ nullness”</p></li>
 </div>
 <div class="section" id="defaulting-annotations-in-effect">
 <h3>Defaulting annotations in effect<a class="headerlink" href="#defaulting-annotations-in-effect" title="Permalink to this headline">¶</a></h3>
-<p>For a given type usage, we define the <strong>defaulting annotation in
-effect</strong> to be the one located at the <em>nearest containing scope</em>
-surrounding the type usage.</p>
+<p>For a given type usage, we define the <strong>defaulting annotation in effect</strong> to be
+the one located at the <em>nearest containing scope</em> surrounding the type usage.</p>
 <ul class="simple">
-<li><p>Class members are contained by classes, which may be contained by
-other class members or classes, and top-level classes are contained
-by packages, which may be contained by modules.</p></li>
-<li><p>If no such defaulting annotation exists, then no defaulting
-annotation is in effect.</p></li>
+<li><p>Class members are contained by classes, which may be contained by other
+class members or classes, and top-level classes are contained by packages,
+which may be contained by modules.</p></li>
+<li><p>If no such defaulting annotation exists, then no defaulting annotation is in
+effect.</p></li>
 </ul>
-<p>We call any type usage that itself carries a
-<a class="reference external" href="#recognized-locations-for-type-use-annotations">recognized</a> type-use
-annotation <strong>explicitly annotated</strong>.</p>
+<p>We call any type usage that itself carries a <a class="reference external" href="#recognized-locations-for-type-use-annotations">recognized</a> type-use annotation
+<strong>explicitly annotated</strong>.</p>
 </div>
 <div class="section" id="parameterized-types">
 <h3>Parameterized types<a class="headerlink" href="#parameterized-types" title="Permalink to this headline">¶</a></h3>
-<p>This section directly builds on <a class="reference external" href="https://docs.oracle.com/javase/specs/jls/se14/html/jls-4.html#jls-4.5">JLS
-4.5</a>
-to extend nullability to parameterized types.</p>
+<p>This section directly builds on <a class="reference external" href="https://docs.oracle.com/javase/specs/jls/se14/html/jls-4.html#jls-4.5">JLS 4.5</a> to extend nullability to parameterized
+types.</p>
 <div class="section" id="parametric-nullability">
 <h4>Parametric nullability<a class="headerlink" href="#parametric-nullability" title="Permalink to this headline">¶</a></h4>
-<p>If a type parameter’s bound is nullable, then unannotated usages of that
-type parameter (inside the scope of <code class="docutils literal notranslate"><span class="pre">&#64;NullMarked</span></code>) have <em>parametric
-nullability</em>.</p>
+<p>If a type parameter’s bound is nullable, then unannotated usages of that type
+parameter (inside the scope of <code class="docutils literal notranslate"><span class="pre">&#64;NullMarked</span></code>) have <em>parametric nullability</em>.</p>
 </div>
 <div class="section" id="type-arguments-of-parameterized-types">
 <h4>Type arguments of parameterized types<a class="headerlink" href="#type-arguments-of-parameterized-types" title="Permalink to this headline">¶</a></h4>
-<p>Tools may wish to check that type arguments are subtypes of the
-corresponding bounds’ types (in addition to base type well-formedness,
-see <a class="reference external" href="https://docs.oracle.com/javase/specs/jls/se14/html/jls-4.html#jls-4.5">JLS
-4.5</a>).
-As usual, tools may still wish to allow (with warning if desired)
-unsound type arguments involving unspecified nullness.</p>
+<p>Tools may wish to check that type arguments are subtypes of the corresponding
+bounds’ types (in addition to base type well-formedness, see <a class="reference external" href="https://docs.oracle.com/javase/specs/jls/se14/html/jls-4.html#jls-4.5">JLS 4.5</a>). As
+usual, tools may still wish to allow (with warning if desired) unsound type
+arguments involving unspecified nullness.</p>
 <p>Specifically, a tool might reject a parameterized type with an explicit
-annotation, such as <code class="docutils literal notranslate"><span class="pre">ImmutableList&lt;&#64;Nullable</span> <span class="pre">String&gt;</span></code>, if
-<code class="docutils literal notranslate"><span class="pre">ImmutableList</span></code>’s type parameter is bounded to be non-null. The tool
-might report an error when encountering this case in source code and
-otherwise ignore the explicit <code class="docutils literal notranslate"><span class="pre">&#64;Nullable</span></code> annotation.</p>
+annotation, such as <code class="docutils literal notranslate"><span class="pre">ImmutableList&lt;&#64;Nullable</span> <span class="pre">String&gt;</span></code>, if <code class="docutils literal notranslate"><span class="pre">ImmutableList</span></code>’s type
+parameter is bounded to be non-null. The tool might report an error when
+encountering this case in source code and otherwise ignore the explicit
+<code class="docutils literal notranslate"><span class="pre">&#64;Nullable</span></code> annotation.</p>
 </div>
 </div>
 <div class="section" id="overriding">
 <h3>Overriding<a class="headerlink" href="#overriding" title="Permalink to this headline">¶</a></h3>
-<p>If a method overrides other methods according to Java language rules
-(see <a class="reference external" href="https://docs.oracle.com/javase/specs/jls/se14/html/jls-8.html#jls-8.4.8.1">JLS
-8.4.8.1</a>,
-also cf. <a class="reference external" href="https://docs.oracle.com/javase/specs/jvms/se14/html/jvms-5.html#jvms-5.4.5">JVMS
-5.4.5</a>),
-then tools may wish to check that:</p>
+<p>If a method overrides other methods according to Java language rules (see
+<a class="reference external" href="https://docs.oracle.com/javase/specs/jls/se14/html/jls-8.html#jls-8.4.8.1">JLS 8.4.8.1</a>, also cf. <a class="reference external" href="https://docs.oracle.com/javase/specs/jvms/se14/html/jvms-5.html#jvms-5.4.5">JVMS 5.4.5</a>), then tools may wish to check that:</p>
 <ul class="simple">
 <li><p>The overriding method’s augmented return type is be
-return-type-substitutable for the
-<a class="reference external" href="https://docs.google.com/document/d/1KQrBxwaVIPIac_6SCf--w-vZBeHkTvtaqPSU_icIccc/edit#bookmark=id.5nvbughni6vx">supermethods</a>’
-return types (corresponds to covariant return types for base types,
-an uncontroversial Java feature).</p></li>
+return-type-substitutable for the <a class="reference external" href="https://docs.google.com/document/d/1KQrBxwaVIPIac_6SCf--w-vZBeHkTvtaqPSU_icIccc/edit#bookmark=id.5nvbughni6vx">supermethods</a>’ return types (corresponds
+to covariant return types for base types, an uncontroversial Java feature).</p></li>
 </ul>
-<p>As usual, tools may wish to allow (with warning if desired) unsound
-declarations involving unspecified nullness. Note that
-<a class="reference external" href="https://docs.google.com/document/d/1KQrBxwaVIPIac_6SCf--w-vZBeHkTvtaqPSU_icIccc/edit#bookmark=id.5nvbughni6vx">supermethods</a>
-and
-<a class="reference external" href="https://docs.google.com/document/d/1KQrBxwaVIPIac_6SCf--w-vZBeHkTvtaqPSU_icIccc/edit#bookmark=id.m2gxs1ddzqwp">superparameters</a>
+<p>As usual, tools may wish to allow (with warning if desired) unsound declarations
+involving unspecified nullness. Note that <a class="reference external" href="https://docs.google.com/document/d/1KQrBxwaVIPIac_6SCf--w-vZBeHkTvtaqPSU_icIccc/edit#bookmark=id.5nvbughni6vx">supermethods</a> and <a class="reference external" href="https://docs.google.com/document/d/1KQrBxwaVIPIac_6SCf--w-vZBeHkTvtaqPSU_icIccc/edit#bookmark=id.m2gxs1ddzqwp">superparameters</a>
 may be defined by members of parameterized supertypes.</p>
 </div>
 <div class="section" id="concerns-around-uninitialized-objects">
 <h3>Concerns around uninitialized objects<a class="headerlink" href="#concerns-around-uninitialized-objects" title="Permalink to this headline">¶</a></h3>
-<p>The broad intention of nullability is that type usages specified as
-non-null should at runtime only represent non-null values. Since fields
-have to be initialized before they can be non-null, this turns out to be
-impractical in edge cases, however. Further, this problem can affect
-method return values, e.g., when methods return field values. We
-therefore likewise only expect non-null guarantees to hold for instance
-(static, respectively) fields and method results by the time their
-declaring class’s constructor (static initializer, respectively) has
-finished (similar to when final fields are guaranteed to be
-initialized).</p>
-<p>Note this semantics does allow for situations in which null values may
-be observable in “non-null” fields and method returns, namely while
-objects are under construction. We simply encourage API owners to
-minimize these cases for non-private (both static and instance) fields
-and methods, which typically involves not “leaking” object references
-outside an API until they’re fully constructed. Some tools may attempt
-to identify such “leaks” and may attempt to ensure proper field
-initialization as defined here during object construction.</p>
+<p>The broad intention of nullability is that type usages specified as non-null
+should at runtime only represent non-null values. Since fields have to be
+initialized before they can be non-null, this turns out to be impractical in
+edge cases, however. Further, this problem can affect method return values,
+e.g., when methods return field values. We therefore likewise only expect
+non-null guarantees to hold for instance (static, respectively) fields and
+method results by the time their declaring class’s constructor (static
+initializer, respectively) has finished (similar to when final fields are
+guaranteed to be initialized).</p>
+<p>Note this semantics does allow for situations in which null values may be
+observable in “non-null” fields and method returns, namely while objects are
+under construction. We simply encourage API owners to minimize these cases for
+non-private (both static and instance) fields and methods, which typically
+involves not “leaking” object references outside an API until they’re fully
+constructed. Some tools may attempt to identify such “leaks” and may attempt to
+ensure proper field initialization as defined here during object construction.</p>
 </div>
 <div class="section" id="examples">
 <h3>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h3>
@@ -406,41 +365,34 @@ initialization as defined here during object construction.</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>Because of the use of <code class="docutils literal notranslate"><span class="pre">&#64;NullMarked</span></code>, every type use in this class’s
-declaration is fixed to either nullable or non-null (including
-type-variable uses, since their type parameters are considered
-implicitly bounded by non-null <code class="docutils literal notranslate"><span class="pre">Object</span></code>).</p>
+<p>Because of the use of <code class="docutils literal notranslate"><span class="pre">&#64;NullMarked</span></code>, every type use in this class’s declaration
+is fixed to either nullable or non-null (including type-variable uses, since
+their type parameters are considered implicitly bounded by non-null <code class="docutils literal notranslate"><span class="pre">Object</span></code>).</p>
 <ul class="simple">
-<li><p>Can the parameters to <code class="docutils literal notranslate"><span class="pre">of()</span></code>’s be null? No, from <code class="docutils literal notranslate"><span class="pre">K</span></code> and
-<code class="docutils literal notranslate"><span class="pre">V</span></code>’s bounds, which are determined implicitly by <code class="docutils literal notranslate"><span class="pre">&#64;NullMarked</span></code>.</p></li>
+<li><p>Can the parameters to <code class="docutils literal notranslate"><span class="pre">of()</span></code>’s be null? No, from <code class="docutils literal notranslate"><span class="pre">K</span></code> and <code class="docutils literal notranslate"><span class="pre">V</span></code>’s bounds, which
+are determined implicitly by <code class="docutils literal notranslate"><span class="pre">&#64;NullMarked</span></code>.</p></li>
 <li><p>Can <code class="docutils literal notranslate"><span class="pre">get()</span></code>’s return <code class="docutils literal notranslate"><span class="pre">null</span></code>? Yes, from its explicit annotation.</p></li>
-<li><p>It is a mismatch to refer to
-<code class="docutils literal notranslate"><span class="pre">ImmutableMap&lt;&#64;Nullable</span> <span class="pre">String,</span> <span class="pre">Object&gt;</span></code> because
-<code class="docutils literal notranslate"><span class="pre">&#64;Nullable</span> <span class="pre">String</span></code> is outside of <code class="docutils literal notranslate"><span class="pre">K</span></code>’s bounds.</p></li>
+<li><p>It is a mismatch to refer to <code class="docutils literal notranslate"><span class="pre">ImmutableMap&lt;&#64;Nullable</span> <span class="pre">String,</span> <span class="pre">Object&gt;</span></code>
+because <code class="docutils literal notranslate"><span class="pre">&#64;Nullable</span> <span class="pre">String</span></code> is outside of <code class="docutils literal notranslate"><span class="pre">K</span></code>’s bounds.</p></li>
 </ul>
-<p>To illustrate wildcards, consider a method return type
-<code class="docutils literal notranslate"><span class="pre">ImmutableMap&lt;?</span> <span class="pre">extends</span> <span class="pre">&#64;Nullable</span> <span class="pre">String,</span> <span class="pre">?&gt;</span></code> with no defaulting
-annotation in scope:</p>
+<p>To illustrate wildcards, consider a method return type <code class="docutils literal notranslate"><span class="pre">ImmutableMap&lt;?</span> <span class="pre">extends</span> <span class="pre">&#64;Nullable</span> <span class="pre">String,</span> <span class="pre">?&gt;</span></code> with no defaulting annotation in scope:</p>
 <ul class="simple">
-<li><p>Can the method return a null map? That is unspecified, since no
-defaulting annotation is in scope.</p></li>
-<li><p>Can the map’s keys or values be null? No, because the wildcards
-inherit that bound from the bounds of <code class="docutils literal notranslate"><span class="pre">K</span></code> and <code class="docutils literal notranslate"><span class="pre">V</span></code> in
-<code class="docutils literal notranslate"><span class="pre">ImmutableMap</span></code>.</p></li>
+<li><p>Can the method return a null map? That is unspecified, since no defaulting
+annotation is in scope.</p></li>
+<li><p>Can the map’s keys or values be null? No, because the wildcards inherit that
+bound from the bounds of <code class="docutils literal notranslate"><span class="pre">K</span></code> and <code class="docutils literal notranslate"><span class="pre">V</span></code> in <code class="docutils literal notranslate"><span class="pre">ImmutableMap</span></code>.</p></li>
 </ul>
-<p>As another example, Guava’s <code class="docutils literal notranslate"><span class="pre">Function</span></code> would be declared as follows to
-allow functions that accept and/or return <code class="docutils literal notranslate"><span class="pre">null</span></code>:</p>
+<p>As another example, Guava’s <code class="docutils literal notranslate"><span class="pre">Function</span></code> would be declared as follows to allow
+functions that accept and/or return <code class="docutils literal notranslate"><span class="pre">null</span></code>:</p>
 <div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="nd">@NullMarked</span>
 <span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Function</span><span class="o">&lt;</span><span class="n">F</span> <span class="kd">extends</span> <span class="nd">@Nullable</span> <span class="n">Object</span><span class="p">,</span> <span class="n">T</span> <span class="kd">extends</span> <span class="nd">@Nullable</span> <span class="n">Object</span><span class="o">&gt;</span> <span class="p">{</span>
   <span class="n">T</span> <span class="nf">apply</span><span class="p">(</span><span class="n">F</span> <span class="n">in</span><span class="p">);</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>Note <code class="docutils literal notranslate"><span class="pre">F</span></code>’s and <code class="docutils literal notranslate"><span class="pre">T</span></code>’s admittedly verbose but very explicit
-<code class="docutils literal notranslate"><span class="pre">extends</span> <span class="pre">&#64;Nullable</span> <span class="pre">Object</span></code> bounds, which mean that <code class="docutils literal notranslate"><span class="pre">apply</span></code>’s
-parameter and result are of parametric nullability.</p>
-<p>Concrete <code class="docutils literal notranslate"><span class="pre">Function</span></code> implementations can still choose not to support
-nulls:</p>
+<p>Note <code class="docutils literal notranslate"><span class="pre">F</span></code>’s and <code class="docutils literal notranslate"><span class="pre">T</span></code>’s admittedly verbose but very explicit <code class="docutils literal notranslate"><span class="pre">extends</span> <span class="pre">&#64;Nullable</span> <span class="pre">Object</span></code> bounds, which mean that <code class="docutils literal notranslate"><span class="pre">apply</span></code>’s parameter and result are of parametric
+nullability.</p>
+<p>Concrete <code class="docutils literal notranslate"><span class="pre">Function</span></code> implementations can still choose not to support nulls:</p>
 <div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="nd">@NullMarked</span>
 <span class="kd">class</span> <span class="nc">Foo</span> <span class="kd">implements</span> <span class="n">Function</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span> <span class="n">Integer</span><span class="o">&gt;</span> <span class="p">{</span>
 <span class="p">}</span>
@@ -450,12 +402,11 @@ nulls:</p>
 </div>
 <div class="section" id="discussion-expression-types">
 <h2>Discussion: Expression types<a class="headerlink" href="#discussion-expression-types" title="Permalink to this headline">¶</a></h2>
-<p>It is not the purpose of this proposal to dictate precise behavior that
-checkers must follow. But we expect Java source code analyzers to want
-to extend our semantics from type usages as defined above to expression
-types (including expression type components).</p>
-<p>As an example, consider a hypothetical annotated version of
-<code class="docutils literal notranslate"><span class="pre">java.util.List</span></code>:</p>
+<p>It is not the purpose of this proposal to dictate precise behavior that checkers
+must follow. But we expect Java source code analyzers to want to extend our
+semantics from type usages as defined above to expression types (including
+expression type components).</p>
+<p>As an example, consider a hypothetical annotated version of <code class="docutils literal notranslate"><span class="pre">java.util.List</span></code>:</p>
 <div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="nd">@NullMarked</span>
 <span class="kd">public</span> <span class="kd">interface</span> <span class="nc">List</span><span class="o">&lt;</span><span class="n">E</span> <span class="kd">extends</span> <span class="nd">@Nullable</span> <span class="n">Object</span><span class="o">&gt;</span> <span class="kd">extends</span> <span class="n">Collection</span><span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;</span> <span class="p">{</span>
   <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">add</span><span class="p">(</span><span class="n">E</span> <span class="n">element</span><span class="p">);</span>
@@ -471,18 +422,17 @@ types (including expression type components).</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>Note that (because of the defaulting annotation in effect) both
-<code class="docutils literal notranslate"><span class="pre">foo</span></code>’s return type’s and <code class="docutils literal notranslate"><span class="pre">xs</span></code>’s <code class="docutils literal notranslate"><span class="pre">String</span></code> type argument’s are
-non-null types. That means that, considering <code class="docutils literal notranslate"><span class="pre">xs</span></code>’s type argument,
-<code class="docutils literal notranslate"><span class="pre">xs.add()</span></code>’s expected parameter type is likewise non-null
-<code class="docutils literal notranslate"><span class="pre">String</span></code>, as is <code class="docutils literal notranslate"><span class="pre">xs.get()</span></code>’s return type.</p>
+<p>Note that (because of the defaulting annotation in effect) both <code class="docutils literal notranslate"><span class="pre">foo</span></code>’s return
+type’s and <code class="docutils literal notranslate"><span class="pre">xs</span></code>’s <code class="docutils literal notranslate"><span class="pre">String</span></code> type argument’s are non-null types. That means that,
+considering <code class="docutils literal notranslate"><span class="pre">xs</span></code>’s type argument, <code class="docutils literal notranslate"><span class="pre">xs.add()</span></code>’s expected parameter type is
+likewise non-null <code class="docutils literal notranslate"><span class="pre">String</span></code>, as is <code class="docutils literal notranslate"><span class="pre">xs.get()</span></code>’s return type.</p>
 <p>Note that unlike with base types, a <code class="docutils literal notranslate"><span class="pre">null</span></code> reference is <em>no longer</em>
 automatically assignable to any type:</p>
 <ul class="simple">
 <li><p>It clearly isn’t usable where a non-null value is required (as in the
 example above).</p></li>
-<li><p>It also isn’t assignable to types with parametric nullability (since
-their type parameters permit non-null instantiations).</p></li>
+<li><p>It also isn’t assignable to types with parametric nullability (since their
+type parameters permit non-null instantiations).</p></li>
 </ul>
 <p>For the latter point, consider the following example:</p>
 <div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="nd">@NullMarked</span>
@@ -499,10 +449,10 @@ their type parameters permit non-null instantiations).</p></li>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>Again we do not prescribe how tools handle any of these scenarios, so
-tools may be silent or issue lower-priority warnings on source lines
-marked “mismatch” here. They’re purely illustrative of how we imagine
-tools will apply semantics to expression typing.</p>
+<p>Again we do not prescribe how tools handle any of these scenarios, so tools may
+be silent or issue lower-priority warnings on source lines marked “mismatch”
+here. They’re purely illustrative of how we imagine tools will apply semantics
+to expression typing.</p>
 </div>
 </div>
 

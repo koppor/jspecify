@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Sonatype group ID request proof of ownership &mdash; JSpecify  documentation</title>
+  <title>Landing Pages &mdash; JSpecify  documentation</title>
   
 
   
@@ -137,13 +137,13 @@
     
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
-      <li>Sonatype group ID request proof of ownership</li>
+      <li>Landing Pages</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
           
-            <a href="_sources/ossrh.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/README.md.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -156,13 +156,51 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="sonatype-group-id-request-proof-of-ownership">
-<h1>Sonatype group ID request proof of ownership<a class="headerlink" href="#sonatype-group-id-request-proof-of-ownership" title="Permalink to this headline">¶</a></h1>
-<p>I, <a class="reference external" href="mailto:cpovirk&#37;&#52;&#48;google&#46;com">cpovirk<span>&#64;</span>google<span>&#46;</span>com</a>, am creating this file to demonstrate ownership of
-jspecify.org. That domain redirects to jspecify.dev, which we also own. You can
-see the source of this page in GitHub:</p>
-<p><a class="reference external" href="https://github.com/jspecify/jspecify/blob/main/docs/ossrh.rst">https://github.com/jspecify/jspecify/blob/main/docs/ossrh.rst</a></p>
-<p>My request is at <a class="reference external" href="https://issues.sonatype.org/browse/OSSRH-69944">https://issues.sonatype.org/browse/OSSRH-69944</a></p>
+  <div class="tex2jax_ignore mathjax_ignore section" id="landing-pages">
+<h1>Landing Pages<a class="headerlink" href="#landing-pages" title="Permalink to this headline">¶</a></h1>
+<p>The docs will rebuild automatically after a commit. If you want to test locally,
+read on:</p>
+<div class="section" id="how-to-build">
+<h2>How to build<a class="headerlink" href="#how-to-build" title="Permalink to this headline">¶</a></h2>
+<p>To build this document, run the following commands:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">cd</span> path/to/jspecify
+$ docker build -t jspecify-sphinx docs
+$ docker run --rm -v <span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>/docs:/docs jspecify-sphinx make linkcheck
+$ docker run --rm -v <span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>/docs:/docs jspecify-sphinx make html
+</pre></div>
+</div>
+<p>To
+<a class="reference external" href="https://www.sphinx-doc.org/en/master/intl.html">translate the document into several languages</a>,
+generate <code class="docutils literal notranslate"><span class="pre">.po</span></code> files by following commands:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ docker run --rm -v <span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>/docs:/docs jspecify-sphinx make gettext
+$ docker run --rm -v <span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>/docs:/docs jspecify-sphinx sphinx-intl update -p _build/gettext -l ja
+</pre></div>
+</div>
+<p>After you finish updating <code class="docutils literal notranslate"><span class="pre">.po</span></code> files, run the following command to generate
+HTML files:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ docker run --rm -v <span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>/docs:/docs jspecify-sphinx make -e <span class="nv">SPHINXOPTS</span><span class="o">=</span><span class="s2">&quot;-D language=&#39;ja&#39;&quot;</span> html
+</pre></div>
+</div>
+</div>
+<div class="section" id="how-to-build-without-docker">
+<h2>How to build without Docker<a class="headerlink" href="#how-to-build-without-docker" title="Permalink to this headline">¶</a></h2>
+<p>Under Debian and Ubuntu, you may be able to run:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ sudo apt-get install python3-sphinx python3-sphinx-rtd-theme python3-pip
+$ pip install --upgrade myst-parser
+$ <span class="o">(</span> <span class="nb">cd</span> docs <span class="o">&amp;&amp;</span> make html <span class="o">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="commonmark-vs-restructuredtext">
+<h2>CommonMark vs. reStructuredText<a class="headerlink" href="#commonmark-vs-restructuredtext" title="Permalink to this headline">¶</a></h2>
+<p>These docs use reStructuredText (hence the <code class="docutils literal notranslate"><span class="pre">.rst</span></code> extension). If you are used to
+CommonMark (and similar flavors of Markdown, like
+<a class="reference external" href="https://github.github.com/gfm/">GitHub’s</a>), you may want to use a converter
+that rewrites CommonMark to reStructuredText:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ pandoc --from<span class="o">=</span>markdown --to<span class="o">=</span>rst docs/foo.md --output<span class="o">=</span>docs/foo.rst
+</pre></div>
+</div>
+</div>
 </div>
 
 
