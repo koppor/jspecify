@@ -838,8 +838,7 @@ pretty sure that we want to allow <code class="docutils literal notranslate"><sp
 <h2>Containment<a class="headerlink" href="#containment" title="Permalink to this headline">¶</a></h2>
 <p>The Java rules are defined in <a class="reference external" href="https://docs.oracle.com/javase/specs/jls/se14/html/jls-4.html#jls-4.5.1">JLS 4.5.1</a>. We add to them as follows:</p>
 <ul>
-<li><p>Disregard the 2 rules that refer to a bare <code class="docutils literal notranslate"><span class="pre">?</span></code>. Instead, treat <code class="docutils literal notranslate"><span class="pre">?</span></code> like
-<code class="docutils literal notranslate"><span class="pre">?</span> <span class="pre">extends</span> <span class="pre">Object</span></code>, where the <a class="reference external" href="#nullness-operator">nullness operator</a> of the <code class="docutils literal notranslate"><span class="pre">Object</span></code> bound is
+<li><p>Disregard the 2 rules that refer to a bare <code class="docutils literal notranslate"><span class="pre">?</span></code>. Instead, treat <code class="docutils literal notranslate"><span class="pre">?</span></code> like <code class="docutils literal notranslate"><span class="pre">?</span> <span class="pre">extends</span> <span class="pre">Object</span></code>, where the <a class="reference external" href="#nullness-operator">nullness operator</a> of the <code class="docutils literal notranslate"><span class="pre">Object</span></code> bound is
 specified by <a class="reference external" href="#unbounded-wildcard">“Bound of an unbounded wildcard.”</a></p>
 <blockquote>
 <div><p>This is just a part of our universal rule to treat a bare <code class="docutils literal notranslate"><span class="pre">?</span></code> like <code class="docutils literal notranslate"><span class="pre">?</span> <span class="pre">extends</span> <span class="pre">Object</span></code>.</p>
@@ -937,9 +936,8 @@ nullness operator of the intersection type itself is defined to always be
 <ul>
 <li><p>The parameterized type that is the output of the conversion has the same
 <a class="reference external" href="#nullness-operator">nullness operator</a> as the parameterized type that is the input type.</p></li>
-<li><p>Disregard the JLS rule about <code class="docutils literal notranslate"><span class="pre">&lt;?&gt;</span></code>. Instead, treat <code class="docutils literal notranslate"><span class="pre">?</span></code> like
-<code class="docutils literal notranslate"><span class="pre">?</span> <span class="pre">extends</span> <span class="pre">Object</span></code>, where the <a class="reference external" href="#nullness-operator">nullness operator</a> of the <code class="docutils literal notranslate"><span class="pre">Object</span></code> bound is
-specified by <a class="reference external" href="#unbounded-wildcard">“Bound of an unbounded wildcard.”</a></p>
+<li><p>Disregard the JLS rule about <code class="docutils literal notranslate"><span class="pre">&lt;?&gt;</span></code>. Instead, treat <code class="docutils literal notranslate"><span class="pre">?</span></code> like <code class="docutils literal notranslate"><span class="pre">?</span> <span class="pre">extends</span> <span class="pre">Object</span></code>, where the <a class="reference external" href="#nullness-operator">nullness operator</a> of the <code class="docutils literal notranslate"><span class="pre">Object</span></code> bound is specified by
+<a class="reference external" href="#unbounded-wildcard">“Bound of an unbounded wildcard.”</a></p>
 <blockquote>
 <div><p>This is just a part of our universal rule to treat a bare <code class="docutils literal notranslate"><span class="pre">?</span></code> like <code class="docutils literal notranslate"><span class="pre">?</span> <span class="pre">extends</span> <span class="pre">Object</span></code>.</p>
 </div></blockquote>
