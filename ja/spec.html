@@ -241,10 +241,27 @@ it does not state when tools must apply the <a class="reference external" href="
 standard Java checks. For example, if code contains the parameterized type
 <code class="docutils literal notranslate"><span class="pre">List&lt;&#64;Nullable</span> <span class="pre">Foo&gt;</span></code>, we would expect tools to check that <code class="docutils literal notranslate"><span class="pre">&#64;Nullable</span> <span class="pre">Foo</span></code> is a
 subtype of the bound of the type parameter of <code class="docutils literal notranslate"><span class="pre">List</span></code>.</p>
-<p>However, this is up to tool authors. In fact, JSpecify annotations can be used
-even by tools that are not &quot;nullness checkers&quot; at all. For example, a tool that
-lists the members of an API could show the nullness of each type in the API,
-without any checking that those types are &quot;correct.&quot;</p>
+<p>However, this is up to tool authors, who may have reasons to take a different
+approach. For example:</p>
+<ul class="simple">
+<li><p>Java
+<a class="reference external" href="https://github.com/jspecify/jspecify/issues/49">requires checks in some cases in which they aren't necessary for soundness</a>
+and <a class="reference external" href="https://github.com/jspecify/jspecify/issues/65">doesn't require checks in some cases in which checks <em>are</em> necessary
+for soundness</a>.</p></li>
+<li><p>JSpecify annotations can be used even by tools that are not &quot;nullness
+checkers&quot; at all. For example, a tool that lists the members of an API could
+show the nullness of each type in the API, without any checking that those
+types are &quot;correct.&quot;</p></li>
+<li><p>Even when a tool is a &quot;nullness checker,&quot; it might be written for another
+language, like Kotlin, with its own rules for when to perform type checks.
+Or the tool might target a future version of Java whose language features
+would not be covered by this version of this spec.</p></li>
+</ul>
+<p>Note also that this spec covers only nullness information <em>from JSpecify
+annotations</em>. Tools may have additional sources of information. For example, a
+tool may recognize additional annotations. Or a tool may define a rule to treat
+all unannotated type usages the same, even those that this spec assigns
+&quot;unspecified nullness.&quot;</p>
 </div>
 <div class="section" id="that-s-all">
 <h3>That's all!<a class="headerlink" href="#that-s-all" title="このヘッドラインへのパーマリンク">¶</a></h3>
@@ -259,14 +276,17 @@ anticipate likely questions. Those comments are set off as block quotes.</p>
 <blockquote>
 <div><p>This is an example of a non-normative comment.</p>
 </div></blockquote>
-<p>This document also links to other documents. Those documents are non-normative.</p>
+<p>This document also links to other documents. Those documents are non-normative,
+except for when we link to the Java Language Specification to defer to its
+rules.</p>
 <blockquote>
 <div><p>As of this writing, we know that this spec is not entirely sufficient: It
 sometimes relies on references to other documents (like the <a class="reference external" href="https://docs.google.com/document/d/1KQrBxwaVIPIac_6SCf--w-vZBeHkTvtaqPSU_icIccc/edit">glossary</a>). We
 will need to fix this by copying those definitions here.</p>
-<p>(Incidentally, I don't recommend trying to read through the glossary as part
-of reviewing this doc: The glossary includes many concepts that we don't need
-here, and we have not maintained it recently.)</p>
+<p>(Incidentally, I recommend viewing the glossary as a mostly separate effort
+from this doc: The glossary presents a slightly different model of both
+nullness and the Java type system. Over time, we'll want to either bring the
+two more closely in line or else draw a clearer line between them.)</p>
 </div></blockquote>
 </div>
 <div class="section" id="details-common-to-all-annotations">
@@ -320,9 +340,13 @@ unrecognized location.</p>
 <li><p>A type usage of a primitive type.</p></li>
 <li><p>The outer type that qualifies an inner type.</p>
 <blockquote>
+<div><p>Every outer type is intrinsically non-nullable because every instance
+of an inner class has an associated instance of the outer class.</p>
+</div></blockquote>
+<blockquote>
 <div><p>For example, the annotation in <code class="docutils literal notranslate"><span class="pre">&#64;Nullable</span> <span class="pre">Foo.Bar</span></code> is in an
-unrecognized location because the outer type <code class="docutils literal notranslate"><span class="pre">Foo</span></code> is intrinsically
-non-nullable.</p>
+unrecognized location because Java syntax attaches it to the outer
+type <code class="docutils literal notranslate"><span class="pre">Foo</span></code>.</p>
 </div></blockquote>
 </li>
 <li><p>Any of the following type contexts:</p>
@@ -385,11 +409,13 @@ a <a class="reference external" href="https://docs.google.com/document/d/1KQrBxw
 </li>
 </ul>
 <blockquote>
-<div><p>Tools are encouraged to issue an error for an annotation in an unrecognized
-location in source code unless they define semantics for that location --- and
-especially to issue errors for annotations in intrinsically non-nullable
-locations. In bytecode, annotations in unrecognized locations may be best
-ignored (again, unless a tool defines semantics for them).</p>
+<div><p>When analyzing source code, tools are encouraged to offer an option to issue
+an error for an annotation in an unrecognized location (unless they define
+semantics for that location). Tools are especially encouraged to issue an
+error for an annotation in a location that is intrinsically non-nullable. When
+reading <em>bytecode</em>, however, tools may be best off ignoring an annotation in
+an unrecognized location (again, unless they define semantics for that
+location).</p>
 </div></blockquote>
 </div>
 </div>
@@ -550,8 +576,10 @@ than <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</spa
 <div class="section" id="bound-of-an-unbounded-wildcard">
 <span id="unbounded-wildcard"></span><h2>Bound of an &quot;unbounded&quot; wildcard<a class="headerlink" href="#bound-of-an-unbounded-wildcard" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>In source, an unbounded wildcard is written as <code class="docutils literal notranslate"><span class="pre">&lt;?&gt;</span></code>. This section does <strong>not</strong>
-apply to <code class="docutils literal notranslate"><span class="pre">&lt;?</span> <span class="pre">extends</span> <span class="pre">Object&gt;</span></code>, even though that is often equivalent to <code class="docutils literal notranslate"><span class="pre">&lt;?&gt;</span></code>.
-See <a class="reference external" href="https://docs.oracle.com/javase/specs/jls/se14/html/jls-4.html#jls-4.5.1">JLS 4.5.1</a>.</p>
+apply to <code class="docutils literal notranslate"><span class="pre">&lt;?</span> <span class="pre">extends</span> <span class="pre">Object&gt;</span></code>, even though that is often equivalent to <code class="docutils literal notranslate"><span class="pre">&lt;?&gt;</span></code>.</p>
+<blockquote>
+<div><p>See <a class="reference external" href="https://docs.oracle.com/javase/specs/jls/se14/html/jls-4.html#jls-4.5.1">JLS 4.5.1</a>.</p>
+</div></blockquote>
 <p>In bytecode, such a wildcard is represented as a wildcard type with an empty
 list of upper bounds and an empty list of lower bounds. This section does
 <strong>not</strong> apply to a wildcard with any bounds in either list, even a sole upper
@@ -583,7 +611,9 @@ the nullness operator defined by this section.</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">&lt;T&gt;</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">&lt;T</span> <span class="pre">extends</span> <span class="pre">Object&gt;</span></code> with no JSpecify nullness type annotations on the bound</p></li>
 </ul>
-<p>See <a class="reference external" href="https://docs.oracle.com/javase/specs/jls/se14/html/jls-4.html#jls-4.4">JLS 4.4</a>.</p>
+<blockquote>
+<div><p>See <a class="reference external" href="https://docs.oracle.com/javase/specs/jls/se14/html/jls-4.html#jls-4.4">JLS 4.4</a>.</p>
+</div></blockquote>
 <p>In bytecode, <code class="docutils literal notranslate"><span class="pre">&lt;T&gt;</span></code> and <code class="docutils literal notranslate"><span class="pre">&lt;T</span> <span class="pre">extends</span> <span class="pre">Object&gt;</span></code> are both represented as a type
 parameter with a single upper bound, <code class="docutils literal notranslate"><span class="pre">Object</span></code>, and no JSpecify nullness type
 annotations on the bound.</p>
