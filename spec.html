@@ -107,22 +107,22 @@
 <li class="toctree-l3"><a class="reference internal" href="#recognized-locations-for-declaration-annotations">Recognized locations for declaration annotations</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#references-to-concepts-defined-by-this-spec-a-name-concept-references-a">References to concepts defined by this spec <a name="concept-references"></a></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#references-to-concepts-defined-by-this-spec">References to concepts defined by this spec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#nullness-operator">Nullness operator</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#augmented-type">Augmented type</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#null-marked-scope">Null-marked scope</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#augmented-type-of-a-type-usage-appearing-in-code-a-name-augmented-type-of-usage-a">Augmented type of a type usage appearing in code <a name="augmented-type-of-usage"></a></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#augmented-type-of-an-intersection-type-a-name-intersection-types-a">Augmented type of an intersection type <a name="intersection-types"></a></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#bound-of-an-unbounded-wildcard-a-name-unbounded-wildcard-a">Bound of an “unbounded” wildcard <a name="unbounded-wildcard"></a></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#bound-of-an-object-bounded-type-parameter-a-name-object-bounded-type-parameter-a">Bound of an <code class="docutils literal notranslate"><span class="pre">Object</span></code>-bounded type parameter <a name="object-bounded-type-parameter"></a></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#augmented-null-types-a-name-null-types-a">Augmented null types <a name="null-types"></a></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#multiple-worlds-a-name-multiple-worlds-a">Multiple “worlds” <a name="multiple-worlds"></a></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#propagating-how-many-worlds-a-check-must-hold-in-a-name-propagating-multiple-worlds-a">Propagating how many worlds a check must hold in <a name="propagating-multiple-worlds"></a></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#augmented-type-of-a-type-usage-appearing-in-code">Augmented type of a type usage appearing in code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#augmented-type-of-an-intersection-type">Augmented type of an intersection type</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#bound-of-an-unbounded-wildcard">Bound of an “unbounded” wildcard</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#bound-of-an-object-bounded-type-parameter">Bound of an <code class="docutils literal notranslate"><span class="pre">Object</span></code>-bounded type parameter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#augmented-null-types">Augmented null types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#multiple-worlds">Multiple “worlds”</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#propagating-how-many-worlds-a-check-must-hold-in">Propagating how many worlds a check must hold in</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#same-type">Same type</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#subtyping">Subtyping</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#nullness-delegating-subtyping-rules-for-java-a-name-nullness-delegating-subtyping-a">Nullness-delegating subtyping rules for Java <a name="nullness-delegating-subtyping"></a></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#nullness-delegating-subtyping-rules-for-java">Nullness-delegating subtyping rules for Java</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#nullness-subtyping">Nullness subtyping</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#null-inclusive-under-every-parameterization">Null-inclusive under every parameterization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#null-exclusive-under-every-parameterization">Null-exclusive under every parameterization</a></li>
@@ -130,7 +130,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#nullness-subtype-establishing-direct-supertype-edges">Nullness-subtype-establishing direct-supertype edges</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#containment">Containment</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#substitution">Substitution</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#applying-a-nullness-operator-to-an-augmented-type-a-name-applying-operator-a">Applying a nullness operator to an augmented type <a name="applying-operator"></a></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#applying-a-nullness-operator-to-an-augmented-type">Applying a nullness operator to an augmented type</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#capture-conversion">Capture conversion</a></li>
 </ul>
 </li>
@@ -410,8 +410,8 @@ locations listed below:</p>
 </div></blockquote>
 </div>
 </div>
-<div class="section" id="references-to-concepts-defined-by-this-spec-a-name-concept-references-a">
-<h2>References to concepts defined by this spec <a name="concept-references"></a><a class="headerlink" href="#references-to-concepts-defined-by-this-spec-a-name-concept-references-a" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="references-to-concepts-defined-by-this-spec">
+<span id="concept-references"></span><h2>References to concepts defined by this spec<a class="headerlink" href="#references-to-concepts-defined-by-this-spec" title="Permalink to this headline">¶</a></h2>
 <p>When a rule in this spec refers to any concept that is defined in this spec (for
 example, <a class="reference external" href="#substitution">substitution</a> or <a class="reference external" href="#containment">containment</a>), apply this spec’s definition (as
 opposed to other definitions, such as the ones in the JLS).</p>
@@ -483,8 +483,8 @@ enclosed by modules.</p>
 <code class="docutils literal notranslate"><span class="pre">&#64;org.jspecify.nullness.NullMarked</span></code>, then the type usage is in a null-marked
 scope. Otherwise, it is not.</p>
 </div>
-<div class="section" id="augmented-type-of-a-type-usage-appearing-in-code-a-name-augmented-type-of-usage-a">
-<h2>Augmented type of a type usage appearing in code <a name="augmented-type-of-usage"></a><a class="headerlink" href="#augmented-type-of-a-type-usage-appearing-in-code-a-name-augmented-type-of-usage-a" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="augmented-type-of-a-type-usage-appearing-in-code">
+<span id="augmented-type-of-usage"></span><h2>Augmented type of a type usage appearing in code<a class="headerlink" href="#augmented-type-of-a-type-usage-appearing-in-code" title="Permalink to this headline">¶</a></h2>
 <p>For most type usages in source code or bytecode on which JSpecify nullness
 annotations are structurally valid, this section defines how to determine their
 <a class="reference external" href="#augmented-type">augmented types</a>. Note, however, that rules for specific cases below take
@@ -518,8 +518,8 @@ difference between a <code class="docutils literal notranslate"><span class="pre
 <code class="docutils literal notranslate"><span class="pre">MINUS_NULL</span></code>.</p>
 </div></blockquote>
 </div>
-<div class="section" id="augmented-type-of-an-intersection-type-a-name-intersection-types-a">
-<h2>Augmented type of an intersection type <a name="intersection-types"></a><a class="headerlink" href="#augmented-type-of-an-intersection-type-a-name-intersection-types-a" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="augmented-type-of-an-intersection-type">
+<span id="intersection-types"></span><h2>Augmented type of an intersection type<a class="headerlink" href="#augmented-type-of-an-intersection-type" title="Permalink to this headline">¶</a></h2>
 <blockquote>
 <div><p>Technically speaking, the JLS does not define syntax for an intersection type.
 Instead, it defines a syntax for type parameters and casts that supports
@@ -546,8 +546,8 @@ than <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</spa
 <a class="reference external" href="#applying-operator">“Applying a nullness operator to an augmented type.”</a></p>
 </div></blockquote>
 </div>
-<div class="section" id="bound-of-an-unbounded-wildcard-a-name-unbounded-wildcard-a">
-<h2>Bound of an “unbounded” wildcard <a name="unbounded-wildcard"></a><a class="headerlink" href="#bound-of-an-unbounded-wildcard-a-name-unbounded-wildcard-a" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="bound-of-an-unbounded-wildcard">
+<span id="unbounded-wildcard"></span><h2>Bound of an “unbounded” wildcard<a class="headerlink" href="#bound-of-an-unbounded-wildcard" title="Permalink to this headline">¶</a></h2>
 <p>In source, an unbounded wildcard is written as <code class="docutils literal notranslate"><span class="pre">&lt;?&gt;</span></code>. This section does <strong>not</strong>
 apply to <code class="docutils literal notranslate"><span class="pre">&lt;?</span> <span class="pre">extends</span> <span class="pre">Object&gt;</span></code>, even though that is often equivalent to <code class="docutils literal notranslate"><span class="pre">&lt;?&gt;</span></code>.
 See <a class="reference external" href="https://docs.oracle.com/javase/specs/jls/se14/html/jls-4.html#jls-4.5.1">JLS 4.5.1</a>.</p>
@@ -575,8 +575,8 @@ implement JSpecify nullness analysis.</p>
 apply the rules for <code class="docutils literal notranslate"><span class="pre">&lt;?</span> <span class="pre">extends</span> <span class="pre">T&gt;</span></code>, where <code class="docutils literal notranslate"><span class="pre">T</span></code> has a base type of <code class="docutils literal notranslate"><span class="pre">Object</span></code> and
 the nullness operator defined by this section.</p>
 </div>
-<div class="section" id="bound-of-an-object-bounded-type-parameter-a-name-object-bounded-type-parameter-a">
-<h2>Bound of an <code class="docutils literal notranslate"><span class="pre">Object</span></code>-bounded type parameter <a name="object-bounded-type-parameter"></a><a class="headerlink" href="#bound-of-an-object-bounded-type-parameter-a-name-object-bounded-type-parameter-a" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="bound-of-an-object-bounded-type-parameter">
+<span id="object-bounded-type-parameter"></span><h2>Bound of an <code class="docutils literal notranslate"><span class="pre">Object</span></code>-bounded type parameter<a class="headerlink" href="#bound-of-an-object-bounded-type-parameter" title="Permalink to this headline">¶</a></h2>
 <p>In source, an <code class="docutils literal notranslate"><span class="pre">Object</span></code>-bounded type parameter can be writen in either of 2 ways:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">&lt;T&gt;</span></code></p></li>
@@ -602,8 +602,8 @@ consider the source code <code class="docutils literal notranslate"><span class=
 when compiled to bytecode.</p>
 </div></blockquote>
 </div>
-<div class="section" id="augmented-null-types-a-name-null-types-a">
-<h2>Augmented null types <a name="null-types"></a><a class="headerlink" href="#augmented-null-types-a-name-null-types-a" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="augmented-null-types">
+<span id="null-types"></span><h2>Augmented null types<a class="headerlink" href="#augmented-null-types" title="Permalink to this headline">¶</a></h2>
 <p>The JLS refers to “the null type.” In this spec, we assign a <a class="reference external" href="#nullness-operator">nullness operator</a>
 to all types, including the null type. This produces multiple null types:</p>
 <ul>
@@ -628,8 +628,8 @@ reference</p></li>
 </li>
 </ul>
 </div>
-<div class="section" id="multiple-worlds-a-name-multiple-worlds-a">
-<h2>Multiple “worlds” <a name="multiple-worlds"></a><a class="headerlink" href="#multiple-worlds-a-name-multiple-worlds-a" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="multiple-worlds">
+<span id="id1"></span><h2>Multiple “worlds”<a class="headerlink" href="#multiple-worlds" title="Permalink to this headline">¶</a></h2>
 <p>Some of the rules in this spec come in 2 versions: One version requires a
 property to hold “in all worlds,” and the other requires it to hold only “in
 some world.”</p>
@@ -666,8 +666,8 @@ some-world rule differs, the differences are explained at the end.</p>
 implement at least part of the all-worlds rules. Those rules are required as
 part of <a class="reference external" href="#substitution">substitution</a>.</p>
 </div></blockquote>
-<div class="section" id="propagating-how-many-worlds-a-check-must-hold-in-a-name-propagating-multiple-worlds-a">
-<h3>Propagating how many worlds a check must hold in <a name="propagating-multiple-worlds"></a><a class="headerlink" href="#propagating-how-many-worlds-a-check-must-hold-in-a-name-propagating-multiple-worlds-a" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="propagating-how-many-worlds-a-check-must-hold-in">
+<span id="propagating-multiple-worlds"></span><h3>Propagating how many worlds a check must hold in<a class="headerlink" href="#propagating-how-many-worlds-a-check-must-hold-in" title="Permalink to this headline">¶</a></h3>
 <p>When one rule in this spec refers to another, it refers to the same version of
 the rule. For example, when the rules for <a class="reference external" href="#containment">containment</a> refer to the rules for
 <a class="reference external" href="#subtyping">subtyping</a>, the some-world containment check applies the some-world subtyping
@@ -696,8 +696,8 @@ of <code class="docutils literal notranslate"><span class="pre">S</span></code>.
 <li><p><code class="docutils literal notranslate"><span class="pre">A</span></code> is a <a class="reference external" href="#nullness-subtyping">nullness subtype</a> of <code class="docutils literal notranslate"><span class="pre">F</span></code>.</p></li>
 </ul>
 </div>
-<div class="section" id="nullness-delegating-subtyping-rules-for-java-a-name-nullness-delegating-subtyping-a">
-<h2>Nullness-delegating subtyping rules for Java <a name="nullness-delegating-subtyping"></a><a class="headerlink" href="#nullness-delegating-subtyping-rules-for-java-a-name-nullness-delegating-subtyping-a" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="nullness-delegating-subtyping-rules-for-java">
+<span id="nullness-delegating-subtyping"></span><h2>Nullness-delegating subtyping rules for Java<a class="headerlink" href="#nullness-delegating-subtyping-rules-for-java" title="Permalink to this headline">¶</a></h2>
 <p>The Java subtyping rules are defined in <a class="reference external" href="https://docs.oracle.com/javase/specs/jls/se14/html/jls-4.html#jls-4.10">JLS 4.10</a>. We add to them as follows:</p>
 <ul>
 <li><p><a class="reference external" href="#concept-references">As always</a>, interpret the Java rules as operating on
@@ -896,8 +896,8 @@ subtyping check fail, as desired.</p>
 <code class="docutils literal notranslate"><span class="pre">V</span></code> to <code class="docutils literal notranslate"><span class="pre">Aᵢ</span></code>.</p></li>
 </ul>
 </div>
-<div class="section" id="applying-a-nullness-operator-to-an-augmented-type-a-name-applying-operator-a">
-<h2>Applying a nullness operator to an augmented type <a name="applying-operator"></a><a class="headerlink" href="#applying-a-nullness-operator-to-an-augmented-type-a-name-applying-operator-a" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="applying-a-nullness-operator-to-an-augmented-type">
+<span id="applying-operator"></span><h2>Applying a nullness operator to an augmented type<a class="headerlink" href="#applying-a-nullness-operator-to-an-augmented-type" title="Permalink to this headline">¶</a></h2>
 <p>The process of applying a <a class="reference external" href="#nullness-operator">nullness operator</a> requires 2 inputs:</p>
 <ul class="simple">
 <li><p>the nullness operator to apply</p></li>
