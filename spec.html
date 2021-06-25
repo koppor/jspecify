@@ -108,6 +108,7 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#references-to-concepts-defined-by-this-spec">References to concepts defined by this spec</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#base-type">Base type</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#nullness-operator">Nullness operator</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#augmented-type">Augmented type</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#null-marked-scope">Null-marked scope</a></li>
@@ -449,7 +450,15 @@ opposed to other definitions, such as the ones in the JLS).</p>
 to a concept that is defined in this spec, likewise apply this spec’s
 definition.</p>
 <p>In particular, when a JLS rule refers to types, apply this spec’s definition of
-<a class="reference external" href="#augmented-type">augmented types</a> (as oppposed to <a class="reference external" href="https://docs.google.com/document/d/1KQrBxwaVIPIac_6SCf--w-vZBeHkTvtaqPSU_icIccc/edit#bookmark=kix.k81vs7t5p45i">base types</a>).</p>
+<a class="reference external" href="#augmented-type">augmented types</a> (as oppposed to <a class="reference external" href="#base-type">base types</a>).</p>
+</div>
+<div class="section" id="base-type">
+<h2>Base type<a class="headerlink" href="#base-type" title="Permalink to this headline">¶</a></h2>
+<p>A <em>base type</em> is a type as defined in <a class="reference external" href="https://docs.oracle.com/javase/specs/jls/se14/html/jls-4.html">JLS 4</a>.</p>
+<blockquote>
+<div><p>JLS 4 does not consider type-use annotations to be part of types, so neither
+does our concept of “base type.”</p>
+</div></blockquote>
 </div>
 <div class="section" id="nullness-operator">
 <h2>Nullness operator<a class="headerlink" href="#nullness-operator" title="Permalink to this headline">¶</a></h2>
@@ -467,7 +476,7 @@ Kotlin types <code class="docutils literal notranslate"><span class="pre">Foo?</
 </div>
 <div class="section" id="augmented-type">
 <h2>Augmented type<a class="headerlink" href="#augmented-type" title="Permalink to this headline">¶</a></h2>
-<p>An augmented type consists of a <a class="reference external" href="https://docs.google.com/document/d/1KQrBxwaVIPIac_6SCf--w-vZBeHkTvtaqPSU_icIccc/edit#bookmark=kix.k81vs7t5p45i">base type</a> and a <a class="reference external" href="#nullness-operator">nullness operator</a>
+<p>An augmented type consists of a <a class="reference external" href="#base-type">base type</a> and a <a class="reference external" href="#nullness-operator">nullness operator</a>
 corresponding to <em>each</em> of its <a class="reference external" href="https://docs.google.com/document/d/1KQrBxwaVIPIac_6SCf--w-vZBeHkTvtaqPSU_icIccc/edit#bookmark=kix.g7gl9fwq1tt5">type components</a>.</p>
 <p>For our purposes, base types (and thus augmented types) include not just class
 and interface types, array types, and type variables but also
@@ -519,7 +528,7 @@ scope. Otherwise, it is not.</p>
 annotations are <a class="reference external" href="#recognized-locations-for-type-use-annotations">recognized</a>, this section defines how to determine their
 <a class="reference external" href="#augmented-type">augmented types</a>. Note, however, that rules for specific cases below take
 precedence over the general rule here.</p>
-<p>Because the JLS already has rules for determining the <a class="reference external" href="https://docs.google.com/document/d/1KQrBxwaVIPIac_6SCf--w-vZBeHkTvtaqPSU_icIccc/edit#bookmark=kix.k81vs7t5p45i">base type</a> for a type
+<p>Because the JLS already has rules for determining the <a class="reference external" href="#base-type">base type</a> for a type
 usage, this section covers only how to determine its <a class="reference external" href="#nullness-operator">nullness operator</a>.</p>
 <p>To determine the nullness operator, apply the following rules in order. Once one
 condition is met, skip the remaining conditions.</p>
@@ -563,7 +572,7 @@ intersection type, following our normal rules for type usages. It also assigns a
 nullness operator to the intersection type as a whole. The nullness operator of
 the type as a whole is always <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code>.</p>
 <blockquote>
-<div><p>This lets us provide, for every <a class="reference external" href="https://docs.google.com/document/d/1KQrBxwaVIPIac_6SCf--w-vZBeHkTvtaqPSU_icIccc/edit#bookmark=kix.k81vs7t5p45i">base type</a>, a rule for computing its
+<div><p>This lets us provide, for every <a class="reference external" href="#base-type">base type</a>, a rule for computing its
 <a class="reference external" href="#augmented-type">augmented type</a>. But we require <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code> so as to avoid questions like
 whether “a <code class="docutils literal notranslate"><span class="pre">UNION_NULL</span></code> intersection type whose members are <code class="docutils literal notranslate"><span class="pre">UNION_NULL</span></code> <code class="docutils literal notranslate"><span class="pre">Foo</span></code>
 and <code class="docutils literal notranslate"><span class="pre">UNION_NULL</span></code> <code class="docutils literal notranslate"><span class="pre">Bar</span></code>” is a subtype of “a <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code> intersection type with
@@ -592,7 +601,7 @@ bound of <code class="docutils literal notranslate"><span class="pre">Object</sp
 <a class="reference external" href="#augmented-type-of-usage">the normal rules</a> for the explicit bound type.</p>
 </div></blockquote>
 <p>If an unbounded wildcard appears in a <a class="reference external" href="#null-marked-scope">null-marked scope</a>, then it has a single
-upper bound whose <a class="reference external" href="https://docs.google.com/document/d/1KQrBxwaVIPIac_6SCf--w-vZBeHkTvtaqPSU_icIccc/edit#bookmark=kix.k81vs7t5p45i">base type</a> is <code class="docutils literal notranslate"><span class="pre">Object</span></code> and whose <a class="reference external" href="#nullness-operator">nullness operator</a> is
+upper bound whose <a class="reference external" href="#base-type">base type</a> is <code class="docutils literal notranslate"><span class="pre">Object</span></code> and whose <a class="reference external" href="#nullness-operator">nullness operator</a> is
 <code class="docutils literal notranslate"><span class="pre">UNION_NULL</span></code>.</p>
 <p>If an unbounded wildcard appears outside a null-marked scope, then it has a
 single upper bound whose base type is <code class="docutils literal notranslate"><span class="pre">Object</span></code> and whose nullness operator is
@@ -621,7 +630,7 @@ the nullness operator defined by this section.</p>
 parameter with a single upper bound, <code class="docutils literal notranslate"><span class="pre">Object</span></code>, and no JSpecify nullness type
 annotations on the bound.</p>
 <p>If an <code class="docutils literal notranslate"><span class="pre">Object</span></code>-bounded type parameter appears in a <a class="reference external" href="#null-marked-scope">null-marked scope</a>, then its
-bound has a <a class="reference external" href="https://docs.google.com/document/d/1KQrBxwaVIPIac_6SCf--w-vZBeHkTvtaqPSU_icIccc/edit#bookmark=kix.k81vs7t5p45i">base type</a> of <code class="docutils literal notranslate"><span class="pre">Object</span></code> and a <a class="reference external" href="#nullness-operator">nullness operator</a> of <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code>.</p>
+bound has a <a class="reference external" href="#base-type">base type</a> of <code class="docutils literal notranslate"><span class="pre">Object</span></code> and a <a class="reference external" href="#nullness-operator">nullness operator</a> of <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code>.</p>
 <blockquote>
 <div><p>Note that this gives <code class="docutils literal notranslate"><span class="pre">&lt;T&gt;</span></code> a different bound than <code class="docutils literal notranslate"><span class="pre">&lt;?&gt;</span></code> (though only in a
 null-marked scope).</p>
@@ -641,7 +650,7 @@ when compiled to bytecode.</p>
 <p>The JLS refers to “the null type.” In this spec, we assign a <a class="reference external" href="#nullness-operator">nullness operator</a>
 to all types, including the null type. This produces multiple null types:</p>
 <ul>
-<li><p>the null <a class="reference external" href="https://docs.google.com/document/d/1KQrBxwaVIPIac_6SCf--w-vZBeHkTvtaqPSU_icIccc/edit#bookmark=kix.k81vs7t5p45i">base type</a> with nullness operator <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code>: the
+<li><p>the null <a class="reference external" href="#base-type">base type</a> with nullness operator <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code>: the
 “bottom”/”nothing” type used in <a class="reference external" href="#capture-conversion">capture conversion</a></p>
 <blockquote>
 <div><p>No value, including <code class="docutils literal notranslate"><span class="pre">null</span></code> itself, has this type.</p>
@@ -735,7 +744,7 @@ of <code class="docutils literal notranslate"><span class="pre">S</span></code>.
 <p>The Java subtyping rules are defined in <a class="reference external" href="https://docs.oracle.com/javase/specs/jls/se14/html/jls-4.html#jls-4.10">JLS 4.10</a>. We add to them as follows:</p>
 <ul>
 <li><p><a class="reference external" href="#concept-references">As always</a>, interpret the Java rules as operating on
-<a class="reference external" href="#augmented-type">augmented types</a>, not <a class="reference external" href="https://docs.google.com/document/d/1KQrBxwaVIPIac_6SCf--w-vZBeHkTvtaqPSU_icIccc/edit#bookmark=kix.k81vs7t5p45i">base types</a>. However, when applying the Java
+<a class="reference external" href="#augmented-type">augmented types</a>, not <a class="reference external" href="#base-type">base types</a>. However, when applying the Java
 direct-supertype rules themselves, <em>ignore</em> the <a class="reference external" href="#nullness-operator">nullness operator</a> of the
 input types and output types. The augmented types matter only when the Java
 rules refer to <em>other</em> rules that are defined in this spec. <em>Those</em> rules
@@ -857,7 +866,7 @@ upper bounds whose nullness operator is <code class="docutils literal notranslat
 </ul>
 <p>Lower-bound rule:</p>
 <ul>
-<li><p>for every type parameter <code class="docutils literal notranslate"><span class="pre">P</span></code> that has a lower bound whose <a class="reference external" href="https://docs.google.com/document/d/1KQrBxwaVIPIac_6SCf--w-vZBeHkTvtaqPSU_icIccc/edit#bookmark=kix.k81vs7t5p45i">base type</a> is the
+<li><p>for every type parameter <code class="docutils literal notranslate"><span class="pre">P</span></code> that has a lower bound whose <a class="reference external" href="#base-type">base type</a> is the
 same as <code class="docutils literal notranslate"><span class="pre">T</span></code>’s base type and whose nullness operator is <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code>: the type
 variable <code class="docutils literal notranslate"><span class="pre">P</span></code></p>
 <p>TODO(cpovirk): What if the lower bound has some other nullness operator? I’m
@@ -902,7 +911,7 @@ define this process.</p>
 </div></blockquote>
 <p>To substitute each type argument <code class="docutils literal notranslate"><span class="pre">Aᵢ</span></code> for each corresponding type parameter
 <code class="docutils literal notranslate"><span class="pre">Pᵢ</span></code>:</p>
-<p>For every type-variable usage <code class="docutils literal notranslate"><span class="pre">V</span></code> whose <a class="reference external" href="https://docs.google.com/document/d/1KQrBxwaVIPIac_6SCf--w-vZBeHkTvtaqPSU_icIccc/edit#bookmark=kix.k81vs7t5p45i">base type</a> is <code class="docutils literal notranslate"><span class="pre">Pᵢ</span></code>, replace <code class="docutils literal notranslate"><span class="pre">V</span></code> with
+<p>For every type-variable usage <code class="docutils literal notranslate"><span class="pre">V</span></code> whose <a class="reference external" href="#base-type">base type</a> is <code class="docutils literal notranslate"><span class="pre">Pᵢ</span></code>, replace <code class="docutils literal notranslate"><span class="pre">V</span></code> with
 the result of the following operation:</p>
 <ul>
 <li><p>If <code class="docutils literal notranslate"><span class="pre">V</span></code> is <a class="reference external" href="#null-exclusive-under-every-parameterization">null-exclusive under every parameterization</a> in <a class="reference external" href="#multiple-worlds">all worlds</a>,
