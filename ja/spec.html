@@ -213,7 +213,8 @@ annotations.</p>
 <p>For someone new to our nullness annotations, this document does not make a good
 introduction. This document is targeted more at tool authors or advanced users.
 For new users, we are working on additional documentation, including Javadoc, a
-User Guide, and a FAQ. At the moment, you can see our <a class="reference internal" href="design-overview.html"><span class="doc std std-doc">design overview</span></a>.</p>
+<a class="reference internal" href="user-guide.html"><span class="doc std std-doc">User Guide</span></a>, and a FAQ. At the moment, you can see our
+<a class="reference internal" href="design-overview.html"><span class="doc std std-doc">design overview</span></a>.</p>
 <div class="section" id="the-world-nullable">
 <h3>The world &quot;nullable&quot;<a class="headerlink" href="#the-world-nullable" title="このヘッドラインへのパーマリンク">¶</a></h3>
 <p>In this doc, I aim not to refer to whether a type &quot;is nullable.&quot; Instead, I draw
@@ -245,8 +246,8 @@ subtype of the bound of the type parameter of <code class="docutils literal notr
 approach. For example:</p>
 <ul class="simple">
 <li><p>Java
-<a class="reference external" href="https://github.com/jspecify/jspecify/issues/49">requires checks in some cases in which they aren't necessary for soundness</a>
-and <a class="reference external" href="https://github.com/jspecify/jspecify/issues/65">doesn't require checks in some cases in which checks <em>are</em> necessary
+<a class="reference external" href="https://github.com/jspecify/jspecify/issues/49">requires checks in some cases in which they aren't necessary for soundness</a>,
+and it <a class="reference external" href="https://github.com/jspecify/jspecify/issues/65">doesn't require checks in some cases in which checks <em>are</em> necessary
 for soundness</a>.</p></li>
 <li><p>JSpecify annotations can be used even by tools that are not &quot;nullness
 checkers&quot; at all. For example, a tool that lists the members of an API could
@@ -345,8 +346,8 @@ of an inner class has an associated instance of the outer class.</p>
 </div></blockquote>
 <blockquote>
 <div><p>For example, the annotation in <code class="docutils literal notranslate"><span class="pre">&#64;Nullable</span> <span class="pre">Foo.Bar</span></code> is in an
-unrecognized location because Java syntax attaches it to the outer
-type <code class="docutils literal notranslate"><span class="pre">Foo</span></code>.</p>
+unrecognized location: Java syntax attaches it to the outer type
+<code class="docutils literal notranslate"><span class="pre">Foo</span></code>.</p>
 </div></blockquote>
 </li>
 <li><p>Any of the following type contexts:</p>
@@ -450,7 +451,7 @@ definition.</p>
 </div>
 <div class="section" id="nullness-operator">
 <h2>Nullness operator<a class="headerlink" href="#nullness-operator" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<p>An nullness operator is one of 4 values:</p>
+<p>A nullness operator is one of 4 values:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">UNION_NULL</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code></p></li>
@@ -487,8 +488,8 @@ specifically to the nullness operator of the type component that is the entire
 type <code class="docutils literal notranslate"><span class="pre">T</span></code>, without reference to the nullness operator of any other type
 components of <code class="docutils literal notranslate"><span class="pre">T</span></code>.</p>
 <blockquote>
-<div><p>For example, &quot;the nullness operator of <code class="docutils literal notranslate"><span class="pre">List&lt;&#64;Nullable</span> <span class="pre">Object&gt;</span></code>&quot; refers to the
-whether the list itself may be <code class="docutils literal notranslate"><span class="pre">null</span></code>, not whether its elements may be.</p>
+<div><p>For example, &quot;the nullness operator of <code class="docutils literal notranslate"><span class="pre">List&lt;Object&gt;</span></code>&quot; refers to whether the
+list itself may be <code class="docutils literal notranslate"><span class="pre">null</span></code>, not whether its elements may be.</p>
 </div></blockquote>
 </div>
 <div class="section" id="null-marked-scope">
@@ -513,7 +514,7 @@ scope. Otherwise, it is not.</p>
 <div class="section" id="augmented-type-of-a-type-usage-appearing-in-code">
 <span id="augmented-type-of-usage"></span><h2>Augmented type of a type usage appearing in code<a class="headerlink" href="#augmented-type-of-a-type-usage-appearing-in-code" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>For most type usages in source code or bytecode on which JSpecify nullness
-annotations are structurally valid, this section defines how to determine their
+annotations are <a class="reference external" href="#recognized-locations-for-type-use-annotations">recognized</a>, this section defines how to determine their
 <a class="reference external" href="#augmented-type">augmented types</a>. Note, however, that rules for specific cases below take
 precedence over the general rule here.</p>
 <p>Because the JLS already has rules for determining the <a class="reference external" href="https://docs.google.com/document/d/1KQrBxwaVIPIac_6SCf--w-vZBeHkTvtaqPSU_icIccc/edit#bookmark=kix.k81vs7t5p45i">base type</a> for a type
