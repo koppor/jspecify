@@ -309,8 +309,11 @@ circumstances detailed below. A type at a recognized location has the semantics
 described in this spec. The spec does not assign semantics to types in other
 locations, nor to any annotations on such types.</p>
 <ul>
-<li><p>Unrecognized location: any component of a type usage in
-<a class="reference external" href="https://docs.google.com/document/d/1KQrBxwaVIPIac_6SCf--w-vZBeHkTvtaqPSU_icIccc/edit#bookmark=id.cjuxrgo7keqs">implementation code</a>:</p>
+<li><p>Unrecognized location: any component of a type usage in the following
+locations:</p>
+<blockquote>
+<div><p>These all fit under the umbrella of “implementation code.”</p>
+</div></blockquote>
 <ul class="simple">
 <li><p>A local variable type.</p></li>
 <li><p>An exception parameter.</p></li>
@@ -376,7 +379,7 @@ this rule extends that to <em>all</em> components of the type.</p>
 <a class="reference external" href="https://docs.google.com/document/d/1KQrBxwaVIPIac_6SCf--w-vZBeHkTvtaqPSU_icIccc/edit#bookmark=kix.j1ewrpknx869">non-root</a> component type, regardless of the root type or surrounding
 <a class="reference external" href="https://docs.google.com/document/d/1KQrBxwaVIPIac_6SCf--w-vZBeHkTvtaqPSU_icIccc/edit#bookmark=kix.pfoww2aic35t">type context</a>.</p>
 <ul>
-<li><p>This may be a <a class="reference external" href="https://docs.google.com/document/d/1KQrBxwaVIPIac_6SCf--w-vZBeHkTvtaqPSU_icIccc/edit#bookmark=id.3gm7aajjj46m">type argument</a>, explicit wildcard bound, array component
+<li><p>This may be a type argument, explicit wildcard bound, array component
 type, or the type used in a variadic parameter declaration.</p>
 <blockquote>
 <div><p>For example, the annotation in <code class="docutils literal notranslate"><span class="pre">Iterator&lt;&#64;Nullable</span> <span class="pre">String&gt;</span></code> is always
@@ -394,7 +397,7 @@ unrecognized location. [<a class="reference external" href="https://github.com/j
 </ul>
 </li>
 <li><p>Recognized location: any of the following (including when the type usage is
-a <a class="reference external" href="https://docs.google.com/document/d/1KQrBxwaVIPIac_6SCf--w-vZBeHkTvtaqPSU_icIccc/edit#bookmark=id.uxek2gfsybvo">type variable</a>, regardless of the corresponding type parameter’s bound):
+a type variable, regardless of the corresponding type parameter’s bound):
 [<a class="reference external" href="https://github.com/jspecify/jspecify/issues/17">#17</a>]</p>
 <ul>
 <li><p>Return type of a method.</p></li>
