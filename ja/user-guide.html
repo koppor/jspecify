@@ -179,14 +179,18 @@
             
   <div class="tex2jax_ignore mathjax_ignore section" id="jspecify-user-guide">
 <h1>JSpecify user guide<a class="headerlink" href="#jspecify-user-guide" title="このヘッドラインへのパーマリンク">¶</a></h1>
-<p>The JSpecify project defines annotations that describe what types in Java code
-can be null. This allows tools to help developers avoid NullPointerExceptions,
-by pinpointing places where those exceptions might happen because the code
-doesn't guard against the possibility that a reference might be null. At the
-same time, the annotations make it possible to declare that certain references
-can never be null.</p>
-<p>These annotations are principally used by tools to check source code. They do
-not necessarily have any effect when the code is being run.</p>
+<p>In Java code, whether an expression may evaluate to null is often documented
+only in natural language, if at all.  The goal of JSpecify is to permit
+programmers to express specifications (initially, just nullness properties) in a
+machine-readable way.</p>
+<p>JSpecify defines annotations that describe whether a Java type contains the value null.
+Such annotations are useful to (for example):</p>
+<ul class="simple">
+<li><p>programmers reading the code,</p></li>
+<li><p>tools that help developers avoid NullPointerExceptions,</p></li>
+<li><p>tools that perform run-time checking and test generation, and</p></li>
+<li><p>documentation systems.</p></li>
+</ul>
 <div class="section" id="java-variables-are-references">
 <h2>Java variables are references<a class="headerlink" href="#java-variables-are-references" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>In Java, all variables, except primitives like <code class="docutils literal notranslate"><span class="pre">int</span></code>, are references. We often
