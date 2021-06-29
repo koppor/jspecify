@@ -238,10 +238,10 @@ the previous:</p>
 <h3>The scope of this spec<a class="headerlink" href="#the-scope-of-this-spec" title="Permalink to this headline">¶</a></h3>
 <p>This spec does not address <em>when</em> tools must apply a given check. For example,
 it does not state when tools must apply the <a class="reference external" href="#subtyping">subtyping</a> check.</p>
-<p>We expect that tools will typically apply them in the same cases that they apply
-standard Java checks. For example, if code contains the parameterized type
-<code class="docutils literal notranslate"><span class="pre">List&lt;&#64;Nullable</span> <span class="pre">Foo&gt;</span></code>, we would expect tools to check that <code class="docutils literal notranslate"><span class="pre">&#64;Nullable</span> <span class="pre">Foo</span></code> is a
-subtype of the bound of the type parameter of <code class="docutils literal notranslate"><span class="pre">List</span></code>.</p>
+<p>We anticipate that tools will typically apply them in the same cases that they
+apply standard Java checks. For example, if code contains the parameterized type
+<code class="docutils literal notranslate"><span class="pre">List&lt;&#64;Nullable</span> <span class="pre">Foo&gt;</span></code>, we anticipate that tools will check that <code class="docutils literal notranslate"><span class="pre">&#64;Nullable</span> <span class="pre">Foo</span></code>
+is a subtype of the bound of the type parameter of <code class="docutils literal notranslate"><span class="pre">List</span></code>.</p>
 <p>However, this is up to tool authors, who may have reasons to take a different
 approach. For example:</p>
 <ul class="simple">
@@ -325,11 +325,11 @@ locations:</p>
 expression for a generic class.</p></li>
 </ul>
 <blockquote>
-<div><p>In practice, we expect that tools will treat types (and their annotations)
-in <em>most</em> of the above locations much like they treat types in other
-locations. Still, this spec does not concern itself with implementation
-code: We believe that the most important domain for us to focus on is that
-of APIs.</p>
+<div><p>In practice, we anticipate that tools will treat types (and their
+annotations) in <em>most</em> of the above locations much like they treat types
+in other locations. Still, this spec does not concern itself with
+implementation code: We believe that the most important domain for us to
+focus on is that of APIs.</p>
 </div></blockquote>
 </li>
 <li><p>Unrecognized location: a class declaration. [<a class="reference external" href="https://github.com/jspecify/jspecify/issues/7">#7</a>]</p>
@@ -549,12 +549,12 @@ another type overrides that method but does not declare the return type as
 </div></blockquote>
 <blockquote>
 <div><p>The rules here never produce the fourth nullness operator, <code class="docutils literal notranslate"><span class="pre">MINUS_NULL</span></code>. (It
-will appear later in <a class="reference external" href="#substitution">substitution</a>. Additionally, we expect for tool authors
-to produce <code class="docutils literal notranslate"><span class="pre">MINUS_NULL</span></code> based on the results of null checks in implementation
-code.) However, if tool authors prefer, they can safely produce <code class="docutils literal notranslate"><span class="pre">MINUS_NULL</span></code>
-in any case in which it is equivalent to <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code>. For example, there is no
-difference between a <code class="docutils literal notranslate"><span class="pre">String</span></code> with <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code> and a <code class="docutils literal notranslate"><span class="pre">String</span></code> with
-<code class="docutils literal notranslate"><span class="pre">MINUS_NULL</span></code>.</p>
+will appear later in <a class="reference external" href="#substitution">substitution</a>. Additionally, we anticipate that tools
+will produce <code class="docutils literal notranslate"><span class="pre">MINUS_NULL</span></code> based on the results of null checks in
+implementation code.) However, if tool authors prefer, they can safely produce
+<code class="docutils literal notranslate"><span class="pre">MINUS_NULL</span></code> in any case in which it is equivalent to <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code>. For
+example, there is no difference between a <code class="docutils literal notranslate"><span class="pre">String</span></code> with <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code> and a
+<code class="docutils literal notranslate"><span class="pre">String</span></code> with <code class="docutils literal notranslate"><span class="pre">MINUS_NULL</span></code>.</p>
 </div></blockquote>
 </div>
 <div class="section" id="augmented-type-of-an-intersection-type">
@@ -832,6 +832,10 @@ other types like type variables and <a class="reference external" href="#interse
 </div></blockquote>
 </li>
 </ul>
+<blockquote>
+<div><p>When code dereferences an expression, we anticipate that tools will check
+whether the expression is null-exclusive under every parameterization.</p>
+</div></blockquote>
 </div>
 <div class="section" id="nullness-subtype-establishing-path">
 <h2>Nullness-subtype-establishing path<a class="headerlink" href="#nullness-subtype-establishing-path" title="Permalink to this headline">¶</a></h2>
