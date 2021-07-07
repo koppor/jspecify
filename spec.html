@@ -213,8 +213,7 @@ annotations.</p>
 <p>For someone new to our nullness annotations, this document does not make a good
 introduction. This document is targeted more at tool authors or advanced users.
 New users will prefer to start with our <a class="reference internal" href="user-guide.html"><span class="doc std std-doc">User Guide</span></a>. We are working on further
-user documentation, including Javadoc. For an intermediate perspective, see our
-<a class="reference internal" href="design-overview.html"><span class="doc std std-doc">design overview</span></a>.</p>
+user documentation, including Javadoc.</p>
 <div class="section" id="the-word-nullable">
 <h3>The word “nullable”<a class="headerlink" href="#the-word-nullable" title="Permalink to this headline">¶</a></h3>
 <p>In this doc, I aim not to refer to whether a type “is nullable.” Instead, I draw
@@ -226,10 +225,11 @@ the previous:</p>
 <li><p>What is the <a class="reference external" href="#nullness-operator">nullness operator</a> of that type usage?</p></li>
 <li><p>For that type usage…</p>
 <ul class="simple">
-<li><p>Is it safe to assume that is not <code class="docutils literal notranslate"><span class="pre">null</span></code>?</p></li>
-<li><p>Is it safe to put a <code class="docutils literal notranslate"><span class="pre">null</span></code> into it?</p></li>
+<li><p>Is it “reasonable” to assume that is not <code class="docutils literal notranslate"><span class="pre">null</span></code>?</p></li>
+<li><p>Is it “reasonable” to put a <code class="docutils literal notranslate"><span class="pre">null</span></code> into it?</p></li>
 <li><p>neither (what we sometimes call “parametric nullness”)</p></li>
-<li><p>both (as can happen with <code class="docutils literal notranslate"><span class="pre">UNSPECIFIED</span></code> under lenient tools)</p></li>
+<li><p>both (as can happen with <a class="reference external" href="#nullness-operator">nullness operator</a> <code class="docutils literal notranslate"><span class="pre">UNSPECIFIED</span></code> under lenient
+tools)</p></li>
 </ul>
 </li>
 </ol>
@@ -261,8 +261,8 @@ would not be covered by this version of this spec.</p></li>
 <p>Note also that this spec covers only nullness information <em>from JSpecify
 annotations</em>. Tools may have additional sources of information. For example, a
 tool may recognize additional annotations. Or a tool may define a rule to treat
-all unannotated type usages the same, even those that this spec assigns
-“unspecified nullness.”</p>
+all unannotated type usages the same, rather than implementing different
+behavior for those that this spec assigns “unspecified nullness.”</p>
 </div>
 <div class="section" id="that-s-all">
 <h3>That’s all!<a class="headerlink" href="#that-s-all" title="Permalink to this headline">¶</a></h3>
@@ -397,9 +397,7 @@ unrecognized location. [<a class="reference external" href="https://github.com/j
 </li>
 </ul>
 </li>
-<li><p>Recognized location: any of the following (including when the type usage is
-a type variable, regardless of the corresponding type parameter’s bound):
-[<a class="reference external" href="https://github.com/jspecify/jspecify/issues/17">#17</a>]</p>
+<li><p>Recognized location: any of the following: [<a class="reference external" href="https://github.com/jspecify/jspecify/issues/17">#17</a>]</p>
 <ul>
 <li><p>Return type of a method.</p></li>
 <li><p>Formal parameter type of a method or constructor.</p></li>
@@ -480,15 +478,13 @@ Kotlin types <code class="docutils literal notranslate"><span class="pre">Foo?</
 corresponding to <em>each</em> of its <a class="reference external" href="https://docs.google.com/document/d/1KQrBxwaVIPIac_6SCf--w-vZBeHkTvtaqPSU_icIccc/edit#bookmark=kix.g7gl9fwq1tt5">type components</a>.</p>
 <p>For our purposes, base types (and thus augmented types) include not just class
 and interface types, array types, and type variables but also
-<a class="reference external" href="#intersection-types">intersection types</a> and the null type. This is true even though the JLS
-sometimes does not supply rules for intersection types and sometimes has
-separate rules for the null type.</p>
-<p>The goal of this spec is to define rules for augmented types compatible with
-those that the JLS defines for base types.</p>
+<a class="reference external" href="#intersection-types">intersection types</a> and the null type.</p>
 <blockquote>
-<div><p>In almost all cases, this spec agrees with the JLS’s rules when specifying
-what <em>base</em> types appear in a piece of code. It makes an exception for
-<a class="reference external" href="#unbounded-wildcard">“Bound of an unbounded wildcard,”</a> for which it
+<div><p>This spec aims to define rules for augmented types compatible with those that
+the JLS defines for base types.</p>
+<p>Accordingly, in almost all cases, this spec agrees with the JLS’s rules when
+specifying what <em>base</em> types appear in a piece of code. It makes an exception
+for <a class="reference external" href="#unbounded-wildcard">“Bound of an unbounded wildcard,”</a> for which it
 specifies a bound of <code class="docutils literal notranslate"><span class="pre">Object</span></code> that the JLS does not specify.</p>
 </div></blockquote>
 <p>When this spec uses capital letters, they refer to augmented types (unless
