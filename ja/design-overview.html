@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>JSpecify design overview &mdash; JSpecify  ドキュメント</title>
+  <title>JSpecify nullness design overview &mdash; JSpecify  ドキュメント</title>
   
 
   
@@ -90,7 +90,7 @@
             
               <p class="caption"><span class="caption-text">コンテンツ</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">JSpecify design overview</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">JSpecify nullness design overview</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#about-this-document">About this document</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#semantics">Semantics</a><ul>
@@ -159,7 +159,7 @@
     
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
-      <li>JSpecify design overview</li>
+      <li>JSpecify nullness design overview</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -178,14 +178,14 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="tex2jax_ignore mathjax_ignore section" id="jspecify-design-overview">
-<h1>JSpecify design overview<a class="headerlink" href="#jspecify-design-overview" title="このヘッドラインへのパーマリンク">¶</a></h1>
+  <div class="tex2jax_ignore mathjax_ignore section" id="jspecify-nullness-design-overview">
+<h1>JSpecify nullness design overview<a class="headerlink" href="#jspecify-nullness-design-overview" title="このヘッドラインへのパーマリンク">¶</a></h1>
 <div class="section" id="about-this-document">
 <h2>About this document<a class="headerlink" href="#about-this-document" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<p>This document summarizes our current thinking for proposing a set of nullness
-annotations. <strong>Nothing here is &quot;set in stone&quot; yet.</strong></p>
-<p>If you are looking for an introduction to <em>using</em> the annotations, you will
-probably prefer the <a class="reference internal" href="user-guide.html"><span class="doc std std-doc">user guide</span></a>.</p>
+<p>This document summarizes some the state of our thinking from mid-2020. Nothing
+here is set in stone, and parts of the doc have gone out of date. For a more
+informal overview, see our in-progress <a class="reference internal" href="user-guide.html"><span class="doc std std-doc">user guide</span></a>. For a more formal
+description, see our in-progress <a class="reference internal" href="spec.html"><span class="doc std std-doc">spec</span></a>.</p>
 </div>
 <div class="section" id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="このヘッドラインへのパーマリンク">¶</a></h2>
@@ -202,7 +202,7 @@ distinguishing annotated from legacy code, we also propose a declaration
 annotation, with semantics similar to existing tools' semantics of &quot;non-null by
 default.&quot; In the absence of that annotation, type usages will be considered of
 &quot;unspecified nullness.&quot;</p>
-<p>We give <a class="reference external" href="#semantics">semantics</a> to these annotations independent of particular tools. We
+<p>We give [semantics] to these annotations independent of particular tools. We
 don't specify what tools must do with that semantic information, nor do we
 forbid them from adding to it (e.g., with flow typing in implementation code).
 We merely define how to interpret our annotations in method, field, and class
@@ -245,7 +245,7 @@ as a type from the given set that is at least as specific as all others.
 Similarly, the <strong>lub</strong> (<em>least upper bound</em>) of a set of types is a type from
 the set that is at most as specific as all others.</p>
 <p>Finally, a <strong>type check</strong> (e.g., to determine assignability) for a pair of
-<a class="reference external" href="#augmented-type">augmented types</a> includes validating <strong>both</strong> (a) a type check of the
+[augmented types] includes validating <strong>both</strong> (a) a type check of the
 <a class="reference external" href="https://docs.google.com/document/d/1KQrBxwaVIPIac_6SCf--w-vZBeHkTvtaqPSU_icIccc/edit#bookmark=kix.k81vs7t5p45i">base types</a>, handled by the off-the-shelf compiler, and (b) a type check for
 nullability.</p>
 <ul class="simple">
@@ -299,7 +299,7 @@ which may be contained by modules.</p></li>
 <li><p>If no such defaulting annotation exists, then no defaulting annotation is in
 effect.</p></li>
 </ul>
-<p>We call any type usage that itself carries a <a class="reference external" href="#recognized-locations-for-type-use-annotations">recognized</a> type-use annotation
+<p>We call any type usage that itself carries a [recognized] type-use annotation
 <strong>explicitly annotated</strong>.</p>
 </div>
 <div class="section" id="parameterized-types">
