@@ -239,8 +239,8 @@ tools)</p></li>
 </div>
 <div class="section" id="the-scope-of-this-spec">
 <h3>The scope of this spec<a class="headerlink" href="#the-scope-of-this-spec" title="このヘッドラインへのパーマリンク">¶</a></h3>
-<p>This spec does not address <em>when</em> tools must apply a given check. For example,
-it does not state when tools must apply the <a class="reference external" href="#subtyping">subtyping</a> check.</p>
+<p>Currently, this spec does not address <em>when</em> tools must apply a given check. For
+example, it does not state when tools must apply the <a class="reference external" href="#subtyping">subtyping</a> check.</p>
 <p>We anticipate that tools will typically apply them in the same cases that they
 apply standard Java checks. For example, if code contains the parameterized type
 <code class="docutils literal notranslate"><span class="pre">List&lt;&#64;Nullable</span> <span class="pre">Foo&gt;</span></code>, we anticipate that tools will check that <code class="docutils literal notranslate"><span class="pre">&#64;Nullable</span> <span class="pre">Foo</span></code>
@@ -708,26 +708,27 @@ reference</p></li>
 <p>Some of the rules in this spec come in 2 versions: One version requires a
 property to hold &quot;in all worlds,&quot; and the other requires it to hold only &quot;in
 some world.&quot;</p>
-<p>Tool authors may wish to implement either or both versions of the rules.</p>
+<p>Tool authors may choose to implement neither, either, or both versions of the
+rules.</p>
 <blockquote>
 <div><p>Our goal is to allow tools and their users to choose their desired level of
 strictness in the presence of <code class="docutils literal notranslate"><span class="pre">UNSPECIFIED</span></code>. The basic idea is that, every
 time a tool encounters a type component with the nullness operator
-<code class="docutils literal notranslate"><span class="pre">UNSPECIFIED</span></code>, it forks off 2 &quot;worlds&quot;: 1 in which the operator is
-<code class="docutils literal notranslate"><span class="pre">UNION_NULL</span></code> and 1 in which it is <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code>.</p>
-<p>Since we lack a nullness specification for the type, we assume that either of
-the resulting worlds may be the &quot;correct&quot; specification. The all-worlds
-version of a rule, by requiring types to be compatible in all possible worlds,
-holds that types are incompatible unless it has enough information to prove
-they are compatible. The some-world version, by requiring types to be
-compatible only in <em>some</em> world, holds that types are compatible unless it has
-enough information to prove they are incompatible. (By behaving
-&quot;optimistically,&quot; the some-world checking behaves much like Kotlin's checking
-of &quot;platform types.&quot;)</p>
-<p>Thus, strict tools may want to implement the all-worlds version of rules, and
-lenient tools may wish to implement the some-world version. Or a tool might
-implement both and let users select which rules to apply.</p>
-<p>Yet another possibility is for a tool to implement both versions and to use
+<code class="docutils literal notranslate"><span class="pre">UNSPECIFIED</span></code>, it has the option to fork off 2 &quot;worlds&quot;: 1 in which the
+operator is <code class="docutils literal notranslate"><span class="pre">UNION_NULL</span></code> and 1 in which it is <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code>.</p>
+<p>In more detail: When tools lack a nullness specification for a type, they may
+choose to assume that either of the resulting worlds may be the &quot;correct&quot;
+specification. The all-worlds version of a rule, by requiring types to be
+compatible in all possible worlds, holds that types are incompatible unless it
+has enough information to prove they are compatible. The some-world version,
+by requiring types to be compatible only in <em>some</em> world, holds that types are
+compatible unless it has enough information to prove they are incompatible.
+(By behaving &quot;optimistically,&quot; the some-world checking behaves much like
+Kotlin's checking of &quot;platform types.&quot;)</p>
+<p>Thus, a strict tool might choose to implement the all-worlds version of rules,
+and a lenient tool might choose to implement the some-world version. Yet
+another tool might implement both and let users select which rules to apply.</p>
+<p>Still another possibility is for a tool to implement both versions and to use
 that to distinguish between &quot;errors&quot; and &quot;warnings.&quot; Such a tool might run
 each check first in the all-worlds version and then, if the check fails, run
 it again in the some-world version. If the check fails in both cases, the tool
@@ -791,8 +792,7 @@ value of <code class="docutils literal notranslate"><span class="pre">NO_CHANGE<
 </li>
 <li><p>When the Java array rules require one type to be a <em>direct</em> supertype of
 another, consider the direct supertypes of <code class="docutils literal notranslate"><span class="pre">T</span></code> to be <em>every</em> type that <code class="docutils literal notranslate"><span class="pre">T</span></code>
-is a <a class="reference external" href="#subtyping">subtype</a> of (as always, applying the definition of subtyping in this
-spec).</p></li>
+is a <a class="reference external" href="#subtyping">subtype</a> of.</p></li>
 </ul>
 </div>
 <div class="section" id="nullness-subtyping">
@@ -980,8 +980,8 @@ subtyping check fail, as desired.</p>
 <p>The process of applying a <a class="reference external" href="#nullness-operator">nullness operator</a> requires 2 inputs:</p>
 <ul class="simple">
 <li><p>the nullness operator to apply</p></li>
-<li><p>the <a class="reference external" href="#augmented-type">augmented type</a> (which, again, includes a <a class="reference external" href="#nullness-operator">nullness operator</a> for that
-type) to apply it to</p></li>
+<li><p>the <a class="reference external" href="#augmented-type">augmented type</a> (which, as always, includes a nullness operator for
+that type) to apply it to</p></li>
 </ul>
 <p>The result of the process is an augmented type.</p>
 <p>The process is as follows:</p>
