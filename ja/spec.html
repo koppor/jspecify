@@ -99,6 +99,11 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#normative-and-non-normative-sections">Normative and non-normative sections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#references-to-concepts-defined-by-this-spec">References to concepts defined by this spec</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#base-type">Base type</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#type-components">Type components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#nullness-operator">Nullness operator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#augmented-type">Augmented type</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#details-common-to-all-annotations">Details common to all annotations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#the-type-use-annotation">The type-use annotation</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#recognized-locations-for-type-use-annotations">Recognized locations for type-use annotations</a></li>
@@ -108,10 +113,6 @@
 <li class="toctree-l3"><a class="reference internal" href="#recognized-locations-for-declaration-annotations">Recognized locations for declaration annotations</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#references-to-concepts-defined-by-this-spec">References to concepts defined by this spec</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#base-type">Base type</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#nullness-operator">Nullness operator</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#augmented-type">Augmented type</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#null-marked-scope">Null-marked scope</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#augmented-type-of-a-type-usage-appearing-in-code">Augmented type of a type usage appearing in code</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#augmented-type-of-an-intersection-type">Augmented type of an intersection type</a></li>
@@ -281,14 +282,78 @@ anticipate likely questions. Those comments are set off as block quotes.</p>
 <p>This document also links to other documents. Those documents are non-normative,
 except for when we link to the Java Language Specification to defer to its
 rules.</p>
+</div>
+<div class="section" id="references-to-concepts-defined-by-this-spec">
+<h2>References to concepts defined by this spec<a class="headerlink" href="#references-to-concepts-defined-by-this-spec" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>When a rule in this spec refers to any concept that is defined in this spec (for
+example, <a class="reference external" href="#substitution">substitution</a> or <a class="reference external" href="#containment">containment</a>), apply this spec's definition (as
+opposed to other definitions, such as the ones in the JLS).</p>
+<p>Additionally, when a rule in this spec refers to a JLS rule that in turn refers
+to a concept that is defined in this spec, likewise apply this spec's
+definition.</p>
+<p>In particular, when a JLS rule refers to types, apply this spec's definition of
+<a class="reference external" href="#augmented-type">augmented types</a> (as oppposed to <a class="reference external" href="#base-type">base types</a>).</p>
+</div>
+<div class="section" id="base-type">
+<h2>Base type<a class="headerlink" href="#base-type" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>A <em>base type</em> is a type as defined in <a class="reference external" href="https://docs.oracle.com/javase/specs/jls/se14/html/jls-4.html">JLS 4</a>.</p>
 <blockquote>
-<div><p>As of this writing, we know that this spec is not entirely sufficient: It
-sometimes relies on references to other documents (like the <a class="reference external" href="https://docs.google.com/document/d/1KQrBxwaVIPIac_6SCf--w-vZBeHkTvtaqPSU_icIccc/edit">glossary</a>). We
-will need to fix this by copying those definitions here.</p>
-<p>(Incidentally, I recommend viewing the glossary as a mostly separate effort
-from this doc: The glossary presents a slightly different model of both
-nullness and the Java type system. Over time, we'll want to either bring the
-two more closely in line or else draw a clearer line between them.)</p>
+<div><p>JLS 4 does not consider type-use annotations to be part of types, so neither
+does our concept of &quot;base type.&quot;</p>
+</div></blockquote>
+</div>
+<div class="section" id="type-components">
+<h2>Type components<a class="headerlink" href="#type-components" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>A <em>type component</em> of a given type is a type that transitively forms some part
+of that type. Specifically, a type component is one of the following:</p>
+<ul class="simple">
+<li><p>a non-wildcard type argument</p></li>
+<li><p>a wildcard bound</p></li>
+<li><p>an array component type</p></li>
+<li><p>an enclosing type</p></li>
+<li><p>an element of an intersection type</p></li>
+<li><p>the entire type</p></li>
+</ul>
+</div>
+<div class="section" id="nullness-operator">
+<h2>Nullness operator<a class="headerlink" href="#nullness-operator" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>A nullness operator is one of 4 values:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">UNION_NULL</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">UNSPECIFIED</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">MINUS_NULL</span></code></p></li>
+</ul>
+<blockquote>
+<div><p>The distinction among these 4 values is similar to the distinction among the
+Kotlin types <code class="docutils literal notranslate"><span class="pre">Foo?</span></code>, <code class="docutils literal notranslate"><span class="pre">Foo</span></code>, <code class="docutils literal notranslate"><span class="pre">Foo!</span></code>, and <code class="docutils literal notranslate"><span class="pre">Foo!!</span></code>, respectively.</p>
+</div></blockquote>
+</div>
+<div class="section" id="augmented-type">
+<h2>Augmented type<a class="headerlink" href="#augmented-type" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>An augmented type consists of a <a class="reference external" href="#base-type">base type</a> and a <a class="reference external" href="#nullness-operator">nullness operator</a>
+corresponding to <em>each</em> of its <a class="reference external" href="#type-components">type components</a>.</p>
+<p>For our purposes, base types (and thus augmented types) include not just class
+and interface types, array types, and type variables but also
+<a class="reference external" href="#intersection-types">intersection types</a> and the null type.</p>
+<blockquote>
+<div><p>This spec aims to define rules for augmented types compatible with those that
+the JLS defines for base types.</p>
+<p>Accordingly, in almost all cases, this spec agrees with the JLS's rules when
+specifying what <em>base</em> types appear in a piece of code. It makes an exception
+for <a class="reference external" href="#unbounded-wildcard">&quot;Bound of an unbounded wildcard,&quot;</a> for which it
+specifies a bound of <code class="docutils literal notranslate"><span class="pre">Object</span></code> that the JLS does not specify.</p>
+</div></blockquote>
+<p>When this spec uses capital letters, they refer to augmented types (unless
+otherwise noted). This is in contrast to the JLS, which typically uses them to
+refer to base types.</p>
+<p>When this spec refers to &quot;the nullness operator of&quot; a type <code class="docutils literal notranslate"><span class="pre">T</span></code>, it refers
+specifically to the nullness operator of the type component that is the entire
+type <code class="docutils literal notranslate"><span class="pre">T</span></code>, without reference to the nullness operator of any other type
+components of <code class="docutils literal notranslate"><span class="pre">T</span></code>.</p>
+<blockquote>
+<div><p>For example, &quot;the nullness operator of <code class="docutils literal notranslate"><span class="pre">List&lt;Object&gt;</span></code>&quot; refers to whether the
+list itself may be <code class="docutils literal notranslate"><span class="pre">null</span></code>, not whether its elements may be.</p>
 </div></blockquote>
 </div>
 <div class="section" id="details-common-to-all-annotations">
@@ -310,107 +375,88 @@ marked <a class="reference external" href="https://docs.oracle.com/en/java/javas
 circumstances detailed below. A type at a recognized location has the semantics
 described in this spec. The spec does not assign semantics to types in other
 locations, nor to any annotations on such types.</p>
-<ul>
-<li><p>Unrecognized location: any component of a type usage in the following
-locations:</p>
 <blockquote>
-<div><p>These all fit under the umbrella of &quot;implementation code.&quot;</p>
+<div><p>For now, we've chosen to restrict ourselves to API locations for which tools
+mostly agree on what it means for a type in that location to be <code class="docutils literal notranslate"><span class="pre">&#64;Nullable</span></code>.</p>
+</div></blockquote>
+<p>The following locations are recognized except when overruled by one of the
+exceptions in the subsequent sections: [<a class="reference external" href="https://github.com/jspecify/jspecify/issues/17">#17</a>]</p>
+<ul>
+<li><p>return type of a method</p></li>
+<li><p>formal parameter type of a method or constructor, as defined in <a class="reference external" href="https://docs.oracle.com/javase/specs/jls/se14/html/jls-8.html#jls-8.4.1">JLS 8.4.1</a></p>
+<blockquote>
+<div><p>This excludes the receiver parameter.</p>
+</div></blockquote>
+</li>
+<li><p>field type</p></li>
+<li><p>type parameter upper bound [<a class="reference external" href="https://github.com/jspecify/jspecify/issues/60">#60</a>]</p></li>
+<li><p>non-wildcard type argument</p></li>
+<li><p>wildcard bound</p></li>
+<li><p>array component type</p></li>
+<li><p>type used in a variadic parameter declaration</p></li>
+</ul>
+<p>However, any location above is unrecognized if it matches either of the
+following cases: [<a class="reference external" href="https://github.com/jspecify/jspecify/issues/17">#17</a>]</p>
+<blockquote>
+<div><p>We refer to these cases (and some other cases below) as &quot;intrinsically
+non-nullable.&quot;</p>
+</div></blockquote>
+<ul>
+<li><p>a type usage of a primitive type</p></li>
+<li><p>the outer type that qualifies an inner type</p>
+<blockquote>
+<div><p>For example, the annotation in <code class="docutils literal notranslate"><span class="pre">&#64;Nullable</span> <span class="pre">Foo.Bar</span></code> is in an unrecognized
+location: Java syntax attaches it to the outer type <code class="docutils literal notranslate"><span class="pre">Foo</span></code>.</p>
+</div></blockquote>
+<blockquote>
+<div><p>Every outer type is intrinsically non-nullable because every instance of
+an inner class has an associated instance of the outer class.</p>
+</div></blockquote>
+</li>
+</ul>
+<p>Additionally, any location above is unrecognized if it makes up <em>any
+<a class="reference external" href="#type-components">type component</a></em> of a type in the following locations: [<a class="reference external" href="https://github.com/jspecify/jspecify/issues/17">#17</a>]</p>
+<blockquote>
+<div><p>These locations all fit under the umbrella of &quot;implementation code.&quot;
+Implementation code may use types that contain type arguments, wildcard
+bounds, and array component types, which would be recognized locations if not
+for the exceptions defined by this section.</p>
 </div></blockquote>
 <ul class="simple">
-<li><p>A local variable type.</p></li>
-<li><p>An exception parameter.</p></li>
-<li><p>The type in a cast expression.</p></li>
-<li><p>An array or object creation expression.</p></li>
-<li><p>An explicit type argument supplied to a generic method or constructor
-(including via a member reference), or to an instance creation
-expression for a generic class.</p></li>
+<li><p>a local variable type</p></li>
+<li><p>an exception parameter</p></li>
+<li><p>the type in a cast expression</p></li>
+<li><p>an array or object creation expression</p></li>
+<li><p>an explicit type argument supplied to a generic method or constructor
+(including via a member reference) or to an instance creation expression for
+a generic class</p></li>
 </ul>
 <blockquote>
-<div><p>In practice, we anticipate that tools will treat types (and their
-annotations) in <em>most</em> of the above locations much like they treat types
-in other locations. Still, this spec does not concern itself with
-implementation code: We believe that the most important domain for us to
-focus on is that of APIs.</p>
+<div><p>In practice, we anticipate that tools will treat types (and their annotations)
+in <em>most</em> of the above locations much like they treat types in other
+locations. Still, this spec does not concern itself with implementation code:
+We believe that the most important domain for us to focus on is that of APIs.</p>
 </div></blockquote>
-</li>
-<li><p>Unrecognized location: a class declaration. [<a class="reference external" href="https://github.com/jspecify/jspecify/issues/7">#7</a>]</p>
+<p>All locations that are not explicitly listed as recognized are unrecognized.</p>
 <blockquote>
-<div><p>For example, the annotation in <code class="docutils literal notranslate"><span class="pre">public</span> <span class="pre">&#64;Nullable</span> <span class="pre">class</span> <span class="pre">Foo</span> <span class="pre">{}</span></code> is in an
-unrecognized location.</p>
-</div></blockquote>
-</li>
-<li><p>Unrecognized location: any type usage that is intrinsically non-nullable:
-[<a class="reference external" href="https://github.com/jspecify/jspecify/issues/17">#17</a>]</p>
-<ul>
-<li><p>A type usage of a primitive type.</p></li>
-<li><p>The outer type that qualifies an inner type.</p>
-<blockquote>
-<div><p>Every outer type is intrinsically non-nullable because every instance
-of an inner class has an associated instance of the outer class.</p>
-</div></blockquote>
-<blockquote>
-<div><p>For example, the annotation in <code class="docutils literal notranslate"><span class="pre">&#64;Nullable</span> <span class="pre">Foo.Bar</span></code> is in an
-unrecognized location: Java syntax attaches it to the outer type
-<code class="docutils literal notranslate"><span class="pre">Foo</span></code>.</p>
-</div></blockquote>
-</li>
-<li><p>Any of the following type contexts:</p>
+<div><p>Other notable unrecognized annotations include: [<a class="reference external" href="https://github.com/jspecify/jspecify/issues/17">#17</a>]</p>
+<p>Some additional intrinsically non-nullable locations:</p>
 <ul class="simple">
 <li><p>supertype in a class declaration</p></li>
 <li><p>thrown exception type</p></li>
 <li><p>enum constant declaration</p></li>
 <li><p>receiver parameter type</p></li>
 </ul>
-</li>
+<p>Some other locations that individual tools are more likely to assign semantics
+to:</p>
+<ul class="simple">
+<li><p>a class declaration [<a class="reference external" href="https://github.com/jspecify/jspecify/issues/7">#7</a>]: For example, the annotation in <code class="docutils literal notranslate"><span class="pre">public</span> <span class="pre">&#64;Nullable</span> <span class="pre">class</span> <span class="pre">Foo</span> <span class="pre">{}</span></code> is in an unrecognized location.</p></li>
+<li><p>a type-parameter declaration or a wildcard <em>itself</em> [<a class="reference external" href="https://github.com/jspecify/jspecify/issues/19">#19</a>, <a class="reference external" href="https://github.com/jspecify/jspecify/issues/31">#31</a>]</p></li>
+<li><p>any <a class="reference external" href="#type-components">type component</a> of a receiver parameter type [<a class="reference external" href="https://github.com/jspecify/jspecify/issues/157">#157</a>]</p></li>
 </ul>
-<blockquote>
-<div><p>But note that the following rules, while they do not apply to
-intrinsically non-nullable type usages themselves, still apply to any
-other <em>component</em> types of such type usages.</p>
+<p>But note that types &quot;inside&quot; some of these locations can still be recognized,
+such as a <em>type argument</em> of a supertype.</p>
 </div></blockquote>
-</li>
-<li><p>Unrecognized location: any component of a receiver parameter type.
-[<a class="reference external" href="https://github.com/jspecify/jspecify/issues/157">#157</a>]</p>
-<blockquote>
-<div><p>This partially overlaps with the rule about non-nullable type contexts
-above: Both rules cover the intrinsically non-nullable top-level type, but
-this rule extends that to <em>all</em> components of the type.</p>
-</div></blockquote>
-</li>
-<li><p>Recognized location (except where covered by the above rules): any
-<a class="reference external" href="https://docs.google.com/document/d/1KQrBxwaVIPIac_6SCf--w-vZBeHkTvtaqPSU_icIccc/edit#bookmark=kix.j1ewrpknx869">non-root</a> component type, regardless of the root type or surrounding
-<a class="reference external" href="https://docs.google.com/document/d/1KQrBxwaVIPIac_6SCf--w-vZBeHkTvtaqPSU_icIccc/edit#bookmark=kix.pfoww2aic35t">type context</a>.</p>
-<ul>
-<li><p>This may be a type argument, explicit wildcard bound, array component
-type, or the type used in a variadic parameter declaration.</p>
-<blockquote>
-<div><p>For example, the annotation in <code class="docutils literal notranslate"><span class="pre">Iterator&lt;&#64;Nullable</span> <span class="pre">String&gt;</span></code> is always
-in a recognized location, aside from the exceptions for implementation
-code and receiver parameters discussed above.</p>
-</div></blockquote>
-</li>
-<li><p>Exception: A type-parameter declaration or a wildcard <em>itself</em> is an
-unrecognized location. [<a class="reference external" href="https://github.com/jspecify/jspecify/issues/19">#19</a>, <a class="reference external" href="https://github.com/jspecify/jspecify/issues/31">#31</a>]</p>
-<blockquote>
-<div><p>Their <em>bounds</em> can still be recognized locations. So too can
-<em>type-variable usages</em>.</p>
-</div></blockquote>
-</li>
-</ul>
-</li>
-<li><p>Recognized location: any of the following: [<a class="reference external" href="https://github.com/jspecify/jspecify/issues/17">#17</a>]</p>
-<ul>
-<li><p>Return type of a method.</p></li>
-<li><p>Formal parameter type of a method or constructor.</p></li>
-<li><p>Field type.</p></li>
-<li><p>Type parameter upper bound. [<a class="reference external" href="https://github.com/jspecify/jspecify/issues/60">#60</a>]</p>
-<blockquote>
-<div><p>But, again, <em>not</em> the type parameter itself.</p>
-</div></blockquote>
-</li>
-</ul>
-</li>
-</ul>
 <blockquote>
 <div><p>When analyzing source code, tools are encouraged to offer an option to issue
 an error for an annotation in an unrecognized location (unless they define
@@ -440,68 +486,8 @@ locations listed below:</p>
 </div></blockquote>
 </div>
 </div>
-<div class="section" id="references-to-concepts-defined-by-this-spec">
-<span id="concept-references"></span><h2>References to concepts defined by this spec<a class="headerlink" href="#references-to-concepts-defined-by-this-spec" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<p>When a rule in this spec refers to any concept that is defined in this spec (for
-example, <a class="reference external" href="#substitution">substitution</a> or <a class="reference external" href="#containment">containment</a>), apply this spec's definition (as
-opposed to other definitions, such as the ones in the JLS).</p>
-<p>Additionally, when a rule in this spec refers to a JLS rule that in turn refers
-to a concept that is defined in this spec, likewise apply this spec's
-definition.</p>
-<p>In particular, when a JLS rule refers to types, apply this spec's definition of
-<a class="reference external" href="#augmented-type">augmented types</a> (as oppposed to <a class="reference external" href="#base-type">base types</a>).</p>
-</div>
-<div class="section" id="base-type">
-<h2>Base type<a class="headerlink" href="#base-type" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<p>A <em>base type</em> is a type as defined in <a class="reference external" href="https://docs.oracle.com/javase/specs/jls/se14/html/jls-4.html">JLS 4</a>.</p>
-<blockquote>
-<div><p>JLS 4 does not consider type-use annotations to be part of types, so neither
-does our concept of &quot;base type.&quot;</p>
-</div></blockquote>
-</div>
-<div class="section" id="nullness-operator">
-<h2>Nullness operator<a class="headerlink" href="#nullness-operator" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<p>A nullness operator is one of 4 values:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">UNION_NULL</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">UNSPECIFIED</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">MINUS_NULL</span></code></p></li>
-</ul>
-<blockquote>
-<div><p>The distinction among these 4 values is similar to the distinction among the
-Kotlin types <code class="docutils literal notranslate"><span class="pre">Foo?</span></code>, <code class="docutils literal notranslate"><span class="pre">Foo</span></code>, <code class="docutils literal notranslate"><span class="pre">Foo!</span></code>, and <code class="docutils literal notranslate"><span class="pre">Foo!!</span></code>, respectively.</p>
-</div></blockquote>
-</div>
-<div class="section" id="augmented-type">
-<h2>Augmented type<a class="headerlink" href="#augmented-type" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<p>An augmented type consists of a <a class="reference external" href="#base-type">base type</a> and a <a class="reference external" href="#nullness-operator">nullness operator</a>
-corresponding to <em>each</em> of its <a class="reference external" href="https://docs.google.com/document/d/1KQrBxwaVIPIac_6SCf--w-vZBeHkTvtaqPSU_icIccc/edit#bookmark=kix.g7gl9fwq1tt5">type components</a>.</p>
-<p>For our purposes, base types (and thus augmented types) include not just class
-and interface types, array types, and type variables but also
-<a class="reference external" href="#intersection-types">intersection types</a> and the null type.</p>
-<blockquote>
-<div><p>This spec aims to define rules for augmented types compatible with those that
-the JLS defines for base types.</p>
-<p>Accordingly, in almost all cases, this spec agrees with the JLS's rules when
-specifying what <em>base</em> types appear in a piece of code. It makes an exception
-for <a class="reference external" href="#unbounded-wildcard">&quot;Bound of an unbounded wildcard,&quot;</a> for which it
-specifies a bound of <code class="docutils literal notranslate"><span class="pre">Object</span></code> that the JLS does not specify.</p>
-</div></blockquote>
-<p>When this spec uses capital letters, they refer to augmented types (unless
-otherwise noted). This is in contrast to the JLS, which typically uses them to
-refer to base types.</p>
-<p>When this spec refers to &quot;the nullness operator of&quot; a type <code class="docutils literal notranslate"><span class="pre">T</span></code>, it refers
-specifically to the nullness operator of the type component that is the entire
-type <code class="docutils literal notranslate"><span class="pre">T</span></code>, without reference to the nullness operator of any other type
-components of <code class="docutils literal notranslate"><span class="pre">T</span></code>.</p>
-<blockquote>
-<div><p>For example, &quot;the nullness operator of <code class="docutils literal notranslate"><span class="pre">List&lt;Object&gt;</span></code>&quot; refers to whether the
-list itself may be <code class="docutils literal notranslate"><span class="pre">null</span></code>, not whether its elements may be.</p>
-</div></blockquote>
-</div>
 <div class="section" id="null-marked-scope">
-<h2>Null-marked scope<a class="headerlink" href="#null-marked-scope" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<span id="concept-references"></span><h2>Null-marked scope<a class="headerlink" href="#null-marked-scope" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>To determine whether a type usage appears in a null-marked scope:</p>
 <p>Look for an <code class="docutils literal notranslate"><span class="pre">&#64;org.jspecify.nullness.NullMarked</span></code> annotation on any of the
 enclosing scopes surrounding the type usage.</p>
