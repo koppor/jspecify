@@ -15,6 +15,7 @@
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/tweaks.css" type="text/css" />
 
   
   
@@ -325,8 +326,56 @@ of that type. Specifically, a type component is one of the following:</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">MINUS_NULL</span></code></p></li>
 </ul>
 <blockquote>
-<div><p>The distinction among these 4 values is similar to the distinction among the
-Kotlin types <code class="docutils literal notranslate"><span class="pre">Foo?</span></code>, <code class="docutils literal notranslate"><span class="pre">Foo</span></code>, <code class="docutils literal notranslate"><span class="pre">Foo!</span></code>, and <code class="docutils literal notranslate"><span class="pre">Foo!!</span></code>, respectively.</p>
+<div><p>The informal meaning of the operators is:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">UNION_NULL</span></code>: This is the operator produced by putting <code class="docutils literal notranslate"><span class="pre">&#64;Nullable</span></code> on a
+type usage.</p>
+<ul>
+<li><p>The type usage <code class="docutils literal notranslate"><span class="pre">String</span></code> <code class="docutils literal notranslate"><span class="pre">UNION_NULL</span></code> includes <code class="docutils literal notranslate"><span class="pre">&quot;a&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;b&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;ab&quot;</span></code>,
+etc., plus <code class="docutils literal notranslate"><span class="pre">null</span></code>.</p></li>
+<li><p>The type-variable usage <code class="docutils literal notranslate"><span class="pre">T</span></code> <code class="docutils literal notranslate"><span class="pre">UNION_NULL</span></code> includes all members of <code class="docutils literal notranslate"><span class="pre">T</span></code>,
+plus <code class="docutils literal notranslate"><span class="pre">null</span></code> if it wasn't already included.</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code>: This is the operator produced by <em>not</em> putting <code class="docutils literal notranslate"><span class="pre">&#64;Nullable</span></code> on
+a type usage (aside from the exception discussed under <code class="docutils literal notranslate"><span class="pre">UNSPECIFIED</span></code>
+below).</p>
+<ul>
+<li><p>The type usage <code class="docutils literal notranslate"><span class="pre">String</span></code> <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code> includes <code class="docutils literal notranslate"><span class="pre">&quot;a&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;b&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;ab&quot;</span></code>,
+etc., without including <code class="docutils literal notranslate"><span class="pre">null</span></code>.</p></li>
+<li><p>The type-variable usage <code class="docutils literal notranslate"><span class="pre">T</span></code> <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code> includes exactly the members
+of <code class="docutils literal notranslate"><span class="pre">T</span></code>: If <code class="docutils literal notranslate"><span class="pre">null</span></code> was a member of <code class="docutils literal notranslate"><span class="pre">T</span></code>, then it's a member of <code class="docutils literal notranslate"><span class="pre">T</span></code>
+<code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code>. If it was not a member of <code class="docutils literal notranslate"><span class="pre">T</span></code>, then it is not a member of
+<code class="docutils literal notranslate"><span class="pre">T</span></code> <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code>.</p></li>
+<li><p>One way to conceptualize this is that <code class="docutils literal notranslate"><span class="pre">String</span></code> <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code> means
+&quot;non-null <code class="docutils literal notranslate"><span class="pre">String</span></code>&quot; but that <code class="docutils literal notranslate"><span class="pre">T</span></code> <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code> means &quot;nullness comes
+from the value of <code class="docutils literal notranslate"><span class="pre">T</span></code>.&quot;</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">UNSPECIFIED</span></code>: This is the operator produced by not putting <code class="docutils literal notranslate"><span class="pre">&#64;Nullable</span></code> on
+a type usage <em>in code that is outside a <a class="reference external" href="#null-marked-scope">null-marked scope</a></em>. Roughly, it
+is the operator assigned to &quot;completely unannotated code.&quot;</p>
+<ul>
+<li><p>The type usage <code class="docutils literal notranslate"><span class="pre">String</span></code> <code class="docutils literal notranslate"><span class="pre">UNSPECIFIED</span></code> includes <code class="docutils literal notranslate"><span class="pre">&quot;a&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;b&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;ab&quot;</span></code>,
+etc., but the developer did not specify whether to include <code class="docutils literal notranslate"><span class="pre">null</span></code>.</p></li>
+<li><p>The type-variable usage <code class="docutils literal notranslate"><span class="pre">T</span></code> <code class="docutils literal notranslate"><span class="pre">UNSPECIFIED</span></code> includes all members of <code class="docutils literal notranslate"><span class="pre">T</span></code>.
+But the developer did not specify whether to add <code class="docutils literal notranslate"><span class="pre">null</span></code> if it wasn't
+already included.</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">MINUS_NULL</span></code>: This operator not only does not <em>add</em> <code class="docutils literal notranslate"><span class="pre">null</span></code> but also
+actively <em>removes</em> it from a type-variable usage that would otherwise
+include it.</p>
+<ul>
+<li><p>The type usage <code class="docutils literal notranslate"><span class="pre">String</span></code> <code class="docutils literal notranslate"><span class="pre">MINUS_NULL</span></code> includes <code class="docutils literal notranslate"><span class="pre">&quot;a&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;b&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;ab&quot;</span></code>,
+etc., without including <code class="docutils literal notranslate"><span class="pre">null</span></code>. (This is equivalent to <code class="docutils literal notranslate"><span class="pre">String</span></code>
+<code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code>.)</p></li>
+<li><p>The type-variable usage <code class="docutils literal notranslate"><span class="pre">T</span></code> <code class="docutils literal notranslate"><span class="pre">MINUS_NULL</span></code> includes all members of <code class="docutils literal notranslate"><span class="pre">T</span></code>
+<em>except</em> for <code class="docutils literal notranslate"><span class="pre">null</span></code>. (This is equivalent to <code class="docutils literal notranslate"><span class="pre">T</span></code> <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code> unless
+<code class="docutils literal notranslate"><span class="pre">null</span></code> was a member of <code class="docutils literal notranslate"><span class="pre">T</span></code>.)</p></li>
+</ul>
+</li>
+</ul>
 </div></blockquote>
 </div>
 <div class="section" id="augmented-type">
