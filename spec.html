@@ -892,10 +892,9 @@ pass.</p>
 type parameters like the one on <code class="docutils literal notranslate"><span class="pre">ImmutableList.Builder</span></code>. That special case
 needs to produce a type with a nullness operator other than <code class="docutils literal notranslate"><span class="pre">UNSPECIFIED</span></code>.
 One valid option is to produce <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code>. We, however, happened to
-choose <code class="docutils literal notranslate"><span class="pre">MINUS_NULL</span></code>: That choice lets tools produce errors directly on the
-site of <code class="docutils literal notranslate"><span class="pre">builder.add(null)</span></code>, even in the case of an invalid declaration
-<code class="docutils literal notranslate"><span class="pre">ImmutableList.Builder&lt;&#64;Nullable</span> <span class="pre">Foo&gt;</span></code>. This choice follows Kotlin’s
-precedent.</p>
+choose <code class="docutils literal notranslate"><span class="pre">MINUS_NULL</span></code>: That choice lets tools recognize that there’s an
+error in code like <code class="docutils literal notranslate"><span class="pre">Optional.of(null)</span></code> without needing to implement type
+inference.</p>
 </div></blockquote>
 </li>
 <li><p>Otherwise, replace <code class="docutils literal notranslate"><span class="pre">V</span></code> with the result of applying the nullness operator of
