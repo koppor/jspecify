@@ -488,13 +488,21 @@ another type overrides that method but does not declare the return type as
 <code class="docutils literal notranslate"><span class="pre">UNION_NULL</span></code>.</p>
 </div></blockquote>
 <blockquote>
-<div><p>The rules here never produce the fourth nullness operator, <code class="docutils literal notranslate"><span class="pre">MINUS_NULL</span></code>. (It
-will appear later in <a class="reference external" href="#substitution">substitution</a>. Additionally, we anticipate that tools
-will produce <code class="docutils literal notranslate"><span class="pre">MINUS_NULL</span></code> based on the results of null checks in
-implementation code.) However, if tool authors prefer, they can safely produce
-<code class="docutils literal notranslate"><span class="pre">MINUS_NULL</span></code> in any case in which it is equivalent to <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code>. For
-example, there is no difference between a <code class="docutils literal notranslate"><span class="pre">String</span></code> with <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code> and a
-<code class="docutils literal notranslate"><span class="pre">String</span></code> with <code class="docutils literal notranslate"><span class="pre">MINUS_NULL</span></code>.</p>
+<div><p>The rules here never produce the fourth nullness operator, <code class="docutils literal notranslate"><span class="pre">MINUS_NULL</span></code>.
+However, if tool authors prefer, they can safely produce <code class="docutils literal notranslate"><span class="pre">MINUS_NULL</span></code> in any
+case in which it is equivalent to <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code>. For example, there is no
+difference between a <code class="docutils literal notranslate"><span class="pre">String</span></code> with <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code> and a <code class="docutils literal notranslate"><span class="pre">String</span></code> with
+<code class="docutils literal notranslate"><span class="pre">MINUS_NULL</span></code>.</p>
+</div></blockquote>
+<blockquote>
+<div><p>So why does <code class="docutils literal notranslate"><span class="pre">MINUS_NULL</span></code> exist at all? It does appear later in this spec in
+the section on <a class="reference external" href="#substitution">substitution</a>. However, its main purpose is to provide tools
+with a way to represent the nullness of certain expressions in implementation
+code: Consider <code class="docutils literal notranslate"><span class="pre">ArrayList&lt;E&gt;</span></code>. <code class="docutils literal notranslate"><span class="pre">ArrayList</span></code> supports null elements, so the
+class has to handle the possibility that any expression of type <code class="docutils literal notranslate"><span class="pre">E</span></code> may be
+null. However, if implementation code contains the statement <code class="docutils literal notranslate"><span class="pre">if</span> <span class="pre">(e</span> <span class="pre">!=</span> <span class="pre">null)</span> <span class="pre">{</span> <span class="pre">...</span> <span class="pre">}</span></code>, then tools can assume that <code class="docutils literal notranslate"><span class="pre">e</span></code> is non-null inside. The purpose of
+<code class="docutils literal notranslate"><span class="pre">MINUS_NULL</span></code> is to represent that such an expression is known not to be null,
+even though its base type <code class="docutils literal notranslate"><span class="pre">E</span></code> suggests otherwise.</p>
 </div></blockquote>
 </section>
 <section id="augmented-type-of-an-intersection-type">
@@ -869,14 +877,26 @@ But in this instance, the null-exclusivity rule (and all rules that it in
 turn applies) are the <a class="reference external" href="#multiple-worlds">all-worlds</a> versions.</p>
 </div></blockquote>
 <blockquote>
-<div><p>This special case improves behavior in &quot;the <code class="docutils literal notranslate"><span class="pre">ImmutableList.Builder</span></code> case&quot;:
-Consider an unannotated user of that class. Its builder will have an
-element type whose <a class="reference external" href="#nullness-operator">nullness operator</a> is <code class="docutils literal notranslate"><span class="pre">UNSPECIFIED</span></code>. Without this
-special case, <code class="docutils literal notranslate"><span class="pre">builder.add(objectUnionNull)</span></code> would pass the subtyping
-check in the <a class="reference external" href="#multiple-worlds">some-world</a> version. This would happen even though we have
-enough information to know that the parameter to <code class="docutils literal notranslate"><span class="pre">add</span></code> is universally
-null-exclusive, regardless of world. The special case here makes that
-subtyping check fail, as desired.</p>
+<div><p>The purpose of this special case is to improve behavior in &quot;the
+<code class="docutils literal notranslate"><span class="pre">ImmutableList.Builder</span></code> case&quot;: Because <code class="docutils literal notranslate"><span class="pre">ImmutableList.Builder.add</span></code> always
+throws <code class="docutils literal notranslate"><span class="pre">NullPointerException</span></code> for a null argument, we would like for
+<code class="docutils literal notranslate"><span class="pre">add(null)</span></code> to be a compile error, even under lenient tools.
+Unfortunately, without this special case, lenient tools could permit
+<code class="docutils literal notranslate"><span class="pre">add(null)</span></code> in unannotated code. For an example, read on.</p>
+<p>Consider an unannotated user of <code class="docutils literal notranslate"><span class="pre">ImmutableList.Builder&lt;Foo&gt;</span> <span class="pre">builder</span></code>. Its
+type argument <code class="docutils literal notranslate"><span class="pre">Foo</span></code> will have a <a class="reference external" href="#nullness-operator">nullness operator</a> of <code class="docutils literal notranslate"><span class="pre">UNSPECIFIED</span></code>.
+Without this special case, the parameter of <code class="docutils literal notranslate"><span class="pre">builder.add</span></code> would have a
+nullness operator of <code class="docutils literal notranslate"><span class="pre">UNSPECIFIED</span></code>, too. Then, when a lenient tool applies
+the <a class="reference external" href="#multiple-worlds">some-world</a> subtyping check to <code class="docutils literal notranslate"><span class="pre">builder.add(null)</span></code>, the check would
+pass.</p>
+<p>To solve this, we need a special case for substitution for null-exclusive
+type parameters like the one on <code class="docutils literal notranslate"><span class="pre">ImmutableList.Builder</span></code>. That special case
+needs to produce a type with a nullness operator other than <code class="docutils literal notranslate"><span class="pre">UNSPECIFIED</span></code>.
+One valid option is to produce <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code>. We, however, happened to
+choose <code class="docutils literal notranslate"><span class="pre">MINUS_NULL</span></code>: That choice lets tools produce errors directly on the
+site of <code class="docutils literal notranslate"><span class="pre">builder.add(null)</span></code>, even in the case of an invalid declaration
+<code class="docutils literal notranslate"><span class="pre">ImmutableList.Builder&lt;&#64;Nullable</span> <span class="pre">Foo&gt;</span></code>. This choice follows Kotlin's
+precedent.</p>
 </div></blockquote>
 </li>
 <li><p>Otherwise, replace <code class="docutils literal notranslate"><span class="pre">V</span></code> with the result of applying the nullness operator of
