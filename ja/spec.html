@@ -70,7 +70,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#bound-of-an-object-bounded-type-parameter">Bound of an <code class="docutils literal notranslate"><span class="pre">Object</span></code>-bounded type parameter</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#augmented-null-types">Augmented null types</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#multiple-worlds">Multiple &quot;worlds&quot;</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#propagating-how-many-worlds-a-check-must-hold-in">Propagating how many worlds a check must hold in</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#propagating-how-many-worlds-a-relation-must-hold-in">Propagating how many worlds a relation must hold in</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#same-type">Same type</a></li>
@@ -147,19 +147,20 @@ tools)</p></li>
 </section>
 <section id="the-scope-of-this-spec">
 <h3>The scope of this spec<a class="headerlink" href="#the-scope-of-this-spec" title="このヘッドラインへのパーマリンク"></a></h3>
-<p>Currently, this spec does not address <em>when</em> tools must apply a given check. For
-example, it does not state when tools must apply the <a class="reference external" href="#subtyping">subtyping</a> check.</p>
-<p>We anticipate that tools will typically apply them in the same cases that they
-apply standard Java checks. For example, if code contains the parameterized type
+<p>Currently, this spec does not address <em>when</em> tools must apply any part of the
+spec. For example, it does not state when tools must check that the <a class="reference external" href="#subtyping">subtyping</a>
+relation holds.</p>
+<p>We anticipate that tools will typically apply parts of this spec in the same
+cases that they apply the corresponding parts of the Java Language
+Specification. For example, if code contains the parameterized type
 <code class="docutils literal notranslate"><span class="pre">List&lt;&#64;Nullable</span> <span class="pre">Foo&gt;</span></code>, we anticipate that tools will check that <code class="docutils literal notranslate"><span class="pre">&#64;Nullable</span> <span class="pre">Foo</span></code>
 is a subtype of the bound of the type parameter of <code class="docutils literal notranslate"><span class="pre">List</span></code>.</p>
 <p>However, this is up to tool authors, who may have reasons to take a different
 approach. For example:</p>
 <ul class="simple">
-<li><p>Java
-<a class="reference external" href="https://github.com/jspecify/jspecify/issues/49">requires checks in some cases in which they aren't necessary for soundness</a>,
-and it <a class="reference external" href="https://github.com/jspecify/jspecify/issues/65">doesn't require checks in some cases in which checks <em>are</em> necessary
-for soundness</a>.</p></li>
+<li><p>Java <a class="reference external" href="https://github.com/jspecify/jspecify/issues/49">places some restrictions that aren't necessary for soundness</a>,
+and it
+<a class="reference external" href="https://github.com/jspecify/jspecify/issues/65">is lenient in at least once way that can lead to runtime errors</a>.</p></li>
 <li><p>JSpecify annotations can be used even by tools that are not &quot;nullness
 checkers&quot; at all. For example, a tool that lists the members of an API could
 show the nullness of each type in the API, without any checking that those
@@ -639,17 +640,18 @@ compatible in all possible worlds, holds that types are incompatible unless it
 has enough information to prove they are compatible. The some-world version,
 by requiring types to be compatible only in <em>some</em> world, holds that types are
 compatible unless it has enough information to prove they are incompatible.
-(By behaving &quot;optimistically,&quot; the some-world checking behaves much like
-Kotlin's checking of &quot;platform types.&quot;)</p>
+(By behaving &quot;optimistically,&quot; the some-world version is much like Kotlin's
+rules for &quot;platform types.&quot;)</p>
 <p>Thus, a strict tool might choose to implement the all-worlds version of rules,
 and a lenient tool might choose to implement the some-world version. Yet
 another tool might implement both and let users select which rules to apply.</p>
 <p>Still another possibility is for a tool to implement both versions and to use
-that to distinguish between &quot;errors&quot; and &quot;warnings.&quot; Such a tool might run
-each check first in the all-worlds version and then, if the check fails, run
-it again in the some-world version. If the check fails in both cases, the tool
-would produce an error. If it passes only because of the some-world version,
-the tool would produce a warning.</p>
+that to distinguish between &quot;errors&quot; and &quot;warnings.&quot; Such a tool might always
+first process code with the all-worlds version and then with the some-world
+version. If the tools detects, say, an out-of-bounds type argument in both
+cases, the tool would produce an error. But, if the tool detects such a
+problem with the all-worlds version but not with the some-world version, the
+tool would produce a warning.</p>
 </div></blockquote>
 <p>The main body of each section of the spec describes the all-worlds rule. If the
 some-world rule differs, the differences are explained at the end.</p>
@@ -658,13 +660,13 @@ some-world rule differs, the differences are explained at the end.</p>
 implement at least part of the all-worlds rules. Those rules are required as
 part of <a class="reference external" href="#substitution">substitution</a>.</p>
 </div></blockquote>
-<section id="propagating-how-many-worlds-a-check-must-hold-in">
-<span id="propagating-multiple-worlds"></span><h3>Propagating how many worlds a check must hold in<a class="headerlink" href="#propagating-how-many-worlds-a-check-must-hold-in" title="このヘッドラインへのパーマリンク"></a></h3>
+<section id="propagating-how-many-worlds-a-relation-must-hold-in">
+<span id="propagating-multiple-worlds"></span><h3>Propagating how many worlds a relation must hold in<a class="headerlink" href="#propagating-how-many-worlds-a-relation-must-hold-in" title="このヘッドラインへのパーマリンク"></a></h3>
 <p>When one rule in this spec refers to another, it refers to the same version of
 the rule. For example, when the rules for <a class="reference external" href="#containment">containment</a> refer to the rules for
-<a class="reference external" href="#subtyping">subtyping</a>, the some-world containment check applies the some-world subtyping
-check, and the all-worlds containment check applies the all-worlds subtyping
-check.</p>
+<a class="reference external" href="#subtyping">subtyping</a>, the some-world containment relation refers to the some-world
+subtyping relation, and the all-worlds containment relation refers to the
+all-worlds subtyping relation.</p>
 <p>This meta-rule applies except when a rule refers explicitly to a particular
 version of another rule.</p>
 </section>
@@ -673,10 +675,10 @@ version of another rule.</p>
 <h2>Same type<a class="headerlink" href="#same-type" title="このヘッドラインへのパーマリンク"></a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">S</span></code> and <code class="docutils literal notranslate"><span class="pre">T</span></code> are the same type if <code class="docutils literal notranslate"><span class="pre">S</span></code> is a <a class="reference external" href="#subtyping">subtype</a> of <code class="docutils literal notranslate"><span class="pre">T</span></code> and <code class="docutils literal notranslate"><span class="pre">T</span></code> is a subtype
 of <code class="docutils literal notranslate"><span class="pre">S</span></code>.</p>
-<p>The same-type check is <em>not</em> defined to be reflexive or transitive.</p>
+<p>The same-type relation is <em>not</em> defined to be reflexive or transitive.</p>
 <blockquote>
-<div><p>For more discussion of reflexive and transitive checks, see the comments under
-<a class="reference external" href="#nullness-subtyping">nullness subtyping</a>.</p>
+<div><p>For more discussion of reflexive and transitive relations, see the comments
+under <a class="reference external" href="#nullness-subtyping">nullness subtyping</a>.</p>
 </div></blockquote>
 </section>
 <section id="subtyping">
@@ -740,18 +742,18 @@ Fortunately, this &quot;mostly transitive&quot; behavior is exactly the behavior
 implementations are likely to produce naturally. Maybe someday we will find a
 way to specify this fully correctly.)</p>
 <blockquote>
-<div><p>Subtyping does end up being transitive when the check is required to hold in
-<a class="reference external" href="#multiple-worlds">all worlds</a>. And it does end up being reflexive when the check is required to
-hold only in <a class="reference external" href="#multiple-worlds">some world</a>. We don't state those properties as rules for 2
-reasons: First, they arise naturally from the definitions. Second, we don't
-want to suggest that subtyping is reflexive and transitive under both versions
-of the rule.</p>
+<div><p>Subtyping does end up being transitive when the relation is required to hold
+in <a class="reference external" href="#multiple-worlds">all worlds</a>. And it does end up being reflexive when the relation is
+required to hold only in <a class="reference external" href="#multiple-worlds">some world</a>. We don't state those properties as
+rules for 2 reasons: First, they arise naturally from the definitions. Second,
+we don't want to suggest that subtyping is reflexive and transitive under both
+versions of the rule.</p>
 <p>Yes, it's pretty terrible for something called &quot;subtyping&quot; not to be reflexive
 or transitive. A more accurate name for this concept would be &quot;consistent,&quot; a
 term used in gradual typing. However, we use &quot;subtyping&quot; anyway. In our
 defense, we need to name multiple concepts, including not just subtyping but
-also <a class="reference external" href="#same-type">same-type</a> checks and <a class="reference external" href="#containment">containment</a>. If we were to coin a new term for
-each, tool authors would need to mentally map between those terms and the
+also the <a class="reference external" href="#same-type">same-type</a> relation and <a class="reference external" href="#containment">containment</a>. If we were to coin a new term
+for each, tool authors would need to mentally map between those terms and the
 analogous Java terms.</p>
 </div></blockquote>
 </section>
@@ -887,8 +889,8 @@ Unfortunately, without this special case, lenient tools could permit
 type argument <code class="docutils literal notranslate"><span class="pre">Foo</span></code> will have a <a class="reference external" href="#nullness-operator">nullness operator</a> of <code class="docutils literal notranslate"><span class="pre">UNSPECIFIED</span></code>.
 Without this special case, the parameter of <code class="docutils literal notranslate"><span class="pre">builder.add</span></code> would have a
 nullness operator of <code class="docutils literal notranslate"><span class="pre">UNSPECIFIED</span></code>, too. Then, when a lenient tool applies
-the <a class="reference external" href="#multiple-worlds">some-world</a> subtyping check to <code class="docutils literal notranslate"><span class="pre">builder.add(null)</span></code>, the check would
-pass.</p>
+the <a class="reference external" href="#multiple-worlds">some-world</a> subtyping relation to <code class="docutils literal notranslate"><span class="pre">builder.add(null)</span></code>, the relation
+would hold.</p>
 <p>To solve this, we need a special case for substitution for null-exclusive
 type parameters like the one on <code class="docutils literal notranslate"><span class="pre">ImmutableList.Builder</span></code>. That special case
 needs to produce a type with a nullness operator other than <code class="docutils literal notranslate"><span class="pre">UNSPECIFIED</span></code>.
