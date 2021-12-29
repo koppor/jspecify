@@ -740,20 +740,25 @@ null-<em>exclusive</em> under every parameterization.</p>
 </div></blockquote>
 <p>Nullness subtyping (and thus subtyping itself) is <em>not</em> defined to be reflexive
 or transitive.</p>
-<p>(Contrast this with our <a class="reference external" href="#nullness-delegating-subtyping">nullness-delegating subtyping</a> rules and <a class="reference external" href="#containment">containment</a>
-rules: Each of those is defined as a transitive closure. However, technically
-speaking,
-<a class="reference external" href="https://groups.google.com/d/msg/jspecify-dev/yPnkx_GSb0Q/hLgS_431AQAJ">there are cases in which those should not be transitive, either</a>.
-Fortunately, this “mostly transitive” behavior is exactly the behavior that
-implementations are likely to produce naturally. Maybe someday we will find a
-way to specify this fully correctly.)</p>
 <blockquote>
-<div><p>Subtyping does end up being transitive when the relation is required to hold
-in all worlds. And it does end up being reflexive when the relation is
-required to hold only in <a class="reference external" href="#multiple-worlds">some world</a>. We don’t state those properties as
-rules for 2 reasons: First, they arise naturally from the definitions. Second,
-we don’t want to suggest that subtyping is reflexive and transitive under both
-versions of the rule.</p>
+<div><p>If we defined nullness subtyping to be reflexive, then “<code class="docutils literal notranslate"><span class="pre">String</span></code> with nullness
+operator <code class="docutils literal notranslate"><span class="pre">UNSPECIFIED</span></code>” would be a subtype of “<code class="docutils literal notranslate"><span class="pre">String</span></code> with nullness operator
+<code class="docutils literal notranslate"><span class="pre">UNSPECIFIED</span></code>,” even under the <a class="reference external" href="#multiple-worlds">all-worlds</a> rules. In other words, we’d be
+saying that unannotated code is always free from nullness errors. That is
+clearly false. (Nevertheless, lenient tools will choose not to issue errors
+for such code. They can do this by implementing the <a class="reference external" href="#multiple-worlds">some-world</a> rules.)</p>
+<p>If we defined nullness subtyping to be transitive, then we’d say that
+“<code class="docutils literal notranslate"><span class="pre">String</span></code> with nullness operator <code class="docutils literal notranslate"><span class="pre">UNION_NULL</span></code>” is a subtype of “<code class="docutils literal notranslate"><span class="pre">String</span></code> with
+nullness operator <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code>” under the some-world rules. That would happen
+because of a chain of subtyping rules:</p>
+<ul class="simple">
+<li><p>“<code class="docutils literal notranslate"><span class="pre">String</span></code> with nullness operator <code class="docutils literal notranslate"><span class="pre">UNION_NULL</span></code>” is a subtype of “<code class="docutils literal notranslate"><span class="pre">String</span></code>
+with nullness operator <code class="docutils literal notranslate"><span class="pre">UNSPECIFIED</span></code>.”</p></li>
+<li><p>“<code class="docutils literal notranslate"><span class="pre">String</span></code> with nullness operator <code class="docutils literal notranslate"><span class="pre">UNSPECIFIED</span></code>” is a subtype of “<code class="docutils literal notranslate"><span class="pre">String</span></code>
+with nullness operator <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code>.”</p></li>
+</ul>
+<p>Therefore, “<code class="docutils literal notranslate"><span class="pre">String</span></code> with nullness operator <code class="docutils literal notranslate"><span class="pre">UNION_NULL</span></code>” is a subtype of
+“<code class="docutils literal notranslate"><span class="pre">String</span></code> with nullness operator <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code>.”</p>
 <p>Yes, it’s pretty terrible for something called “subtyping” not to be reflexive
 or transitive. A more accurate name for this concept would be “consistent,” a
 term used in gradual typing. However, we use “subtyping” anyway. In our
@@ -762,7 +767,22 @@ also the <a class="reference external" href="#same-type">same-type</a> relation 
 for each, tool authors would need to mentally map between those terms and the
 analogous Java terms. (Still, yes: Feel free to read terms like “subtyping” as
 if they hvae scare quotes around them.)</p>
+<p>Subtyping does end up being transitive when the relation is required to hold
+in all worlds. And it does end up being reflexive when the relation is
+required to hold only in <a class="reference external" href="#multiple-worlds">some world</a>. We don’t state those properties as
+rules for 2 reasons: First, they arise naturally from the definitions. Second,
+we don’t want to suggest that subtyping is reflexive and transitive under both
+versions of the rule.</p>
 </div></blockquote>
+<p>Contrast this with our <a class="reference external" href="#nullness-delegating-subtyping">nullness-delegating subtyping</a> rules and <a class="reference external" href="#containment">containment</a>
+rules: Each of those is defined as a transitive closure. However, this is
+incorrect, and we should fix it: Transitivity causes the same problem there as
+it does here: <code class="docutils literal notranslate"><span class="pre">List&lt;?</span> <span class="pre">extends</span> <span class="pre">&#64;Nullable</span> <span class="pre">String&gt;</span></code> ends up as a subtype of <code class="docutils literal notranslate"><span class="pre">List&lt;?</span> <span class="pre">extends</span> <span class="pre">String&gt;</span></code> because of a chain of subtyping rules that uses “<code class="docutils literal notranslate"><span class="pre">String</span></code> with
+nullness operator <code class="docutils literal notranslate"><span class="pre">UNSPECIFIED</span></code>” as part of the intermediate step. Luckily, tool
+authors that set out to implement transitivity for these two rules are very
+unlikely to write code that “notices” this chain. So, in practice, users are
+likely to see the “mostly transitive” that we intend, even if we haven’t found a
+way to formally specify it yet.</p>
 </section>
 <section id="null-inclusive-under-every-parameterization">
 <h2>Null-inclusive under every parameterization<a class="headerlink" href="#null-inclusive-under-every-parameterization" title="Permalink to this headline"></a></h2>
