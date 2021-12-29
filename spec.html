@@ -916,21 +916,47 @@ case.)</p>
 </section>
 <section id="nullness-delegating-subtyping-rules-for-java">
 <span id="nullness-delegating-subtyping"></span><h2>Nullness-delegating subtyping rules for Java<a class="headerlink" href="#nullness-delegating-subtyping-rules-for-java" title="Permalink to this headline"></a></h2>
-<p>The Java subtyping rules are defined in <a class="reference external" href="https://docs.oracle.com/javase/specs/jls/se14/html/jls-4.html#jls-4.10">JLS 4.10</a>. We add to them as follows:</p>
+<blockquote>
+<div><p>Recall that this rule exists to handle subcomponents of types — namely, type
+arguments and array component types: It essentially says “Check nullness
+subtyping for subcomponents as appropriate.”</p>
+</div></blockquote>
+<p>The Java subtyping rules are defined in <a class="reference external" href="https://docs.oracle.com/javase/specs/jls/se14/html/jls-4.html#jls-4.10">JLS 4.10</a>. (Each rule takes a type as
+input and produces zero or more direct supertypes as outputs.) We add to them as
+follows:</p>
 <ul>
 <li><p><a class="reference external" href="#concept-references">As always</a>, interpret the Java rules as operating on
-<a class="reference external" href="#augmented-type">augmented types</a>, not <a class="reference external" href="#base-type">base types</a>. However, when applying the Java
-direct-supertype rules themselves, <em>ignore</em> the <a class="reference external" href="#nullness-operator">nullness operator</a> of the
-input types and output types. The augmented types matter only when the Java
-rules refer to <em>other</em> rules that are defined in this spec. <em>Those</em> rules
-respect the nullness operator of some type components — but never the
-nullness operator of the type component that represents the whole input or
-output type.</p>
+<a class="reference external" href="#augmented-type">augmented types</a>, not <a class="reference external" href="#base-type">base types</a>. This raises the question of <em>how</em> to
+extend these particular rules to operate on augmented types. The answer has
+two parts:</p>
+<ul>
+<li><p>The first part applies only to the nullness operator <em>“of the type.”</em>
+<a class="reference external" href="#augmented-type">As always</a>, this means the nullness operator of the
+type component that is the entire type.</p>
+<p>No matter what nullness operator the input augmented type has, the rules
+still apply, and they still produce the same direct supertypes. Thanks
+to that rule, the nullness operator of any <em>produced supertype</em> is never
+read by the subtyping rules, so any nullness operator is valid for it,
+too.</p>
 <blockquote>
-<div><p>To “ignore” the output’s nullness operator, we recommend outputting a
-value of <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code>, since that is valid for all types, including
+<div><p>Essentially, this rule says that the top-level types do no matter:
+They have already been checked by the <a class="reference external" href="#nullness-subtyping">nullness subtyping</a> check.</p>
+<p>For simplicity, we recommend producing a nullness operator of
+<code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code>: That operator is valid for all types, including
 <a class="reference external" href="#intersection-types">intersection types</a>.</p>
 </div></blockquote>
+</li>
+<li><p>The nullness operators of <em>subcomponents</em> of the augmented types <em>do</em>
+matter. That’s because some Java rules place requirements on those
+subcomponents. <a class="reference external" href="#concept-references">As always</a>, check those
+requirements by applying <em>this spec’s</em> definitions.</p>
+<blockquote>
+<div><p>Those definitions (like <a class="reference external" href="#containment">containment</a>) refer back to definitions (like
+<a class="reference external" href="#nullness-subtyping">nullness subtyping</a>) that use the nullness operator of the types in
+question.</p>
+</div></blockquote>
+</li>
+</ul>
 </li>
 <li><p>When the Java array rules require one type to be a <em>direct</em> supertype of
 another, consider the direct supertypes of <code class="docutils literal notranslate"><span class="pre">T</span></code> to be <em>every</em> type that <code class="docutils literal notranslate"><span class="pre">T</span></code>
