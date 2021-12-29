@@ -74,12 +74,12 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#same-type">Same type</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#subtyping">Subtyping</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#nullness-delegating-subtyping-rules-for-java">Nullness-delegating subtyping rules for Java</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#nullness-subtyping">Nullness subtyping</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#null-inclusive-under-every-parameterization">Null-inclusive under every parameterization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#null-exclusive-under-every-parameterization">Null-exclusive under every parameterization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#nullness-subtype-establishing-path">Nullness-subtype-establishing path</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#nullness-subtype-establishing-direct-supertype-edges">Nullness-subtype-establishing direct-supertype edges</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#nullness-delegating-subtyping-rules-for-java">Nullness-delegating subtyping rules for Java</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#containment">Containment</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#substitution">Substitution</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#applying-a-nullness-operator-to-an-augmented-type">Applying a nullness operator to an augmented type</a></li>
@@ -689,53 +689,55 @@ under <a class="reference external" href="#nullness-subtyping">nullness subtypin
 <h2>Subtyping<a class="headerlink" href="#subtyping" title="Permalink to this headline"></a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">A</span></code> is a subtype of <code class="docutils literal notranslate"><span class="pre">F</span></code> if both of the following conditions are met:</p>
 <ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">A</span></code> is a <a class="reference external" href="#nullness-subtyping">nullness subtype</a> of <code class="docutils literal notranslate"><span class="pre">F</span></code>.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">A</span></code> is a subtype of <code class="docutils literal notranslate"><span class="pre">F</span></code> according to the
 <a class="reference external" href="#nullness-delegating-subtyping">nullness-delegating subtyping rules for Java</a>.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">A</span></code> is a <a class="reference external" href="#nullness-subtyping">nullness subtype</a> of <code class="docutils literal notranslate"><span class="pre">F</span></code>.</p></li>
 </ul>
-</section>
-<section id="nullness-delegating-subtyping-rules-for-java">
-<span id="nullness-delegating-subtyping"></span><h2>Nullness-delegating subtyping rules for Java<a class="headerlink" href="#nullness-delegating-subtyping-rules-for-java" title="Permalink to this headline"></a></h2>
-<p>The Java subtyping rules are defined in <a class="reference external" href="https://docs.oracle.com/javase/specs/jls/se14/html/jls-4.html#jls-4.10">JLS 4.10</a>. We add to them as follows:</p>
-<ul>
-<li><p><a class="reference external" href="#concept-references">As always</a>, interpret the Java rules as operating on
-<a class="reference external" href="#augmented-type">augmented types</a>, not <a class="reference external" href="#base-type">base types</a>. However, when applying the Java
-direct-supertype rules themselves, <em>ignore</em> the <a class="reference external" href="#nullness-operator">nullness operator</a> of the
-input types and output types. The augmented types matter only when the Java
-rules refer to <em>other</em> rules that are defined in this spec. <em>Those</em> rules
-respect the nullness operator of some type components — but never the
-nullness operator of the type component that represents the whole input or
-output type.</p>
 <blockquote>
-<div><p>To “ignore” the output’s nullness operator, we recommend outputting a
-value of <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code>, since that is valid for all types, including
-<a class="reference external" href="#intersection-types">intersection types</a>.</p>
+<div><p>The first condition suffices for most cases. The second condition is necessary
+only for types that have subcomponents — namely, parameterized types and
+arrays. And it essentially says “Check the first condition on subcomponents as
+appropriate.”</p>
 </div></blockquote>
-</li>
-<li><p>When the Java array rules require one type to be a <em>direct</em> supertype of
-another, consider the direct supertypes of <code class="docutils literal notranslate"><span class="pre">T</span></code> to be <em>every</em> type that <code class="docutils literal notranslate"><span class="pre">T</span></code>
-is a <a class="reference external" href="#subtyping">subtype</a> of.</p></li>
-</ul>
 </section>
 <section id="nullness-subtyping">
 <h2>Nullness subtyping<a class="headerlink" href="#nullness-subtyping" title="Permalink to this headline"></a></h2>
-<blockquote>
-<div><p>The primary complication in subtyping comes from type-variable usages. Our
-rules for them must account for every combination of type arguments with which
-a given generic type can be parameterized.</p>
-</div></blockquote>
 <p><code class="docutils literal notranslate"><span class="pre">A</span></code> is a nullness subtype of <code class="docutils literal notranslate"><span class="pre">F</span></code> if any of the following conditions are met:</p>
+<blockquote>
+<div><p>Nullness subtyping asks the question: If <code class="docutils literal notranslate"><span class="pre">A</span></code> includes <code class="docutils literal notranslate"><span class="pre">null</span></code>, does <code class="docutils literal notranslate"><span class="pre">F</span></code> also
+include <code class="docutils literal notranslate"><span class="pre">null</span></code>? There are 3 cases in which this is true, 2 easy and 1 hard:</p>
+</div></blockquote>
 <ul>
-<li><p><code class="docutils literal notranslate"><span class="pre">F</span></code> is <a class="reference external" href="#null-inclusive-under-every-parameterization">null-inclusive under every parameterization</a>.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">A</span></code> is <a class="reference external" href="#null-exclusive-under-every-parameterization">null-exclusive under every parameterization</a>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">F</span></code> is <a class="reference external" href="#null-inclusive-under-every-parameterization">null-inclusive under every parameterization</a>.</p>
+<blockquote>
+<div><p>This is the first easy case: <code class="docutils literal notranslate"><span class="pre">F</span></code> always includes <code class="docutils literal notranslate"><span class="pre">null</span></code>.</p>
+</div></blockquote>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">A</span></code> is <a class="reference external" href="#null-exclusive-under-every-parameterization">null-exclusive under every parameterization</a>.</p>
+<blockquote>
+<div><p>This is the second easy case: <code class="docutils literal notranslate"><span class="pre">A</span></code> never includes <code class="docutils literal notranslate"><span class="pre">null</span></code>.</p>
+</div></blockquote>
+</li>
 <li><p><code class="docutils literal notranslate"><span class="pre">A</span></code> has a <a class="reference external" href="#nullness-subtype-establishing-path">nullness-subtype-establishing path</a> to any type whose base type
 is the same as the base type of <code class="docutils literal notranslate"><span class="pre">F</span></code>, and <code class="docutils literal notranslate"><span class="pre">F</span></code> does <em>not</em> have
 <a class="reference external" href="#nullness-operator">nullness operator</a> <code class="docutils literal notranslate"><span class="pre">MINUS_NULL</span></code>.</p>
 <blockquote>
-<div><p>The third case is necessary only for type-variable usages.</p>
+<div><p>This is the hard case: A given type-variable usage does not necessarily
+always include <code class="docutils literal notranslate"><span class="pre">null</span></code>, nor does it necessarily always exclude <code class="docutils literal notranslate"><span class="pre">null</span></code>. (For
+example, consider a usage of <code class="docutils literal notranslate"><span class="pre">E</span></code> inside <code class="docutils literal notranslate"><span class="pre">ArrayList&lt;E&gt;</span></code>. <code class="docutils literal notranslate"><span class="pre">ArrayList</span></code> may be
+instantiated as either an <code class="docutils literal notranslate"><span class="pre">ArrayList&lt;&#64;Nullable</span> <span class="pre">String&gt;</span></code> or an
+<code class="docutils literal notranslate"><span class="pre">ArrayList&lt;String&gt;</span></code>.)</p>
+<p>Subtyping questions for type-variable usages are more complex: <code class="docutils literal notranslate"><span class="pre">E</span></code> is a
+nullness subtype of <code class="docutils literal notranslate"><span class="pre">E</span></code>; <code class="docutils literal notranslate"><span class="pre">&#64;Nullable</span> <span class="pre">E</span></code> is not. Similarly, if <code class="docutils literal notranslate"><span class="pre">&lt;F</span> <span class="pre">extends</span> <span class="pre">E&gt;</span></code>, then <code class="docutils literal notranslate"><span class="pre">F</span></code> is a nullness subtype of <code class="docutils literal notranslate"><span class="pre">E</span></code>. But if <code class="docutils literal notranslate"><span class="pre">&lt;F</span> <span class="pre">extends</span> <span class="pre">&#64;Nullable</span> <span class="pre">E&gt;</span></code>, it is not.</p>
 </div></blockquote>
 </li>
 </ul>
+<blockquote>
+<div><p>A further level of complexity in all this is <code class="docutils literal notranslate"><span class="pre">UNSPECIFIED</span></code>. For example, in
+the <a class="reference external" href="#multiple-worlds">all-worlds</a> version of the following rules, a type with nullness operator
+<code class="docutils literal notranslate"><span class="pre">UNSPECIFIED</span></code> can be both null-<em>inclusive</em> under every parameterization and
+null-<em>exclusive</em> under every parameterization.</p>
+</div></blockquote>
 <p>Nullness subtyping (and thus subtyping itself) is <em>not</em> defined to be reflexive
 or transitive.</p>
 <p>(Contrast this with our <a class="reference external" href="#nullness-delegating-subtyping">nullness-delegating subtyping</a> rules and <a class="reference external" href="#containment">containment</a>
@@ -747,7 +749,7 @@ implementations are likely to produce naturally. Maybe someday we will find a
 way to specify this fully correctly.)</p>
 <blockquote>
 <div><p>Subtyping does end up being transitive when the relation is required to hold
-in <a class="reference external" href="#multiple-worlds">all worlds</a>. And it does end up being reflexive when the relation is
+in all worlds. And it does end up being reflexive when the relation is
 required to hold only in <a class="reference external" href="#multiple-worlds">some world</a>. We don’t state those properties as
 rules for 2 reasons: First, they arise naturally from the definitions. Second,
 we don’t want to suggest that subtyping is reflexive and transitive under both
@@ -837,6 +839,29 @@ pretty sure that we want to allow <code class="docutils literal notranslate"><sp
 <p><strong>Some-world version:</strong> The rules are the same except that the requirements for
 “<code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code> or <code class="docutils literal notranslate"><span class="pre">MINUS_NULL</span></code>” are loosened to “<code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code>, <code class="docutils literal notranslate"><span class="pre">MINUS_NULL</span></code>, or
 <code class="docutils literal notranslate"><span class="pre">UNSPECIFIED</span></code>.”</p>
+</section>
+<section id="nullness-delegating-subtyping-rules-for-java">
+<span id="nullness-delegating-subtyping"></span><h2>Nullness-delegating subtyping rules for Java<a class="headerlink" href="#nullness-delegating-subtyping-rules-for-java" title="Permalink to this headline"></a></h2>
+<p>The Java subtyping rules are defined in <a class="reference external" href="https://docs.oracle.com/javase/specs/jls/se14/html/jls-4.html#jls-4.10">JLS 4.10</a>. We add to them as follows:</p>
+<ul>
+<li><p><a class="reference external" href="#concept-references">As always</a>, interpret the Java rules as operating on
+<a class="reference external" href="#augmented-type">augmented types</a>, not <a class="reference external" href="#base-type">base types</a>. However, when applying the Java
+direct-supertype rules themselves, <em>ignore</em> the <a class="reference external" href="#nullness-operator">nullness operator</a> of the
+input types and output types. The augmented types matter only when the Java
+rules refer to <em>other</em> rules that are defined in this spec. <em>Those</em> rules
+respect the nullness operator of some type components — but never the
+nullness operator of the type component that represents the whole input or
+output type.</p>
+<blockquote>
+<div><p>To “ignore” the output’s nullness operator, we recommend outputting a
+value of <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code>, since that is valid for all types, including
+<a class="reference external" href="#intersection-types">intersection types</a>.</p>
+</div></blockquote>
+</li>
+<li><p>When the Java array rules require one type to be a <em>direct</em> supertype of
+another, consider the direct supertypes of <code class="docutils literal notranslate"><span class="pre">T</span></code> to be <em>every</em> type that <code class="docutils literal notranslate"><span class="pre">T</span></code>
+is a <a class="reference external" href="#subtyping">subtype</a> of.</p></li>
+</ul>
 </section>
 <section id="containment">
 <h2>Containment<a class="headerlink" href="#containment" title="Permalink to this headline"></a></h2>
