@@ -878,13 +878,23 @@ upper bounds whose nullness operator is <code class="docutils literal notranslat
 <ul>
 <li><p>the augmented type “<code class="docutils literal notranslate"><span class="pre">C</span></code> with nullness operator <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code>” for every type
 variable <code class="docutils literal notranslate"><span class="pre">C</span></code> whose lower bound meets both of the following conditions:</p>
+<blockquote>
+<div><p>This rule specifies “<code class="docutils literal notranslate"><span class="pre">C</span></code> with nullness operator <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code>” instead of
+just “<code class="docutils literal notranslate"><span class="pre">C</span></code>” because our definition of <a class="reference external" href="#nullness-subtype-establishing-path">nullness-subtype-establishing path</a>
+operates on augmented types. However, the nullness operator does not
+matter in this case: After the initial check of the nullness operator of
+the type called “<code class="docutils literal notranslate"><span class="pre">A</span></code>” above, no steps of the process look at the nullness
+operator of the “from” node.</p>
+</div></blockquote>
+<!-- TODO(cpovirk): Figure out whether the path's "*from* type" could be a
+base type instead of an augmented type. Maybe I've been sticking with an
+augmented type because that provides better access to bounds in our
+prototype... possibly because the augmented types reflect
+substitution/asMemberOf operations?? -->
 <ul class="simple">
 <li><p>Its <a class="reference external" href="#base-type">base type</a> is the same as <code class="docutils literal notranslate"><span class="pre">T</span></code>’s base type.</p></li>
-<li><p>Its nullness operator is <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code>.</p></li>
+<li><p>Its nullness operator is <em>not</em> <code class="docutils literal notranslate"><span class="pre">MINUS_NULL</span></code>.</p></li>
 </ul>
-<p>TODO(cpovirk): What if the lower bound has some other nullness operator? I’m
-pretty sure that we want to allow <code class="docutils literal notranslate"><span class="pre">UNSPECIFIED</span></code> in the some-world version
-(as we did before my recent edits), and we may want to allow more.</p>
 </li>
 </ul>
 <p><strong>Some-world version:</strong> The rules are the same except that the requirements for
