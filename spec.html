@@ -852,6 +852,18 @@ operators.</p>
 </section>
 <section id="nullness-subtype-establishing-direct-supertype-edges">
 <h2>Nullness-subtype-establishing direct-supertype edges<a class="headerlink" href="#nullness-subtype-establishing-direct-supertype-edges" title="Permalink to this headline"></a></h2>
+<blockquote>
+<div><p>This section defines the supertypes for a given type — but limited to those
+that matter for nullness checking. For example, there’s no need for the rules
+to reflect that “<code class="docutils literal notranslate"><span class="pre">String</span></code> with nullness operator <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code>” extends
+“<code class="docutils literal notranslate"><span class="pre">Object</span></code> with nullness operator <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code>”: If we’ve established that a
+type has a path to “<code class="docutils literal notranslate"><span class="pre">String</span></code> with nullness operator <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code>,” then we
+already know that it’s <a class="reference external" href="#null-exclusive-under-every-parameterization">null-exclusive under every parameterization</a>, based on
+the rules above, and that’s enough to prove subtyping. And if we <em>haven’t</em>
+established that, then the <code class="docutils literal notranslate"><span class="pre">String</span></code>-<code class="docutils literal notranslate"><span class="pre">Object</span></code> edge isn’t going to change that.</p>
+<p>Thus, the rules here are restricted to type variables and intersection types,
+whose supertypes may have nullness annotations.</p>
+</div></blockquote>
 <p><code class="docutils literal notranslate"><span class="pre">T</span></code> has nullness-subtype-establishing direct-supertype edges to the union of the
 nodes computed by the following 2 rules:</p>
 <p>Upper-bound rule:</p>
