@@ -876,9 +876,12 @@ upper bounds whose nullness operator is <code class="docutils literal notranslat
 </ul>
 <p>Lower-bound rule:</p>
 <ul>
-<li><p>for every type parameter <code class="docutils literal notranslate"><span class="pre">P</span></code> that has a lower bound whose <a class="reference external" href="#base-type">base type</a> is the
-same as <code class="docutils literal notranslate"><span class="pre">T</span></code>’s base type and whose nullness operator is <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code>: the type
-variable <code class="docutils literal notranslate"><span class="pre">P</span></code></p>
+<li><p>the augmented type “<code class="docutils literal notranslate"><span class="pre">C</span></code> with nullness operator <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code>” for every type
+variable <code class="docutils literal notranslate"><span class="pre">C</span></code> whose lower bound meets both of the following conditions:</p>
+<ul class="simple">
+<li><p>Its <a class="reference external" href="#base-type">base type</a> is the same as <code class="docutils literal notranslate"><span class="pre">T</span></code>’s base type.</p></li>
+<li><p>Its nullness operator is <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code>.</p></li>
+</ul>
 <p>TODO(cpovirk): What if the lower bound has some other nullness operator? I’m
 pretty sure that we want to allow <code class="docutils literal notranslate"><span class="pre">UNSPECIFIED</span></code> in the some-world version
 (as we did before my recent edits), and we may want to allow more.</p>
