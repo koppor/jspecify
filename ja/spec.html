@@ -1026,10 +1026,8 @@ would hold.</p>
 <p>To solve this, we need a special case for substitution for null-exclusive
 type parameters like the one on <code class="docutils literal notranslate"><span class="pre">ImmutableList.Builder</span></code>. That special case
 needs to produce a type with a nullness operator other than <code class="docutils literal notranslate"><span class="pre">UNSPECIFIED</span></code>.
-One valid option is to produce <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code>. We, however, happened to
-choose <code class="docutils literal notranslate"><span class="pre">MINUS_NULL</span></code>: That choice lets tools recognize that there's an
-error in code like <code class="docutils literal notranslate"><span class="pre">Optional.of(null)</span></code> without needing to implement type
-inference.</p>
+One valid option is to produce <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code>; we happened to choose
+<code class="docutils literal notranslate"><span class="pre">MINUS_NULL</span></code>.</p>
 </div></blockquote>
 </li>
 <li><p>Otherwise, replace <code class="docutils literal notranslate"><span class="pre">V</span></code> with the result of applying the nullness operator of
