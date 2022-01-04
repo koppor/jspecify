@@ -240,9 +240,9 @@ of that type. Specifically, a type component is one of the following:</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">UNION_NULL</span></code>: This is the operator produced by putting <code class="docutils literal notranslate"><span class="pre">&#64;Nullable</span></code> on a
 type usage.</p>
 <ul>
-<li><p>The type usage <code class="docutils literal notranslate"><span class="pre">String</span></code> <code class="docutils literal notranslate"><span class="pre">UNION_NULL</span></code> includes <code class="docutils literal notranslate"><span class="pre">&quot;a&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;b&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;ab&quot;</span></code>,
+<li><p>The type usage <code class="docutils literal notranslate"><span class="pre">String</span> <span class="pre">UNION_NULL</span></code> includes <code class="docutils literal notranslate"><span class="pre">&quot;a&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;b&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;ab&quot;</span></code>,
 etc., plus <code class="docutils literal notranslate"><span class="pre">null</span></code>.</p></li>
-<li><p>The type-variable usage <code class="docutils literal notranslate"><span class="pre">T</span></code> <code class="docutils literal notranslate"><span class="pre">UNION_NULL</span></code> includes all members of <code class="docutils literal notranslate"><span class="pre">T</span></code>,
+<li><p>The type-variable usage <code class="docutils literal notranslate"><span class="pre">T</span> <span class="pre">UNION_NULL</span></code> includes all members of <code class="docutils literal notranslate"><span class="pre">T</span></code>,
 plus <code class="docutils literal notranslate"><span class="pre">null</span></code> if it wasn't already included.</p></li>
 </ul>
 </li>
@@ -250,24 +250,23 @@ plus <code class="docutils literal notranslate"><span class="pre">null</span></c
 a type usage (aside from the exception discussed under <code class="docutils literal notranslate"><span class="pre">UNSPECIFIED</span></code>
 below).</p>
 <ul>
-<li><p>The type usage <code class="docutils literal notranslate"><span class="pre">String</span></code> <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code> includes <code class="docutils literal notranslate"><span class="pre">&quot;a&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;b&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;ab&quot;</span></code>,
-etc., without including <code class="docutils literal notranslate"><span class="pre">null</span></code>.</p></li>
-<li><p>The type-variable usage <code class="docutils literal notranslate"><span class="pre">T</span></code> <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code> includes exactly the members
-of <code class="docutils literal notranslate"><span class="pre">T</span></code>: If <code class="docutils literal notranslate"><span class="pre">null</span></code> was a member of <code class="docutils literal notranslate"><span class="pre">T</span></code>, then it's a member of <code class="docutils literal notranslate"><span class="pre">T</span></code>
-<code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code>. If it was not a member of <code class="docutils literal notranslate"><span class="pre">T</span></code>, then it is not a member of
-<code class="docutils literal notranslate"><span class="pre">T</span></code> <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code>.</p></li>
-<li><p>One way to conceptualize this is that <code class="docutils literal notranslate"><span class="pre">String</span></code> <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code> means
-&quot;non-null <code class="docutils literal notranslate"><span class="pre">String</span></code>&quot; but that <code class="docutils literal notranslate"><span class="pre">T</span></code> <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code> means &quot;nullness comes
-from the value of <code class="docutils literal notranslate"><span class="pre">T</span></code>.&quot;</p></li>
+<li><p>The type usage <code class="docutils literal notranslate"><span class="pre">String</span> <span class="pre">NO_CHANGE</span></code> includes <code class="docutils literal notranslate"><span class="pre">&quot;a&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;b&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;ab&quot;</span></code>, etc.,
+without including <code class="docutils literal notranslate"><span class="pre">null</span></code>.</p></li>
+<li><p>The type-variable usage <code class="docutils literal notranslate"><span class="pre">T</span> <span class="pre">NO_CHANGE</span></code> includes exactly the members of
+<code class="docutils literal notranslate"><span class="pre">T</span></code>: If <code class="docutils literal notranslate"><span class="pre">null</span></code> was a member of <code class="docutils literal notranslate"><span class="pre">T</span></code>, then it's a member of <code class="docutils literal notranslate"><span class="pre">T</span> <span class="pre">NO_CHANGE</span></code>. If it was not a member of <code class="docutils literal notranslate"><span class="pre">T</span></code>, then it is not a member of
+<code class="docutils literal notranslate"><span class="pre">T</span> <span class="pre">NO_CHANGE</span></code>.</p></li>
+<li><p>One way to conceptualize this is that <code class="docutils literal notranslate"><span class="pre">String</span> <span class="pre">NO_CHANGE</span></code> means
+&quot;non-null <code class="docutils literal notranslate"><span class="pre">String</span></code>&quot; but that <code class="docutils literal notranslate"><span class="pre">T</span> <span class="pre">NO_CHANGE</span></code> means &quot;nullness comes from
+the value of <code class="docutils literal notranslate"><span class="pre">T</span></code>.&quot;</p></li>
 </ul>
 </li>
 <li><p><code class="docutils literal notranslate"><span class="pre">UNSPECIFIED</span></code>: This is the operator produced by not putting <code class="docutils literal notranslate"><span class="pre">&#64;Nullable</span></code> on
 a type usage <em>in code that is outside a <a class="reference external" href="#null-marked-scope">null-marked scope</a></em>. Roughly, it
 is the operator assigned to &quot;completely unannotated code.&quot;</p>
 <ul>
-<li><p>The type usage <code class="docutils literal notranslate"><span class="pre">String</span></code> <code class="docutils literal notranslate"><span class="pre">UNSPECIFIED</span></code> includes <code class="docutils literal notranslate"><span class="pre">&quot;a&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;b&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;ab&quot;</span></code>,
+<li><p>The type usage <code class="docutils literal notranslate"><span class="pre">String</span> <span class="pre">UNSPECIFIED</span></code> includes <code class="docutils literal notranslate"><span class="pre">&quot;a&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;b&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;ab&quot;</span></code>,
 etc., but the developer did not specify whether to include <code class="docutils literal notranslate"><span class="pre">null</span></code>.</p></li>
-<li><p>The type-variable usage <code class="docutils literal notranslate"><span class="pre">T</span></code> <code class="docutils literal notranslate"><span class="pre">UNSPECIFIED</span></code> includes all members of <code class="docutils literal notranslate"><span class="pre">T</span></code>.
+<li><p>The type-variable usage <code class="docutils literal notranslate"><span class="pre">T</span> <span class="pre">UNSPECIFIED</span></code> includes all members of <code class="docutils literal notranslate"><span class="pre">T</span></code>.
 But the developer did not specify whether to add <code class="docutils literal notranslate"><span class="pre">null</span></code> if it wasn't
 already included.</p></li>
 </ul>
@@ -276,11 +275,10 @@ already included.</p></li>
 actively <em>removes</em> it from a type-variable usage that would otherwise
 include it.</p>
 <ul>
-<li><p>The type usage <code class="docutils literal notranslate"><span class="pre">String</span></code> <code class="docutils literal notranslate"><span class="pre">MINUS_NULL</span></code> includes <code class="docutils literal notranslate"><span class="pre">&quot;a&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;b&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;ab&quot;</span></code>,
-etc., without including <code class="docutils literal notranslate"><span class="pre">null</span></code>. (This is equivalent to <code class="docutils literal notranslate"><span class="pre">String</span></code>
-<code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code>.)</p></li>
-<li><p>The type-variable usage <code class="docutils literal notranslate"><span class="pre">T</span></code> <code class="docutils literal notranslate"><span class="pre">MINUS_NULL</span></code> includes all members of <code class="docutils literal notranslate"><span class="pre">T</span></code>
-<em>except</em> for <code class="docutils literal notranslate"><span class="pre">null</span></code>. (This is equivalent to <code class="docutils literal notranslate"><span class="pre">T</span></code> <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code> unless
+<li><p>The type usage <code class="docutils literal notranslate"><span class="pre">String</span> <span class="pre">MINUS_NULL</span></code> includes <code class="docutils literal notranslate"><span class="pre">&quot;a&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;b&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;ab&quot;</span></code>,
+etc., without including <code class="docutils literal notranslate"><span class="pre">null</span></code>. (This is equivalent to <code class="docutils literal notranslate"><span class="pre">String</span> <span class="pre">NO_CHANGE</span></code>.)</p></li>
+<li><p>The type-variable usage <code class="docutils literal notranslate"><span class="pre">T</span> <span class="pre">MINUS_NULL</span></code> includes all members of <code class="docutils literal notranslate"><span class="pre">T</span></code>
+<em>except</em> for <code class="docutils literal notranslate"><span class="pre">null</span></code>. (This is equivalent to <code class="docutils literal notranslate"><span class="pre">T</span> <span class="pre">NO_CHANGE</span></code> unless
 <code class="docutils literal notranslate"><span class="pre">null</span></code> was a member of <code class="docutils literal notranslate"><span class="pre">T</span></code>.)</p></li>
 </ul>
 </li>
@@ -497,8 +495,7 @@ another type overrides that method but does not declare the return type as
 <div><p>The rules here never produce the fourth nullness operator, <code class="docutils literal notranslate"><span class="pre">MINUS_NULL</span></code>.
 However, if tool authors prefer, they can safely produce <code class="docutils literal notranslate"><span class="pre">MINUS_NULL</span></code> in any
 case in which it is equivalent to <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code>. For example, there is no
-difference between a <code class="docutils literal notranslate"><span class="pre">String</span></code> with <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code> and a <code class="docutils literal notranslate"><span class="pre">String</span></code> with
-<code class="docutils literal notranslate"><span class="pre">MINUS_NULL</span></code>.</p>
+difference between <code class="docutils literal notranslate"><span class="pre">String</span> <span class="pre">NO_CHANGE</span></code> and <code class="docutils literal notranslate"><span class="pre">String</span> <span class="pre">MINUS_NULL</span></code>.</p>
 </div></blockquote>
 <blockquote>
 <div><p>So why does <code class="docutils literal notranslate"><span class="pre">MINUS_NULL</span></code> exist at all? It does appear later in this spec in
@@ -528,8 +525,8 @@ the type as a whole is always <code class="docutils literal notranslate"><span c
 <blockquote>
 <div><p>This lets us provide, for every <a class="reference external" href="#base-type">base type</a>, a rule for computing its
 <a class="reference external" href="#augmented-type">augmented type</a>. But we require <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code> so as to avoid questions like
-whether &quot;a <code class="docutils literal notranslate"><span class="pre">UNION_NULL</span></code> intersection type whose members are <code class="docutils literal notranslate"><span class="pre">UNION_NULL</span></code> <code class="docutils literal notranslate"><span class="pre">Foo</span></code>
-and <code class="docutils literal notranslate"><span class="pre">UNION_NULL</span></code> <code class="docutils literal notranslate"><span class="pre">Bar</span></code>&quot; is a subtype of &quot;a <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code> intersection type with
+whether &quot;a <code class="docutils literal notranslate"><span class="pre">UNION_NULL</span></code> intersection type whose members are <code class="docutils literal notranslate"><span class="pre">Foo</span> <span class="pre">UNION_NULL</span></code>
+and <code class="docutils literal notranslate"><span class="pre">Bar</span> <span class="pre">UNION_NULL</span></code>&quot; is a subtype of &quot;a <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code> intersection type with
 those same members.&quot; Plus, it would be difficult for tools to output the
 nullness operator of an intersection type in a human-readable way.</p>
 </div></blockquote>
@@ -742,24 +739,19 @@ null-<em>exclusive</em> under every parameterization.</p>
 <p>Nullness subtyping (and thus subtyping itself) is <em>not</em> defined to be reflexive
 or transitive.</p>
 <blockquote>
-<div><p>If we defined nullness subtyping to be reflexive, then &quot;<code class="docutils literal notranslate"><span class="pre">String</span></code> with nullness
-operator <code class="docutils literal notranslate"><span class="pre">UNSPECIFIED</span></code>&quot; would be a subtype of &quot;<code class="docutils literal notranslate"><span class="pre">String</span></code> with nullness operator
-<code class="docutils literal notranslate"><span class="pre">UNSPECIFIED</span></code>,&quot; even under the <a class="reference external" href="#multiple-worlds">all-worlds</a> rules. In other words, we'd be
-saying that unannotated code is always free from nullness errors. That is
-clearly false. (Nevertheless, lenient tools will choose not to issue errors
-for such code. They can do this by implementing the <a class="reference external" href="#multiple-worlds">some-world</a> rules.)</p>
-<p>If we defined nullness subtyping to be transitive, then we'd say that
-&quot;<code class="docutils literal notranslate"><span class="pre">String</span></code> with nullness operator <code class="docutils literal notranslate"><span class="pre">UNION_NULL</span></code>&quot; is a subtype of &quot;<code class="docutils literal notranslate"><span class="pre">String</span></code> with
-nullness operator <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code>&quot; under the some-world rules. That would happen
-because of a chain of subtyping rules:</p>
+<div><p>If we defined nullness subtyping to be reflexive, then <code class="docutils literal notranslate"><span class="pre">String</span> <span class="pre">UNSPECIFIED</span></code>
+would be a subtype of <code class="docutils literal notranslate"><span class="pre">String</span> <span class="pre">UNSPECIFIED</span></code>, even under the <a class="reference external" href="#multiple-worlds">all-worlds</a> rules.
+In other words, we'd be saying that unannotated code is always free from
+nullness errors. That is clearly false. (Nevertheless, lenient tools will
+choose not to issue errors for such code. They can do this by implementing the
+<a class="reference external" href="#multiple-worlds">some-world</a> rules.)</p>
+<p>If we defined nullness subtyping to be transitive, then we'd say that <code class="docutils literal notranslate"><span class="pre">String</span> <span class="pre">UNION_NULL</span></code> is a subtype of <code class="docutils literal notranslate"><span class="pre">String</span> <span class="pre">NO_CHANGE</span></code> under the some-world rules.
+That would happen because of a chain of subtyping rules:</p>
 <ul class="simple">
-<li><p>&quot;<code class="docutils literal notranslate"><span class="pre">String</span></code> with nullness operator <code class="docutils literal notranslate"><span class="pre">UNION_NULL</span></code>&quot; is a subtype of &quot;<code class="docutils literal notranslate"><span class="pre">String</span></code>
-with nullness operator <code class="docutils literal notranslate"><span class="pre">UNSPECIFIED</span></code>.&quot;</p></li>
-<li><p>&quot;<code class="docutils literal notranslate"><span class="pre">String</span></code> with nullness operator <code class="docutils literal notranslate"><span class="pre">UNSPECIFIED</span></code>&quot; is a subtype of &quot;<code class="docutils literal notranslate"><span class="pre">String</span></code>
-with nullness operator <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code>.&quot;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">String</span> <span class="pre">UNION_NULL</span></code> is a subtype of <code class="docutils literal notranslate"><span class="pre">String</span> <span class="pre">UNSPECIFIED</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">String</span> <span class="pre">UNSPECIFIED</span></code> is a subtype of <code class="docutils literal notranslate"><span class="pre">String</span> <span class="pre">NO_CHANGE</span></code>.</p></li>
 </ul>
-<p>Therefore, &quot;<code class="docutils literal notranslate"><span class="pre">String</span></code> with nullness operator <code class="docutils literal notranslate"><span class="pre">UNION_NULL</span></code>&quot; is a subtype of
-&quot;<code class="docutils literal notranslate"><span class="pre">String</span></code> with nullness operator <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code>.&quot;</p>
+<p>Therefore, <code class="docutils literal notranslate"><span class="pre">String</span> <span class="pre">UNION_NULL</span></code> is a subtype of <code class="docutils literal notranslate"><span class="pre">String</span> <span class="pre">NO_CHANGE</span></code>.</p>
 <p>Yes, it's pretty terrible for something called &quot;subtyping&quot; not to be reflexive
 or transitive. A more accurate name for this concept would be &quot;consistent,&quot; a
 term used in gradual typing. However, we use &quot;subtyping&quot; anyway. In our
@@ -778,12 +770,11 @@ versions of the rule.</p>
 <p>Contrast this with our <a class="reference external" href="#nullness-delegating-subtyping">nullness-delegating subtyping</a> rules and <a class="reference external" href="#containment">containment</a>
 rules: Each of those is defined as a transitive closure. However, this is
 incorrect, and we should fix it: Transitivity causes the same problem there as
-it does here: <code class="docutils literal notranslate"><span class="pre">List&lt;?</span> <span class="pre">extends</span> <span class="pre">&#64;Nullable</span> <span class="pre">String&gt;</span></code> ends up as a subtype of <code class="docutils literal notranslate"><span class="pre">List&lt;?</span> <span class="pre">extends</span> <span class="pre">String&gt;</span></code> because of a chain of subtyping rules that uses &quot;<code class="docutils literal notranslate"><span class="pre">String</span></code> with
-nullness operator <code class="docutils literal notranslate"><span class="pre">UNSPECIFIED</span></code>&quot; as part of the intermediate step. Luckily, tool
-authors that set out to implement transitivity for these two rules are very
-unlikely to write code that &quot;notices&quot; this chain. So, in practice, users are
-likely to see the &quot;mostly transitive&quot; that we intend, even if we haven't found a
-way to formally specify it yet.</p>
+it does here: <code class="docutils literal notranslate"><span class="pre">List&lt;?</span> <span class="pre">extends</span> <span class="pre">&#64;Nullable</span> <span class="pre">String&gt;</span></code> ends up as a subtype of <code class="docutils literal notranslate"><span class="pre">List&lt;?</span> <span class="pre">extends</span> <span class="pre">String&gt;</span></code> because of a chain of subtyping rules that uses <code class="docutils literal notranslate"><span class="pre">String</span> <span class="pre">UNSPECIFIED</span></code> as part of the intermediate step. Luckily, tool authors that set
+out to implement transitivity for these two rules are very unlikely to write
+code that &quot;notices&quot; this chain. So, in practice, users are likely to see the
+&quot;mostly transitive&quot; that we intend, even if we haven't found a way to formally
+specify it yet.</p>
 </section>
 <section id="null-inclusive-under-every-parameterization">
 <h2>Null-inclusive under every parameterization<a class="headerlink" href="#null-inclusive-under-every-parameterization" title="このヘッドラインへのパーマリンク"></a></h2>
@@ -861,12 +852,11 @@ operators.</p>
 <blockquote>
 <div><p>This section defines the supertypes for a given type --- but limited to those
 that matter for nullness checking. For example, there's no need for the rules
-to reflect that &quot;<code class="docutils literal notranslate"><span class="pre">String</span></code> with nullness operator <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code>&quot; extends
-&quot;<code class="docutils literal notranslate"><span class="pre">Object</span></code> with nullness operator <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code>&quot;: If we've established that a
-type has a path to &quot;<code class="docutils literal notranslate"><span class="pre">String</span></code> with nullness operator <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code>,&quot; then we
-already know that it's <a class="reference external" href="#null-exclusive-under-every-parameterization">null-exclusive under every parameterization</a>, based on
-the rules above, and that's enough to prove subtyping. And if we <em>haven't</em>
-established that, then the <code class="docutils literal notranslate"><span class="pre">String</span></code>-<code class="docutils literal notranslate"><span class="pre">Object</span></code> edge isn't going to change that.</p>
+to reflect that <code class="docutils literal notranslate"><span class="pre">String</span> <span class="pre">NO_CHANGE</span></code> extends <code class="docutils literal notranslate"><span class="pre">Object</span> <span class="pre">NO_CHANGE</span></code>: If we've
+established that a type has a path to <code class="docutils literal notranslate"><span class="pre">String</span> <span class="pre">NO_CHANGE</span></code>, then we already know
+that it's <a class="reference external" href="#null-exclusive-under-every-parameterization">null-exclusive under every parameterization</a>, based on the rules
+above, and that's enough to prove subtyping. And if we <em>haven't</em> established
+that, then the <code class="docutils literal notranslate"><span class="pre">String</span></code>-<code class="docutils literal notranslate"><span class="pre">Object</span></code> edge isn't going to change that.</p>
 <p>Thus, the rules here are restricted to type variables and intersection types,
 whose supertypes may have nullness annotations.</p>
 </div></blockquote>
@@ -882,15 +872,14 @@ upper bounds whose nullness operator is <code class="docutils literal notranslat
 </ul>
 <p>Lower-bound rule:</p>
 <ul>
-<li><p>the augmented type &quot;<code class="docutils literal notranslate"><span class="pre">C</span></code> with nullness operator <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code>&quot; for every type
-variable <code class="docutils literal notranslate"><span class="pre">C</span></code> whose lower bound meets both of the following conditions:</p>
+<li><p>the augmented type <code class="docutils literal notranslate"><span class="pre">C</span> <span class="pre">NO_CHANGE</span></code> for every type variable <code class="docutils literal notranslate"><span class="pre">C</span></code> whose lower
+bound meets both of the following conditions:</p>
 <blockquote>
-<div><p>This rule specifies &quot;<code class="docutils literal notranslate"><span class="pre">C</span></code> with nullness operator <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code>&quot; instead of
-just &quot;<code class="docutils literal notranslate"><span class="pre">C</span></code>&quot; because our definition of <a class="reference external" href="#nullness-subtype-establishing-path">nullness-subtype-establishing path</a>
-operates on augmented types. However, the nullness operator does not
-matter in this case: After the initial check of the nullness operator of
-the type called &quot;<code class="docutils literal notranslate"><span class="pre">A</span></code>&quot; above, no steps of the process look at the nullness
-operator of the &quot;from&quot; node.</p>
+<div><p>This rule specifies &quot;<code class="docutils literal notranslate"><span class="pre">C</span> <span class="pre">NO_CHANGE</span></code>&quot; instead of just &quot;<code class="docutils literal notranslate"><span class="pre">C</span></code>&quot; because our
+definition of <a class="reference external" href="#nullness-subtype-establishing-path">nullness-subtype-establishing path</a> operates on augmented
+types. However, the nullness operator does not matter in this case: After
+the initial check of the nullness operator of the type called &quot;<code class="docutils literal notranslate"><span class="pre">A</span></code>&quot; above,
+no steps of the process look at the nullness operator of the &quot;from&quot; node.</p>
 </div></blockquote>
 <!-- TODO(cpovirk): Figure out whether the path's "*from* type" could be a
 base type instead of an augmented type. Maybe I've been sticking with an
@@ -988,12 +977,9 @@ applies if and only if this spec defines the 2 types to be the <a class="referen
 <blockquote>
 <div><p>Substitution on Java base types barely requires an explanation: See <a class="reference external" href="https://docs.oracle.com/javase/specs/jls/se14/html/jls-1.html#jls-1.3">JLS 1.3</a>.
 Substitution on <a class="reference external" href="#augmented-type">augmented types</a>, however, is trickier: If <code class="docutils literal notranslate"><span class="pre">Map.get</span></code> returns
-&quot;<code class="docutils literal notranslate"><span class="pre">V</span></code> with <a class="reference external" href="#nullness-operator">nullness operator</a> <code class="docutils literal notranslate"><span class="pre">UNION_NULL</span></code>,&quot; and if a user has a map whose
-value type is &quot;<code class="docutils literal notranslate"><span class="pre">String</span></code> with nullness operator <code class="docutils literal notranslate"><span class="pre">UNSPECIFIED</span></code>,&quot; then what does
-its <code class="docutils literal notranslate"><span class="pre">get</span></code> method return? Naive substitution would produce &quot;<code class="docutils literal notranslate"><span class="pre">String</span></code> with
-nullness operator <code class="docutils literal notranslate"><span class="pre">UNSPECIFIED</span></code> with nullness operator <code class="docutils literal notranslate"><span class="pre">UNION_NULL</span></code>.&quot; To
-reduce that to a proper augmented type with a single nullness operator, we
-define this process.</p>
+<code class="docutils literal notranslate"><span class="pre">V</span> <span class="pre">UNION_NULL</span></code>, and if a user has a map whose value type is <code class="docutils literal notranslate"><span class="pre">String</span> <span class="pre">UNSPECIFIED</span></code>, then what does its <code class="docutils literal notranslate"><span class="pre">get</span></code> method return? Naive substitution would
+produce <code class="docutils literal notranslate"><span class="pre">String</span> <span class="pre">UNSPECIFIED</span> <span class="pre">UNION_NULL</span></code>. To reduce that to a proper augmented
+type with a single nullness operator, we define this process.</p>
 </div></blockquote>
 <p>To substitute each type argument <code class="docutils literal notranslate"><span class="pre">Aᵢ</span></code> for each corresponding type parameter
 <code class="docutils literal notranslate"><span class="pre">Pᵢ</span></code>:</p>
