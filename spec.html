@@ -796,6 +796,7 @@ includes <code class="docutils literal notranslate"><span class="pre">null</span
 <li><p>It is an <a class="reference external" href="#intersection-types">intersection type</a> whose elements all are null-inclusive under
 every parameterization.</p></li>
 </ul>
+<p>TODO(cpovirk): It seems likely that we need an additional condition here for <code class="docutils literal notranslate"><span class="pre">T</span> <span class="pre">super</span> <span class="pre">&#64;Nullable</span> <span class="pre">Foo</span></code>, as produced by capture conversion.</p>
 <p><strong>Some-world version:</strong> The rule is the same except that the requirement for
 “<code class="docutils literal notranslate"><span class="pre">UNION_NULL</span></code>” is loosened to “<code class="docutils literal notranslate"><span class="pre">UNION_NULL</span></code> or <code class="docutils literal notranslate"><span class="pre">UNSPECIFIED</span></code>.”</p>
 <blockquote>
