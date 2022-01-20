@@ -916,7 +916,7 @@ case.)</p>
 <span id="nullness-delegating-subtyping"></span><h2>Nullness-delegating subtyping rules for Java<a class="headerlink" href="#nullness-delegating-subtyping-rules-for-java" title="このヘッドラインへのパーマリンク"></a></h2>
 <blockquote>
 <div><p>Recall that this rule exists to handle subcomponents of types --- namely, type
-arguments and array component types: It essentially says &quot;Check nullness
+arguments and array component types. It essentially says &quot;Check nullness
 subtyping for subcomponents as appropriate.&quot;</p>
 </div></blockquote>
 <p>The Java subtyping rules are defined in <a class="reference external" href="https://docs.oracle.com/javase/specs/jls/se14/html/jls-4.html#jls-4.10">JLS 4.10</a>. (Each rule takes a type as
@@ -928,14 +928,18 @@ follows:</p>
 extend these particular rules to operate on augmented types. The answer has
 two parts:</p>
 <ul>
-<li><p>The first part applies only to the nullness operator <em>&quot;of the type.&quot;</em>
-<a class="reference external" href="#augmented-type">As always</a>, this means the nullness operator of the
-type component that is the entire type.</p>
-<p>No matter what nullness operator the input augmented type has, the rules
-still apply, and they still produce the same direct supertypes. Thanks
-to that rule, the nullness operator of any <em>produced supertype</em> is never
-read by the subtyping rules, so any nullness operator is valid for it,
-too.</p>
+<li><p>The first part of the answer applies only to the nullness operator <em>&quot;of
+the type.&quot;</em> (<a class="reference external" href="#augmented-type">As always</a>, this means the nullness
+operator of the type component that is the entire type.)</p>
+<p>And the first part of the answer is: No matter what nullness operator
+the input augmented type has, the rules still apply, and they still
+produce the same direct supertypes.</p>
+<blockquote>
+<div><p>Thanks to that rule, the nullness operator of any <em>output</em> type is
+never read by the subtyping rules.</p>
+</div></blockquote>
+<p>So, when computing output types, tools may produce them with <em>any</em>
+nullness operator.</p>
 <blockquote>
 <div><p>Essentially, this rule says that the top-level types do no matter:
 They have already been checked by the <a class="reference external" href="#nullness-subtyping">nullness subtyping</a> check.</p>
@@ -951,8 +955,8 @@ subcomponents meet certain requirements.
 <em>this spec's</em> definitions.</p>
 <blockquote>
 <div><p>Those definitions (like <a class="reference external" href="#containment">containment</a>) refer back to definitions (like
-<a class="reference external" href="#nullness-subtyping">nullness subtyping</a>) that use the nullness operator of the types in
-question.</p>
+<a class="reference external" href="#nullness-subtyping">nullness subtyping</a>) that use the nullness operators of the
+subcomponents in question.</p>
 </div></blockquote>
 </li>
 </ul>
@@ -1014,9 +1018,9 @@ Unfortunately, without this special case, lenient tools could permit
 <p>Consider an unannotated user of <code class="docutils literal notranslate"><span class="pre">ImmutableList.Builder&lt;Foo&gt;</span> <span class="pre">builder</span></code>. Its
 type argument <code class="docutils literal notranslate"><span class="pre">Foo</span></code> will have a <a class="reference external" href="#nullness-operator">nullness operator</a> of <code class="docutils literal notranslate"><span class="pre">UNSPECIFIED</span></code>.
 Without this special case, the parameter of <code class="docutils literal notranslate"><span class="pre">builder.add</span></code> would have a
-nullness operator of <code class="docutils literal notranslate"><span class="pre">UNSPECIFIED</span></code>, too. Then, when a lenient tool applies
-the <a class="reference external" href="#multiple-worlds">some-world</a> subtyping relation to <code class="docutils literal notranslate"><span class="pre">builder.add(null)</span></code>, the relation
-would hold.</p>
+nullness operator of <code class="docutils literal notranslate"><span class="pre">UNSPECIFIED</span></code>, too. Then, when a lenient tool would
+check whether the <a class="reference external" href="#multiple-worlds">some-world</a> subtyping relation holds for
+<code class="docutils literal notranslate"><span class="pre">builder.add(null)</span></code>, it would find that it does.</p>
 <p>To solve this, we need a special case for substitution for null-exclusive
 type parameters like the one on <code class="docutils literal notranslate"><span class="pre">ImmutableList.Builder</span></code>. That special case
 needs to produce a type with a nullness operator other than <code class="docutils literal notranslate"><span class="pre">UNSPECIFIED</span></code>.
@@ -1077,8 +1081,11 @@ nullness operator of the intersection type itself is defined to always be
 </div></blockquote>
 </li>
 <li><p>When a rule generates a lower bound that is the null type, we specify that
-its nullness operator is <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code>. (See
-<a class="reference external" href="#null-types">&quot;Augmented null types.&quot;</a>)</p></li>
+its nullness operator is <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code>.</p>
+<blockquote>
+<div><p>See <a class="reference external" href="#null-types">&quot;Augmented null types.&quot;</a></p>
+</div></blockquote>
+</li>
 </ul>
 </section>
 </section>
