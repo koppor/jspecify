@@ -332,12 +332,19 @@ marked <a class="reference external" href="https://docs.oracle.com/en/java/javas
 <section id="recognized-locations-for-type-use-annotations">
 <h3>Recognized locations for type-use annotations<a class="headerlink" href="#recognized-locations-for-type-use-annotations" title="Permalink to this headline"></a></h3>
 <p>A location is a <em>recognized</em> location for our type-use annotation in the
-circumstances detailed below. A type at a recognized location has the semantics
-described in this spec. The spec does not assign semantics to types in other
-locations, nor to any annotations on such types.</p>
+circumstances detailed below. This spec does not define semantics for
+annotations in other locations.</p>
 <blockquote>
 <div><p>For now, we’ve chosen to restrict ourselves to API locations for which tools
 mostly agree on what it means for a type in that location to be <code class="docutils literal notranslate"><span class="pre">&#64;Nullable</span></code>.</p>
+<p>When analyzing source code, tools are encouraged to offer an option to issue
+an error for an annotation in an unrecognized location (unless they define
+semantics for that location). Tools are especially encouraged to issue an
+error for an annotation in a location that is “intrinsically non-nullable”
+(defined below).</p>
+<p>When reading <em>bytecode</em>, however, tools may be best off ignoring an annotation
+in an unrecognized location (again, unless they define semantics for that
+location).</p>
 </div></blockquote>
 <p>The following locations are recognized except when overruled by one of the
 exceptions in the subsequent sections: [<a class="reference external" href="https://github.com/jspecify/jspecify/issues/17">#17</a>]</p>
@@ -420,15 +427,6 @@ to:</p>
 </ul>
 <p>But note that types “inside” some of these locations can still be recognized,
 such as a <em>type argument</em> of a supertype.</p>
-</div></blockquote>
-<blockquote>
-<div><p>When analyzing source code, tools are encouraged to offer an option to issue
-an error for an annotation in an unrecognized location (unless they define
-semantics for that location). Tools are especially encouraged to issue an
-error for an annotation in a location that is intrinsically non-nullable. When
-reading <em>bytecode</em>, however, tools may be best off ignoring an annotation in
-an unrecognized location (again, unless they define semantics for that
-location).</p>
 </div></blockquote>
 </section>
 </section>
