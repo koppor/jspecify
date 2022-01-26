@@ -894,14 +894,11 @@ the <code class="docutils literal notranslate"><span class="pre">String</span></
 whose supertypes may have nullness annotations.</p>
 </div></blockquote>
 <p><code class="docutils literal notranslate"><span class="pre">T</span></code> has nullness-subtype-establishing direct-supertype edges to the following:</p>
-<ul>
+<ul class="simple">
 <li><p>if <code class="docutils literal notranslate"><span class="pre">T</span></code> is an augmented <a class="reference external" href="#intersection-types">intersection type</a>: all the intersection type's
 elements whose <a class="reference external" href="#nullness-operator">nullness operator</a> is <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code> or <code class="docutils literal notranslate"><span class="pre">MINUS_NULL</span></code></p></li>
 <li><p>if <code class="docutils literal notranslate"><span class="pre">T</span></code> is an augmented type variable: all the corresponding type parameter's
-upper bounds whose nullness operator is <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code> or <code class="docutils literal notranslate"><span class="pre">MINUS_NULL</span></code></p>
-<!-- TODO(cpovirk): Do we need to say anything about performing
-     substitution of any type arguments into those bounds? -->
-</li>
+upper bounds whose nullness operator is <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code> or <code class="docutils literal notranslate"><span class="pre">MINUS_NULL</span></code></p></li>
 <li><p>otherwise: no nodes</p></li>
 </ul>
 <p><strong>Some-world version:</strong> The rules are the same except that the requirements for
