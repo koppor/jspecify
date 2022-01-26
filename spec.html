@@ -706,7 +706,7 @@ appropriate.”</p>
 <p><code class="docutils literal notranslate"><span class="pre">A</span></code> is a nullness subtype of <code class="docutils literal notranslate"><span class="pre">F</span></code> if any of the following conditions are met:</p>
 <blockquote>
 <div><p>Nullness subtyping asks the question: If <code class="docutils literal notranslate"><span class="pre">A</span></code> includes <code class="docutils literal notranslate"><span class="pre">null</span></code>, does <code class="docutils literal notranslate"><span class="pre">F</span></code> also
-include <code class="docutils literal notranslate"><span class="pre">null</span></code>? There are 3 cases in which this is true, 2 easy and 1 hard:</p>
+include <code class="docutils literal notranslate"><span class="pre">null</span></code>? There are 4 cases in which this is true, 2 easy and 2 hard:</p>
 </div></blockquote>
 <ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">F</span></code> is <a class="reference external" href="#null-inclusive-under-every-parameterization">null-inclusive under every parameterization</a>.</p>
@@ -723,13 +723,29 @@ include <code class="docutils literal notranslate"><span class="pre">null</span>
 is the same as the base type of <code class="docutils literal notranslate"><span class="pre">F</span></code>, and <code class="docutils literal notranslate"><span class="pre">F</span></code> does <em>not</em> have
 <a class="reference external" href="#nullness-operator">nullness operator</a> <code class="docutils literal notranslate"><span class="pre">MINUS_NULL</span></code>.</p>
 <blockquote>
-<div><p>This is the hard case: A given type-variable usage does not necessarily
-always include <code class="docutils literal notranslate"><span class="pre">null</span></code>, nor does it necessarily always exclude <code class="docutils literal notranslate"><span class="pre">null</span></code>. (For
-example, consider a usage of <code class="docutils literal notranslate"><span class="pre">E</span></code> inside <code class="docutils literal notranslate"><span class="pre">ArrayList&lt;E&gt;</span></code>. <code class="docutils literal notranslate"><span class="pre">ArrayList</span></code> may be
-instantiated as either an <code class="docutils literal notranslate"><span class="pre">ArrayList&lt;&#64;Nullable</span> <span class="pre">String&gt;</span></code> or an
-<code class="docutils literal notranslate"><span class="pre">ArrayList&lt;String&gt;</span></code>.)</p>
+<div><p>This is the first hard case: A given type-variable usage does not
+necessarily always include <code class="docutils literal notranslate"><span class="pre">null</span></code>, nor does it necessarily always exclude
+<code class="docutils literal notranslate"><span class="pre">null</span></code>. (For example, consider a usage of <code class="docutils literal notranslate"><span class="pre">E</span></code> inside <code class="docutils literal notranslate"><span class="pre">ArrayList&lt;E&gt;</span></code>.
+<code class="docutils literal notranslate"><span class="pre">ArrayList</span></code> may be instantiated as either an <code class="docutils literal notranslate"><span class="pre">ArrayList&lt;&#64;Nullable</span> <span class="pre">String&gt;</span></code>
+or an <code class="docutils literal notranslate"><span class="pre">ArrayList&lt;String&gt;</span></code>.)</p>
 <p>Subtyping questions for type-variable usages are more complex: <code class="docutils literal notranslate"><span class="pre">E</span></code> is a
 nullness subtype of <code class="docutils literal notranslate"><span class="pre">E</span></code>; <code class="docutils literal notranslate"><span class="pre">&#64;Nullable</span> <span class="pre">E</span></code> is not. Similarly, if <code class="docutils literal notranslate"><span class="pre">&lt;F</span> <span class="pre">extends</span> <span class="pre">E&gt;</span></code>, then <code class="docutils literal notranslate"><span class="pre">F</span></code> is a nullness subtype of <code class="docutils literal notranslate"><span class="pre">E</span></code>. But if <code class="docutils literal notranslate"><span class="pre">&lt;F</span> <span class="pre">extends</span> <span class="pre">&#64;Nullable</span> <span class="pre">E&gt;</span></code>, it is not.</p>
+</div></blockquote>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">F</span></code> is a type-variable usage that meets <em>both</em> of the following conditions:</p>
+<ul class="simple">
+<li><p>It does <em>not</em> have nullness operator <code class="docutils literal notranslate"><span class="pre">MINUS_NULL</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">A</span></code> is a nullness subtype of its lower bound.</p></li>
+</ul>
+<blockquote>
+<div><p>This is the second hard case: It covers type variables that are introduced
+by capture conversion of <code class="docutils literal notranslate"><span class="pre">?</span> <span class="pre">super</span></code> wildcards.</p>
+<p>In short, whether you have a <code class="docutils literal notranslate"><span class="pre">Predicate&lt;?</span> <span class="pre">super</span> <span class="pre">String&gt;</span></code>, a <code class="docutils literal notranslate"><span class="pre">Predicate&lt;?</span> <span class="pre">super</span> <span class="pre">&#64;Nullable</span> <span class="pre">String&gt;</span></code>, or unannotated code that doesn’t specify the
+nullness operator for the bound, you can always pass its <code class="docutils literal notranslate"><span class="pre">test</span></code> method a
+<code class="docutils literal notranslate"><span class="pre">String</span></code>. (If you want to pass a <code class="docutils literal notranslate"><span class="pre">&#64;Nullable</span> <span class="pre">String</span></code>, then you’ll need for
+the bound to be <a class="reference external" href="#null-inclusive-under-every-parameterization">null-inclusive under every parameterization</a>. The
+existence of the null-inclusiveness rule frees this current rule from
+having to cover that case.)</p>
 </div></blockquote>
 </li>
 </ul>
@@ -782,7 +798,7 @@ formally specify it yet.</p>
 </section>
 <section id="null-inclusive-under-every-parameterization">
 <h2>Null-inclusive under every parameterization<a class="headerlink" href="#null-inclusive-under-every-parameterization" title="Permalink to this headline"></a></h2>
-<p>A type is null-inclusive under every parameterization if it meets either of the
+<p>A type is null-inclusive under every parameterization if it meets any of the
 following conditions:</p>
 <ul>
 <li><p>Its <a class="reference external" href="#nullness-operator">nullness operator</a> is <code class="docutils literal notranslate"><span class="pre">UNION_NULL</span></code>.</p>
@@ -793,8 +809,19 @@ includes <code class="docutils literal notranslate"><span class="pre">null</span
 </li>
 <li><p>It is an <a class="reference external" href="#intersection-types">intersection type</a> whose elements all are null-inclusive under
 every parameterization.</p></li>
+<li><p>It is a type variable that meets <em>both</em> of the following conditions:</p>
+<ul class="simple">
+<li><p>It does <em>not</em> have nullness operator <code class="docutils literal notranslate"><span class="pre">MINUS_NULL</span></code>.</p></li>
+<li><p>Its lower bound is null-inclusive under every parameterization.</p></li>
 </ul>
-<p>TODO(cpovirk): It seems likely that we need an additional condition here for <code class="docutils literal notranslate"><span class="pre">T</span> <span class="pre">super</span> <span class="pre">&#64;Nullable</span> <span class="pre">Foo</span></code>, as produced by capture conversion.</p>
+<blockquote>
+<div><p>This third case is probably irrelevant in practice: It covers <code class="docutils literal notranslate"><span class="pre">?</span> <span class="pre">super</span> <span class="pre">&#64;Nullable</span> <span class="pre">Foo</span></code>, which is already covered by the rules for
+<a class="reference external" href="#nullness-subtyping">nullness subtyping</a>. It’s included here in case some tool has reason to
+check whether a type is null-inclusive under every parameterization
+<em>outside</em> of a check for nullness subtyping.</p>
+</div></blockquote>
+</li>
+</ul>
 <p><strong>Some-world version:</strong> The rule is the same except that the requirement for
 “<code class="docutils literal notranslate"><span class="pre">UNION_NULL</span></code>” is loosened to “<code class="docutils literal notranslate"><span class="pre">UNION_NULL</span></code> or <code class="docutils literal notranslate"><span class="pre">UNSPECIFIED</span></code>.”</p>
 <blockquote>
@@ -865,46 +892,17 @@ the <code class="docutils literal notranslate"><span class="pre">String</span></
 <p>Thus, the rules here are restricted to type variables and intersection types,
 whose supertypes may have nullness annotations.</p>
 </div></blockquote>
-<p><code class="docutils literal notranslate"><span class="pre">T</span></code> has nullness-subtype-establishing direct-supertype edges to the union of the
-nodes computed by the following 2 rules:</p>
-<p>Upper-bound rule:</p>
-<ul class="simple">
+<p><code class="docutils literal notranslate"><span class="pre">T</span></code> has nullness-subtype-establishing direct-supertype edges to the following:</p>
+<ul>
 <li><p>if <code class="docutils literal notranslate"><span class="pre">T</span></code> is an augmented <a class="reference external" href="#intersection-types">intersection type</a>: all the intersection type’s
 elements whose <a class="reference external" href="#nullness-operator">nullness operator</a> is <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code> or <code class="docutils literal notranslate"><span class="pre">MINUS_NULL</span></code></p></li>
 <li><p>if <code class="docutils literal notranslate"><span class="pre">T</span></code> is an augmented type variable: all the corresponding type parameter’s
-upper bounds whose nullness operator is <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code> or <code class="docutils literal notranslate"><span class="pre">MINUS_NULL</span></code></p></li>
+upper bounds whose nullness operator is <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code> or <code class="docutils literal notranslate"><span class="pre">MINUS_NULL</span></code></p>
+<!-- TODO(cpovirk): Do we need to say anything about performing
+     substitution of any type arguments into those bounds? -->
+</li>
 <li><p>otherwise: no nodes</p></li>
 </ul>
-<p>Lower-bound rule:</p>
-<ul>
-<li><p>the augmented type <code class="docutils literal notranslate"><span class="pre">C</span> <span class="pre">NO_CHANGE</span></code> for every type variable <code class="docutils literal notranslate"><span class="pre">C</span></code> whose lower
-bound meets both of the following conditions:</p>
-<blockquote>
-<div><p>This rule specifies “<code class="docutils literal notranslate"><span class="pre">C</span> <span class="pre">NO_CHANGE</span></code>” instead of just “<code class="docutils literal notranslate"><span class="pre">C</span></code>” because our
-definition of <a class="reference external" href="#nullness-subtype-establishing-path">nullness-subtype-establishing path</a> operates on augmented
-types. However, the nullness operator does not matter in this case: After
-the initial check of the nullness operator of the type called “<code class="docutils literal notranslate"><span class="pre">A</span></code>” above,
-no steps of the process look at the nullness operator of the “from” node.</p>
-</div></blockquote>
-<!-- TODO(cpovirk): Figure out whether the path's "*from* type" could be a
-base type instead of an augmented type. Maybe I've been sticking with an
-augmented type because that provides better access to bounds in our
-prototype... possibly because the augmented types reflect
-substitution/asMemberOf operations?? -->
-<ul class="simple">
-<li><p>Its <a class="reference external" href="#base-type">base type</a> is the same as <code class="docutils literal notranslate"><span class="pre">T</span></code>’s base type.</p></li>
-<li><p>Its nullness operator is <em>not</em> <code class="docutils literal notranslate"><span class="pre">MINUS_NULL</span></code>.</p></li>
-</ul>
-</li>
-</ul>
-<blockquote>
-<div><p>In short, whether you have a <code class="docutils literal notranslate"><span class="pre">Predicate&lt;?</span> <span class="pre">super</span> <span class="pre">String&gt;</span></code>, a <code class="docutils literal notranslate"><span class="pre">Predicate&lt;?</span> <span class="pre">super</span> <span class="pre">&#64;Nullable</span> <span class="pre">String&gt;</span></code>, or unannotated code that doesn’t specify the nullness
-operator for the bound, you can always pass its <code class="docutils literal notranslate"><span class="pre">test</span></code> method a <code class="docutils literal notranslate"><span class="pre">String</span></code>. (If
-you want to pass a <code class="docutils literal notranslate"><span class="pre">&#64;Nullable</span> <span class="pre">String</span></code>, then you’ll need for the bound to be
-<a class="reference external" href="#null-inclusive-under-every-parameterization">null-inclusive under every parameterization</a>. The existence of the
-null-inclusiveness rule frees this current rule from having to cover that
-case.)</p>
-</div></blockquote>
 <p><strong>Some-world version:</strong> The rules are the same except that the requirements for
 “<code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code> or <code class="docutils literal notranslate"><span class="pre">MINUS_NULL</span></code>” are loosened to “<code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code>, <code class="docutils literal notranslate"><span class="pre">MINUS_NULL</span></code>, or
 <code class="docutils literal notranslate"><span class="pre">UNSPECIFIED</span></code>.”</p>
