@@ -124,8 +124,7 @@ haven't said whether <code class="docutils literal notranslate"><span class="pre
 <code class="docutils literal notranslate"><span class="pre">x.getClass()</span></code> is safe (at least as far as JSpecify is concerned).</p>
 <p>There are two JSpecify annotations that indicate these properties:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">&#64;Nullable</span></code> applied to a type means a reference of that type that can be
-null.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&#64;Nullable</span></code> applied to a type means a reference of that type can be null.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">&#64;NullMarked</span></code> applied to a module, package, or class means that a reference
 in that scope can't be null unless its type is explicitly marked
 <code class="docutils literal notranslate"><span class="pre">&#64;Nullable</span></code>. (Below we will see that there are some exceptions to this for
