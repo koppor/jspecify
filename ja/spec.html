@@ -114,7 +114,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section class="tex2jax_ignore mathjax_ignore" id="jspecify-nullness-spec-draft">
+  <section id="jspecify-nullness-spec-draft">
 <h1>JSpecify nullness spec draft<a class="headerlink" href="#jspecify-nullness-spec-draft" title="このヘッドラインへのパーマリンク"></a></h1>
 <p>This document is our draft specification for the semantics of a set of nullness
 annotations.</p>
@@ -133,13 +133,13 @@ can ask for any given type usage. Each kind is derived (at least in part) from
 the previous:</p>
 <ol class="arabic simple">
 <li><p>Does <code class="docutils literal notranslate"><span class="pre">&#64;Nullable</span></code> appear directly on that type usage?</p></li>
-<li><p>What is the <a class="reference external" href="#nullness-operator">nullness operator</a> of that type usage?</p></li>
+<li><p>What is the <span class="xref myst">nullness operator</span> of that type usage?</p></li>
 <li><p>For that type usage...</p>
 <ul class="simple">
 <li><p>Is it &quot;reasonable&quot; to assume that is not <code class="docutils literal notranslate"><span class="pre">null</span></code>?</p></li>
 <li><p>Is it &quot;reasonable&quot; to put a <code class="docutils literal notranslate"><span class="pre">null</span></code> into it?</p></li>
 <li><p>neither (what we sometimes call &quot;parametric nullness&quot;)</p></li>
-<li><p>both (as can happen with <a class="reference external" href="#nullness-operator">nullness operator</a> <code class="docutils literal notranslate"><span class="pre">UNSPECIFIED</span></code> under lenient
+<li><p>both (as can happen with <span class="xref myst">nullness operator</span> <code class="docutils literal notranslate"><span class="pre">UNSPECIFIED</span></code> under lenient
 tools)</p></li>
 </ul>
 </li>
@@ -148,7 +148,7 @@ tools)</p></li>
 <section id="the-scope-of-this-spec">
 <h3>The scope of this spec<a class="headerlink" href="#the-scope-of-this-spec" title="このヘッドラインへのパーマリンク"></a></h3>
 <p>Currently, this spec does not address <em>when</em> tools must apply any part of the
-spec. For example, it does not state when tools must check that the <a class="reference external" href="#subtyping">subtyping</a>
+spec. For example, it does not state when tools must check that the <span class="xref myst">subtyping</span>
 relation holds.</p>
 <p>We anticipate that tools will typically apply parts of this spec in the same
 cases that they apply the corresponding parts of the Java Language
@@ -196,13 +196,13 @@ rules.</p>
 <section id="references-to-concepts-defined-by-this-spec">
 <span id="concept-references"></span><h2>References to concepts defined by this spec<a class="headerlink" href="#references-to-concepts-defined-by-this-spec" title="このヘッドラインへのパーマリンク"></a></h2>
 <p>When a rule in this spec refers to any concept that is defined in this spec (for
-example, <a class="reference external" href="#substitution">substitution</a> or <a class="reference external" href="#containment">containment</a>), apply this spec's definition (as
+example, <span class="xref myst">substitution</span> or <span class="xref myst">containment</span>), apply this spec's definition (as
 opposed to other definitions, such as the ones in the JLS).</p>
 <p>Additionally, when a rule in this spec refers to a JLS rule that in turn refers
 to a concept that is defined in this spec, likewise apply this spec's
 definition.</p>
 <p>In particular, when a JLS rule refers to types, apply this spec's definition of
-<a class="reference external" href="#augmented-type">augmented types</a> (as oppposed to <a class="reference external" href="#base-type">base types</a>).</p>
+<span class="xref myst">augmented types</span> (as oppposed to <span class="xref myst">base types</span>).</p>
 </section>
 <section id="base-type">
 <h2>Base type<a class="headerlink" href="#base-type" title="このヘッドラインへのパーマリンク"></a></h2>
@@ -261,7 +261,7 @@ the value of <code class="docutils literal notranslate"><span class="pre">T</spa
 </ul>
 </li>
 <li><p><code class="docutils literal notranslate"><span class="pre">UNSPECIFIED</span></code>: This is the operator produced by not putting <code class="docutils literal notranslate"><span class="pre">&#64;Nullable</span></code> on
-a type usage <em>in code that is outside a <a class="reference external" href="#null-marked-scope">null-marked scope</a></em>. Roughly, it
+a type usage <em>in code that is outside a <span class="xref myst">null-marked scope</span></em>. Roughly, it
 is the operator assigned to &quot;completely unannotated code.&quot;</p>
 <ul>
 <li><p>The type usage <code class="docutils literal notranslate"><span class="pre">String</span> <span class="pre">UNSPECIFIED</span></code> includes <code class="docutils literal notranslate"><span class="pre">&quot;a&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;b&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;ab&quot;</span></code>,
@@ -287,8 +287,8 @@ etc., without including <code class="docutils literal notranslate"><span class="
 </section>
 <section id="augmented-type">
 <h2>Augmented type<a class="headerlink" href="#augmented-type" title="このヘッドラインへのパーマリンク"></a></h2>
-<p>An augmented type consists of a <a class="reference external" href="#base-type">base type</a> and a <a class="reference external" href="#nullness-operator">nullness operator</a>
-corresponding to <em>each</em> of its <a class="reference external" href="#type-components">type components</a>.</p>
+<p>An augmented type consists of a <span class="xref myst">base type</span> and a <span class="xref myst">nullness operator</span>
+corresponding to <em>each</em> of its <span class="xref myst">type components</span>.</p>
 <blockquote>
 <div><p>Arguably, an augmented type with nullness operator <code class="docutils literal notranslate"><span class="pre">UNSPECIFIED</span></code> is better
 understood not as representing &quot;a type&quot; but as representing a <em>lack</em> of the
@@ -296,13 +296,13 @@ nullness portion of the type.</p>
 </div></blockquote>
 <p>For our purposes, base types (and thus augmented types) include not just class
 and interface types, array types, and type variables but also
-<a class="reference external" href="#intersection-types">intersection types</a> and the null type.</p>
+<span class="xref myst">intersection types</span> and the null type.</p>
 <blockquote>
 <div><p>This spec aims to define rules for augmented types compatible with those that
 the JLS defines for base types.</p>
 <p>Accordingly, in almost all cases, this spec agrees with the JLS's rules when
 specifying what <em>base</em> types appear in a piece of code. It makes an exception
-for <a class="reference external" href="#unbounded-wildcard">&quot;Bound of an unbounded wildcard,&quot;</a> for which it
+for <span class="xref myst">&quot;Bound of an unbounded wildcard,&quot;</span> for which it
 specifies a bound of <code class="docutils literal notranslate"><span class="pre">Object</span></code> that the JLS does not specify.</p>
 </div></blockquote>
 <p>When this spec uses capital letters, they refer to augmented types (unless
@@ -387,7 +387,7 @@ an inner class has an associated instance of the outer class.</p>
 </li>
 </ul>
 <p>Additionally, any location above is unrecognized if it makes up <em>any
-<a class="reference external" href="#type-components">type component</a></em> of a type in the following locations: [<a class="reference external" href="https://github.com/jspecify/jspecify/issues/17">#17</a>]</p>
+<span class="xref myst">type component</span></em> of a type in the following locations: [<a class="reference external" href="https://github.com/jspecify/jspecify/issues/17">#17</a>]</p>
 <blockquote>
 <div><p>These locations all fit under the umbrella of &quot;implementation code.&quot;
 Implementation code may use types that contain type arguments, wildcard
@@ -424,7 +424,7 @@ to:</p>
 <ul class="simple">
 <li><p>a class declaration [<a class="reference external" href="https://github.com/jspecify/jspecify/issues/7">#7</a>]: For example, the annotation in <code class="docutils literal notranslate"><span class="pre">public</span> <span class="pre">&#64;Nullable</span> <span class="pre">class</span> <span class="pre">Foo</span> <span class="pre">{}</span></code> is in an unrecognized location.</p></li>
 <li><p>a type-parameter declaration or a wildcard <em>itself</em> [<a class="reference external" href="https://github.com/jspecify/jspecify/issues/19">#19</a>, <a class="reference external" href="https://github.com/jspecify/jspecify/issues/31">#31</a>]</p></li>
-<li><p>any <a class="reference external" href="#type-components">type component</a> of a receiver parameter type [<a class="reference external" href="https://github.com/jspecify/jspecify/issues/157">#157</a>]</p></li>
+<li><p>any <span class="xref myst">type component</span> of a receiver parameter type [<a class="reference external" href="https://github.com/jspecify/jspecify/issues/157">#157</a>]</p></li>
 </ul>
 <p>But note that types &quot;inside&quot; some of these locations can still be recognized,
 such as a <em>type argument</em> of a supertype.</p>
@@ -471,17 +471,17 @@ scope. Otherwise, it is not.</p>
 <section id="augmented-type-of-a-type-usage-appearing-in-code">
 <span id="augmented-type-of-usage"></span><h2>Augmented type of a type usage appearing in code<a class="headerlink" href="#augmented-type-of-a-type-usage-appearing-in-code" title="このヘッドラインへのパーマリンク"></a></h2>
 <p>For most type usages in source code or bytecode on which JSpecify nullness
-annotations are <a class="reference external" href="#recognized-locations-for-type-use-annotations">recognized</a>, this section defines how to determine their
-<a class="reference external" href="#augmented-type">augmented types</a>. Note, however, that rules for specific cases below take
+annotations are <span class="xref myst">recognized</span>, this section defines how to determine their
+<span class="xref myst">augmented types</span>. Note, however, that rules for specific cases below take
 precedence over the general rule here.</p>
-<p>Because the JLS already has rules for determining the <a class="reference external" href="#base-type">base type</a> for a type
-usage, this section covers only how to determine its <a class="reference external" href="#nullness-operator">nullness operator</a>.</p>
+<p>Because the JLS already has rules for determining the <span class="xref myst">base type</span> for a type
+usage, this section covers only how to determine its <span class="xref myst">nullness operator</span>.</p>
 <p>To determine the nullness operator, apply the following rules in order. Once one
 condition is met, skip the remaining conditions.</p>
 <ul class="simple">
 <li><p>If the type usage is annotated with <code class="docutils literal notranslate"><span class="pre">&#64;org.jspecify.nullness.Nullable</span></code>, its
 nullness operator is <code class="docutils literal notranslate"><span class="pre">UNION_NULL</span></code>.</p></li>
-<li><p>If the type usage appears in a <a class="reference external" href="#null-marked-scope">null-marked scope</a>, its nullness operator is
+<li><p>If the type usage appears in a <span class="xref myst">null-marked scope</span>, its nullness operator is
 <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code>.</p></li>
 <li><p>Its nullness operator is <code class="docutils literal notranslate"><span class="pre">UNSPECIFIED</span></code>.</p></li>
 </ul>
@@ -501,7 +501,7 @@ difference between <code class="docutils literal notranslate"><span class="pre">
 </div></blockquote>
 <blockquote>
 <div><p>So why does <code class="docutils literal notranslate"><span class="pre">MINUS_NULL</span></code> exist at all? It does appear later in this spec in
-the section on <a class="reference external" href="#substitution">substitution</a>. However, its main purpose is to provide tools
+the section on <span class="xref myst">substitution</span>. However, its main purpose is to provide tools
 with a way to represent the nullness of certain expressions in implementation
 code: Consider <code class="docutils literal notranslate"><span class="pre">ArrayList&lt;E&gt;</span></code>. <code class="docutils literal notranslate"><span class="pre">ArrayList</span></code> supports null elements, so the
 class has to handle the possibility that any expression of type <code class="docutils literal notranslate"><span class="pre">E</span></code> may be
@@ -516,17 +516,17 @@ even though its base type <code class="docutils literal notranslate"><span class
 <div><p>Technically speaking, the JLS does not define syntax for an intersection type.
 Instead, it defines a syntax for type parameters and casts that supports
 multiple types. Then the intersection type is derived from those. Intersection
-types can also arise from operations like <a class="reference external" href="#capture-conversion">capture conversion</a>. See <a class="reference external" href="https://docs.oracle.com/javase/specs/jls/se14/html/jls-4.html#jls-4.9">JLS 4.9</a>.</p>
+types can also arise from operations like <span class="xref myst">capture conversion</span>. See <a class="reference external" href="https://docs.oracle.com/javase/specs/jls/se14/html/jls-4.html#jls-4.9">JLS 4.9</a>.</p>
 <p>One result of this is that it's never possible for a programmer to write an
 annotation &quot;on an intersection type.&quot;</p>
 </div></blockquote>
-<p>This spec assigns a <a class="reference external" href="#nullness-operator">nullness operator</a> to each individual element of an
+<p>This spec assigns a <span class="xref myst">nullness operator</span> to each individual element of an
 intersection type, following our normal rules for type usages. It also assigns a
 nullness operator to the intersection type as a whole. The nullness operator of
 the type as a whole is always <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code>.</p>
 <blockquote>
-<div><p>This lets us provide, for every <a class="reference external" href="#base-type">base type</a>, a rule for computing its
-<a class="reference external" href="#augmented-type">augmented type</a>. But we require <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code> so as to avoid questions like
+<div><p>This lets us provide, for every <span class="xref myst">base type</span>, a rule for computing its
+<span class="xref myst">augmented type</span>. But we require <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code> so as to avoid questions like
 whether &quot;a <code class="docutils literal notranslate"><span class="pre">UNION_NULL</span></code> intersection type whose members are <code class="docutils literal notranslate"><span class="pre">Foo</span> <span class="pre">UNION_NULL</span></code>
 and <code class="docutils literal notranslate"><span class="pre">Bar</span> <span class="pre">UNION_NULL</span></code>&quot; is a subtype of &quot;a <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code> intersection type with
 those same members.&quot; Plus, it would be difficult for tools to output the
@@ -535,7 +535,7 @@ nullness operator of an intersection type in a human-readable way.</p>
 <blockquote>
 <div><p>To avoid ever creating an intersection type with a nullness operator other
 than <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code>, we define special handling for intersection types under
-<a class="reference external" href="#applying-operator">&quot;Applying a nullness operator to an augmented type.&quot;</a></p>
+<span class="xref myst">&quot;Applying a nullness operator to an augmented type.&quot;</span></p>
 </div></blockquote>
 </section>
 <section id="bound-of-an-unbounded-wildcard">
@@ -551,10 +551,10 @@ apply to a wildcard with any bounds in either list, even a sole upper bound of
 <code class="docutils literal notranslate"><span class="pre">Object</span></code>.</p>
 <blockquote>
 <div><p>For a wildcard with an explicit bound of <code class="docutils literal notranslate"><span class="pre">Object</span></code> (that is, <code class="docutils literal notranslate"><span class="pre">&lt;?</span> <span class="pre">extends</span> <span class="pre">Object&gt;</span></code>, perhaps with an annotation on <code class="docutils literal notranslate"><span class="pre">Object</span></code>), instead apply
-<a class="reference external" href="#augmented-type-of-usage">the normal rules</a> for the explicit bound type.</p>
+<span class="xref myst">the normal rules</span> for the explicit bound type.</p>
 </div></blockquote>
-<p>If an unbounded wildcard appears in a <a class="reference external" href="#null-marked-scope">null-marked scope</a>, then it has a single
-upper bound whose <a class="reference external" href="#base-type">base type</a> is <code class="docutils literal notranslate"><span class="pre">Object</span></code> and whose <a class="reference external" href="#nullness-operator">nullness operator</a> is
+<p>If an unbounded wildcard appears in a <span class="xref myst">null-marked scope</span>, then it has a single
+upper bound whose <span class="xref myst">base type</span> is <code class="docutils literal notranslate"><span class="pre">Object</span></code> and whose <span class="xref myst">nullness operator</span> is
 <code class="docutils literal notranslate"><span class="pre">UNION_NULL</span></code>.</p>
 <p>If an unbounded wildcard appears outside a null-marked scope, then it has a
 single upper bound whose base type is <code class="docutils literal notranslate"><span class="pre">Object</span></code> and whose nullness operator is
@@ -582,8 +582,8 @@ the nullness operator defined by this section.</p>
 <p>In bytecode, <code class="docutils literal notranslate"><span class="pre">&lt;T&gt;</span></code> and <code class="docutils literal notranslate"><span class="pre">&lt;T</span> <span class="pre">extends</span> <span class="pre">Object&gt;</span></code> are both represented as a type
 parameter with a single upper bound, <code class="docutils literal notranslate"><span class="pre">Object</span></code>, and no JSpecify nullness type
 annotations on the bound.</p>
-<p>If an <code class="docutils literal notranslate"><span class="pre">Object</span></code>-bounded type parameter appears in a <a class="reference external" href="#null-marked-scope">null-marked scope</a>, then its
-bound has a <a class="reference external" href="#base-type">base type</a> of <code class="docutils literal notranslate"><span class="pre">Object</span></code> and a <a class="reference external" href="#nullness-operator">nullness operator</a> of <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code>.</p>
+<p>If an <code class="docutils literal notranslate"><span class="pre">Object</span></code>-bounded type parameter appears in a <span class="xref myst">null-marked scope</span>, then its
+bound has a <span class="xref myst">base type</span> of <code class="docutils literal notranslate"><span class="pre">Object</span></code> and a <span class="xref myst">nullness operator</span> of <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code>.</p>
 <blockquote>
 <div><p>Note that this gives <code class="docutils literal notranslate"><span class="pre">&lt;T&gt;</span></code> a different bound than <code class="docutils literal notranslate"><span class="pre">&lt;?&gt;</span></code> (though only in a
 null-marked scope).</p>
@@ -592,19 +592,19 @@ null-marked scope).</p>
 its bound has a base type of <code class="docutils literal notranslate"><span class="pre">Object</span></code> and a nullness operator of <code class="docutils literal notranslate"><span class="pre">UNSPECIFIED</span></code>.</p>
 <blockquote>
 <div><p>All these rules match the behavior of
-<a class="reference external" href="#augmented-type-of-usage">our normal rules</a> for determining the
-<a class="reference external" href="#augmented-type">augmented type</a> of the bound <code class="docutils literal notranslate"><span class="pre">Object</span></code>. The only &quot;special&quot; part is that we
+<span class="xref myst">our normal rules</span> for determining the
+<span class="xref myst">augmented type</span> of the bound <code class="docutils literal notranslate"><span class="pre">Object</span></code>. The only &quot;special&quot; part is that we
 consider the source code <code class="docutils literal notranslate"><span class="pre">&lt;T&gt;</span></code> to have a bound of <code class="docutils literal notranslate"><span class="pre">Object</span></code>, just as it does
 when compiled to bytecode.</p>
 </div></blockquote>
 </section>
 <section id="augmented-null-types">
 <span id="null-types"></span><h2>Augmented null types<a class="headerlink" href="#augmented-null-types" title="このヘッドラインへのパーマリンク"></a></h2>
-<p>The JLS refers to &quot;the null type.&quot; In this spec, we assign a <a class="reference external" href="#nullness-operator">nullness operator</a>
+<p>The JLS refers to &quot;the null type.&quot; In this spec, we assign a <span class="xref myst">nullness operator</span>
 to all types, including the null type. This produces multiple null types:</p>
 <ul>
-<li><p>the null <a class="reference external" href="#base-type">base type</a> with nullness operator <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code>: the
-&quot;bottom&quot;/&quot;nothing&quot; type used in <a class="reference external" href="#capture-conversion">capture conversion</a></p>
+<li><p>the null <span class="xref myst">base type</span> with nullness operator <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code>: the
+&quot;bottom&quot;/&quot;nothing&quot; type used in <span class="xref myst">capture conversion</span></p>
 <blockquote>
 <div><p>No value has this type, not even <code class="docutils literal notranslate"><span class="pre">null</span></code> itself.</p>
 </div></blockquote>
@@ -664,13 +664,13 @@ some-world rule differs, the differences are explained at the end.</p>
 <blockquote>
 <div><p>A small warning: To implement the full some-world rules, a tool must also
 implement at least part of the all-worlds rules. Those rules are required as
-part of <a class="reference external" href="#substitution">substitution</a>.</p>
+part of <span class="xref myst">substitution</span>.</p>
 </div></blockquote>
 <section id="propagating-how-many-worlds-a-relation-must-hold-in">
 <span id="propagating-multiple-worlds"></span><h3>Propagating how many worlds a relation must hold in<a class="headerlink" href="#propagating-how-many-worlds-a-relation-must-hold-in" title="このヘッドラインへのパーマリンク"></a></h3>
 <p>When one rule in this spec refers to another, it refers to the same version of
-the rule. For example, when the rules for <a class="reference external" href="#containment">containment</a> refer to the rules for
-<a class="reference external" href="#subtyping">subtyping</a>, the some-world containment relation refers to the some-world
+the rule. For example, when the rules for <span class="xref myst">containment</span> refer to the rules for
+<span class="xref myst">subtyping</span>, the some-world containment relation refers to the some-world
 subtyping relation, and the all-worlds containment relation refers to the
 all-worlds subtyping relation.</p>
 <p>This meta-rule applies except when a rule refers explicitly to a particular
@@ -679,21 +679,21 @@ version of another rule.</p>
 </section>
 <section id="same-type">
 <h2>Same type<a class="headerlink" href="#same-type" title="このヘッドラインへのパーマリンク"></a></h2>
-<p><code class="docutils literal notranslate"><span class="pre">S</span></code> and <code class="docutils literal notranslate"><span class="pre">T</span></code> are the same type if <code class="docutils literal notranslate"><span class="pre">S</span></code> is a <a class="reference external" href="#subtyping">subtype</a> of <code class="docutils literal notranslate"><span class="pre">T</span></code> and <code class="docutils literal notranslate"><span class="pre">T</span></code> is a subtype
+<p><code class="docutils literal notranslate"><span class="pre">S</span></code> and <code class="docutils literal notranslate"><span class="pre">T</span></code> are the same type if <code class="docutils literal notranslate"><span class="pre">S</span></code> is a <span class="xref myst">subtype</span> of <code class="docutils literal notranslate"><span class="pre">T</span></code> and <code class="docutils literal notranslate"><span class="pre">T</span></code> is a subtype
 of <code class="docutils literal notranslate"><span class="pre">S</span></code>.</p>
 <p>The same-type relation is <em>not</em> defined to be reflexive or transitive.</p>
 <blockquote>
 <div><p>For more discussion of reflexive and transitive relations, see the comments
-under <a class="reference external" href="#nullness-subtyping">nullness subtyping</a>.</p>
+under <span class="xref myst">nullness subtyping</span>.</p>
 </div></blockquote>
 </section>
 <section id="subtyping">
 <h2>Subtyping<a class="headerlink" href="#subtyping" title="このヘッドラインへのパーマリンク"></a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">A</span></code> is a subtype of <code class="docutils literal notranslate"><span class="pre">F</span></code> if both of the following conditions are met:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">A</span></code> is a <a class="reference external" href="#nullness-subtyping">nullness subtype</a> of <code class="docutils literal notranslate"><span class="pre">F</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">A</span></code> is a <span class="xref myst">nullness subtype</span> of <code class="docutils literal notranslate"><span class="pre">F</span></code>.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">A</span></code> is a subtype of <code class="docutils literal notranslate"><span class="pre">F</span></code> according to the
-<a class="reference external" href="#nullness-delegating-subtyping">nullness-delegating subtyping rules for Java</a>.</p></li>
+<span class="xref myst">nullness-delegating subtyping rules for Java</span>.</p></li>
 </ul>
 <blockquote>
 <div><p>The first condition suffices for most cases. The second condition is necessary
@@ -710,19 +710,19 @@ appropriate.&quot;</p>
 include <code class="docutils literal notranslate"><span class="pre">null</span></code>? There are 4 cases in which this is true, 2 easy and 2 hard:</p>
 </div></blockquote>
 <ul>
-<li><p><code class="docutils literal notranslate"><span class="pre">F</span></code> is <a class="reference external" href="#null-inclusive-under-every-parameterization">null-inclusive under every parameterization</a>.</p>
+<li><p><code class="docutils literal notranslate"><span class="pre">F</span></code> is <span class="xref myst">null-inclusive under every parameterization</span>.</p>
 <blockquote>
 <div><p>This is the first easy case: <code class="docutils literal notranslate"><span class="pre">F</span></code> always includes <code class="docutils literal notranslate"><span class="pre">null</span></code>.</p>
 </div></blockquote>
 </li>
-<li><p><code class="docutils literal notranslate"><span class="pre">A</span></code> is <a class="reference external" href="#null-exclusive-under-every-parameterization">null-exclusive under every parameterization</a>.</p>
+<li><p><code class="docutils literal notranslate"><span class="pre">A</span></code> is <span class="xref myst">null-exclusive under every parameterization</span>.</p>
 <blockquote>
 <div><p>This is the second easy case: <code class="docutils literal notranslate"><span class="pre">A</span></code> never includes <code class="docutils literal notranslate"><span class="pre">null</span></code>.</p>
 </div></blockquote>
 </li>
-<li><p><code class="docutils literal notranslate"><span class="pre">A</span></code> has a <a class="reference external" href="#nullness-subtype-establishing-path">nullness-subtype-establishing path</a> to any type whose base type
+<li><p><code class="docutils literal notranslate"><span class="pre">A</span></code> has a <span class="xref myst">nullness-subtype-establishing path</span> to any type whose base type
 is the same as the base type of <code class="docutils literal notranslate"><span class="pre">F</span></code>, and <code class="docutils literal notranslate"><span class="pre">F</span></code> does <em>not</em> have
-<a class="reference external" href="#nullness-operator">nullness operator</a> <code class="docutils literal notranslate"><span class="pre">MINUS_NULL</span></code>.</p>
+<span class="xref myst">nullness operator</span> <code class="docutils literal notranslate"><span class="pre">MINUS_NULL</span></code>.</p>
 <blockquote>
 <div><p>This is the first hard case: A given type-variable usage does not
 necessarily always include <code class="docutils literal notranslate"><span class="pre">null</span></code>, nor does it necessarily always exclude
@@ -744,7 +744,7 @@ by capture conversion of <code class="docutils literal notranslate"><span class=
 <p>In short, whether you have a <code class="docutils literal notranslate"><span class="pre">Predicate&lt;?</span> <span class="pre">super</span> <span class="pre">String&gt;</span></code>, a <code class="docutils literal notranslate"><span class="pre">Predicate&lt;?</span> <span class="pre">super</span> <span class="pre">&#64;Nullable</span> <span class="pre">String&gt;</span></code>, or unannotated code that doesn't specify the
 nullness operator for the bound, you can always pass its <code class="docutils literal notranslate"><span class="pre">test</span></code> method a
 <code class="docutils literal notranslate"><span class="pre">String</span></code>. (If you want to pass a <code class="docutils literal notranslate"><span class="pre">&#64;Nullable</span> <span class="pre">String</span></code>, then you'll need for
-the bound to be <a class="reference external" href="#null-inclusive-under-every-parameterization">null-inclusive under every parameterization</a>. The
+the bound to be <span class="xref myst">null-inclusive under every parameterization</span>. The
 existence of the null-inclusiveness rule frees this current rule from
 having to cover that case.)</p>
 </div></blockquote>
@@ -752,7 +752,7 @@ having to cover that case.)</p>
 </ul>
 <blockquote>
 <div><p>A further level of complexity in all this is <code class="docutils literal notranslate"><span class="pre">UNSPECIFIED</span></code>. For example, in
-the <a class="reference external" href="#multiple-worlds">all-worlds</a> version of the following rules, a type with nullness operator
+the <span class="xref myst">all-worlds</span> version of the following rules, a type with nullness operator
 <code class="docutils literal notranslate"><span class="pre">UNSPECIFIED</span></code> can be both null-<em>inclusive</em> under every parameterization and
 null-<em>exclusive</em> under every parameterization.</p>
 </div></blockquote>
@@ -760,11 +760,11 @@ null-<em>exclusive</em> under every parameterization.</p>
 or transitive.</p>
 <blockquote>
 <div><p>If we defined nullness subtyping to be reflexive, then <code class="docutils literal notranslate"><span class="pre">String</span> <span class="pre">UNSPECIFIED</span></code>
-would be a subtype of <code class="docutils literal notranslate"><span class="pre">String</span> <span class="pre">UNSPECIFIED</span></code>, even under the <a class="reference external" href="#multiple-worlds">all-worlds</a> rules.
+would be a subtype of <code class="docutils literal notranslate"><span class="pre">String</span> <span class="pre">UNSPECIFIED</span></code>, even under the <span class="xref myst">all-worlds</span> rules.
 In other words, we'd be saying that unannotated code is always free from
 nullness errors. That is clearly false. (Nevertheless, lenient tools will
 choose not to issue errors for such code. They can do this by implementing the
-<a class="reference external" href="#multiple-worlds">some-world</a> rules.)</p>
+<span class="xref myst">some-world</span> rules.)</p>
 <p>If we defined nullness subtyping to be transitive, then <code class="docutils literal notranslate"><span class="pre">String</span> <span class="pre">UNION_NULL</span></code>
 would be a subtype of <code class="docutils literal notranslate"><span class="pre">String</span> <span class="pre">NO_CHANGE</span></code> under the some-world rules. That
 would happen because of a chain of subtyping rules:</p>
@@ -777,18 +777,18 @@ would happen because of a chain of subtyping rules:</p>
 or transitive. A more accurate name for this concept would be &quot;consistent,&quot; a
 term used in gradual typing. However, we use &quot;subtyping&quot; anyway. In our
 defense, we need to name multiple concepts, including not just subtyping but
-also the <a class="reference external" href="#same-type">same-type</a> relation and <a class="reference external" href="#containment">containment</a>. If we were to coin a new term
+also the <span class="xref myst">same-type</span> relation and <span class="xref myst">containment</span>. If we were to coin a new term
 for each, tool authors would need to mentally map between those terms and the
 analogous Java terms. (Still, yes: Feel free to read terms like &quot;subtyping&quot; as
 if they hvae scare quotes around them.)</p>
 <p>Subtyping does end up being transitive when the relation is required to hold
 in all worlds. And it does end up being reflexive when the relation is
-required to hold only in <a class="reference external" href="#multiple-worlds">some world</a>. We don't state those properties as
+required to hold only in <span class="xref myst">some world</span>. We don't state those properties as
 rules for 2 reasons: First, they arise naturally from the definitions. Second,
 we don't want to suggest that subtyping is reflexive and transitive under both
 versions of the rule.</p>
 </div></blockquote>
-<p>Contrast this with our <a class="reference external" href="#nullness-delegating-subtyping">nullness-delegating subtyping</a> rules and <a class="reference external" href="#containment">containment</a>
+<p>Contrast this with our <span class="xref myst">nullness-delegating subtyping</span> rules and <span class="xref myst">containment</span>
 rules: Each of those is defined as a transitive closure. However, this is
 incorrect, and we should fix it: Transitivity causes the same problem there as
 it does here: <code class="docutils literal notranslate"><span class="pre">List&lt;?</span> <span class="pre">extends</span> <span class="pre">&#64;Nullable</span> <span class="pre">String&gt;</span></code> ends up as a subtype of <code class="docutils literal notranslate"><span class="pre">List&lt;?</span> <span class="pre">extends</span> <span class="pre">String&gt;</span></code> because of a chain of subtyping rules that uses <code class="docutils literal notranslate"><span class="pre">String</span> <span class="pre">UNSPECIFIED</span></code> as part of the intermediate step. Luckily, tool authors that set
@@ -802,13 +802,13 @@ formally specify it yet.</p>
 <p>A type is null-inclusive under every parameterization if it meets any of the
 following conditions:</p>
 <ul>
-<li><p>Its <a class="reference external" href="#nullness-operator">nullness operator</a> is <code class="docutils literal notranslate"><span class="pre">UNION_NULL</span></code>.</p>
+<li><p>Its <span class="xref myst">nullness operator</span> is <code class="docutils literal notranslate"><span class="pre">UNION_NULL</span></code>.</p>
 <blockquote>
 <div><p>This is the simplest part of the simplest case: A type usage always
 includes <code class="docutils literal notranslate"><span class="pre">null</span></code> if it's annotated with <code class="docutils literal notranslate"><span class="pre">&#64;Nullable</span></code>.</p>
 </div></blockquote>
 </li>
-<li><p>It is an <a class="reference external" href="#intersection-types">intersection type</a> whose elements all are null-inclusive under
+<li><p>It is an <span class="xref myst">intersection type</span> whose elements all are null-inclusive under
 every parameterization.</p></li>
 <li><p>It is a type variable that meets <em>both</em> of the following conditions:</p>
 <ul class="simple">
@@ -817,7 +817,7 @@ every parameterization.</p></li>
 </ul>
 <blockquote>
 <div><p>This third case is probably irrelevant in practice: It covers <code class="docutils literal notranslate"><span class="pre">?</span> <span class="pre">super</span> <span class="pre">&#64;Nullable</span> <span class="pre">Foo</span></code>, which is already covered by the rules for
-<a class="reference external" href="#nullness-subtyping">nullness subtyping</a>. It's included here in case some tool has reason to
+<span class="xref myst">nullness subtyping</span>. It's included here in case some tool has reason to
 check whether a type is null-inclusive under every parameterization
 <em>outside</em> of a check for nullness subtyping.</p>
 </div></blockquote>
@@ -841,13 +841,13 @@ check on the expression). The case of <code class="docutils literal notranslate"
 why the following rule requires looking for a &quot;path.&quot;</p>
 </div></blockquote>
 <p>A type is null-exclusive under every parameterization if it has a
-<a class="reference external" href="#nullness-subtype-establishing-path">nullness-subtype-establishing path</a> to either of the following:</p>
+<span class="xref myst">nullness-subtype-establishing path</span> to either of the following:</p>
 <ul>
-<li><p>any type whose <a class="reference external" href="#nullness-operator">nullness operator</a> is <code class="docutils literal notranslate"><span class="pre">MINUS_NULL</span></code></p></li>
+<li><p>any type whose <span class="xref myst">nullness operator</span> is <code class="docutils literal notranslate"><span class="pre">MINUS_NULL</span></code></p></li>
 <li><p>any augmented class or array type</p>
 <blockquote>
 <div><p>This rule refers specifically to a &quot;class or array type,&quot; as distinct from
-other types like type variables and <a class="reference external" href="#intersection-types">intersection types</a>.</p>
+other types like type variables and <span class="xref myst">intersection types</span>.</p>
 </div></blockquote>
 </li>
 </ul>
@@ -860,15 +860,15 @@ whether the expression is null-exclusive under every parameterization.</p>
 <h2>Nullness-subtype-establishing path<a class="headerlink" href="#nullness-subtype-establishing-path" title="このヘッドラインへのパーマリンク"></a></h2>
 <blockquote>
 <div><p>Note that this definition is used both by the definition of
-<a class="reference external" href="#null-inclusive-under-every-parameterization">null-inclusive under every parameterization</a> and by the third condition in
-the definition <a class="reference external" href="#nullness-subtyping">nullness subtyping</a> itself (the &quot;type-variable case&quot;).</p>
+<span class="xref myst">null-inclusive under every parameterization</span> and by the third condition in
+the definition <span class="xref myst">nullness subtyping</span> itself (the &quot;type-variable case&quot;).</p>
 </div></blockquote>
 <p><code class="docutils literal notranslate"><span class="pre">A</span></code> has a nullness-subtype-establishing path to <code class="docutils literal notranslate"><span class="pre">F</span></code> if both of the following
 hold:</p>
 <ul>
-<li><p><code class="docutils literal notranslate"><span class="pre">A</span></code> has <a class="reference external" href="#nullness-operator">nullness operator</a> <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code> or <code class="docutils literal notranslate"><span class="pre">MINUS_NULL</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">A</span></code> has <span class="xref myst">nullness operator</span> <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code> or <code class="docutils literal notranslate"><span class="pre">MINUS_NULL</span></code>.</p></li>
 <li><p>There is a path from <code class="docutils literal notranslate"><span class="pre">A</span></code> to <code class="docutils literal notranslate"><span class="pre">F</span></code> through
-<a class="reference external" href="#nullness-subtype-establishing-direct-supertype-edges">nullness-subtype-establishing direct-supertype edges</a>.</p>
+<span class="xref myst">nullness-subtype-establishing direct-supertype edges</span>.</p>
 <blockquote>
 <div><p>The path may be empty. That is, <code class="docutils literal notranslate"><span class="pre">A</span></code> has a nullness-subtype-establishing
 path to itself --- as long as it has one of the required nullness
@@ -887,7 +887,7 @@ operators.</p>
 that fill the gaps in our nullness checking of &quot;top-level&quot; types. For example,
 there's no need for the rules to reflect that <code class="docutils literal notranslate"><span class="pre">String</span> <span class="pre">NO_CHANGE</span></code> extends
 <code class="docutils literal notranslate"><span class="pre">Object</span> <span class="pre">NO_CHANGE</span></code>: If we've established that a type has a path to <code class="docutils literal notranslate"><span class="pre">String</span> <span class="pre">NO_CHANGE</span></code>, then we already know that it's
-<a class="reference external" href="#null-exclusive-under-every-parameterization">null-exclusive under every parameterization</a>, based on the rules above, and
+<span class="xref myst">null-exclusive under every parameterization</span>, based on the rules above, and
 that's enough to prove subtyping. And if we <em>haven't</em> established that, then
 the <code class="docutils literal notranslate"><span class="pre">String</span></code>-<code class="docutils literal notranslate"><span class="pre">Object</span></code> edge isn't going to change that.</p>
 <p>Thus, the rules here are restricted to type variables and intersection types,
@@ -895,8 +895,8 @@ whose supertypes may have nullness annotations.</p>
 </div></blockquote>
 <p><code class="docutils literal notranslate"><span class="pre">T</span></code> has nullness-subtype-establishing direct-supertype edges to the following:</p>
 <ul class="simple">
-<li><p>if <code class="docutils literal notranslate"><span class="pre">T</span></code> is an augmented <a class="reference external" href="#intersection-types">intersection type</a>: all the intersection type's
-elements whose <a class="reference external" href="#nullness-operator">nullness operator</a> is <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code> or <code class="docutils literal notranslate"><span class="pre">MINUS_NULL</span></code></p></li>
+<li><p>if <code class="docutils literal notranslate"><span class="pre">T</span></code> is an augmented <span class="xref myst">intersection type</span>: all the intersection type's
+elements whose <span class="xref myst">nullness operator</span> is <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code> or <code class="docutils literal notranslate"><span class="pre">MINUS_NULL</span></code></p></li>
 <li><p>if <code class="docutils literal notranslate"><span class="pre">T</span></code> is an augmented type variable: all the corresponding type parameter's
 upper bounds whose nullness operator is <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code> or <code class="docutils literal notranslate"><span class="pre">MINUS_NULL</span></code></p></li>
 <li><p>otherwise: no nodes</p></li>
@@ -916,13 +916,13 @@ subtyping for subcomponents as appropriate.&quot;</p>
 input and produces zero or more direct supertypes as outputs.) We add to them as
 follows:</p>
 <ul>
-<li><p><a class="reference external" href="#concept-references">As always</a>, interpret the Java rules as operating on
-<a class="reference external" href="#augmented-type">augmented types</a>, not <a class="reference external" href="#base-type">base types</a>. This raises the question of <em>how</em> to
+<li><p><span class="xref myst">As always</span>, interpret the Java rules as operating on
+<span class="xref myst">augmented types</span>, not <span class="xref myst">base types</span>. This raises the question of <em>how</em> to
 extend these particular rules to operate on augmented types. The answer has
 two parts:</p>
 <ul>
 <li><p>The first part of the answer applies only to the nullness operator <em>&quot;of
-the type.&quot;</em> (<a class="reference external" href="#augmented-type">As always</a>, this means the nullness
+the type.&quot;</em> (<span class="xref myst">As always</span>, this means the nullness
 operator of the type component that is the entire type.)</p>
 <p>And the first part of the answer is: No matter what nullness operator
 the input augmented type has, the rules still apply, and they still
@@ -935,20 +935,20 @@ never read by the subtyping rules.</p>
 nullness operator.</p>
 <blockquote>
 <div><p>Essentially, this rule says that the top-level types do no matter:
-They have already been checked by the <a class="reference external" href="#nullness-subtyping">nullness subtyping</a> check.</p>
+They have already been checked by the <span class="xref myst">nullness subtyping</span> check.</p>
 <p>For simplicity, we recommend producing a nullness operator of
 <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code>: That operator is valid for all types, including
-<a class="reference external" href="#intersection-types">intersection types</a>.</p>
+<span class="xref myst">intersection types</span>.</p>
 </div></blockquote>
 </li>
 <li><p>The nullness operators of <em>subcomponents</em> of the augmented types <em>do</em>
 matter. For example, some Java rules produce subtypes only if
 subcomponents meet certain requirements.
-<a class="reference external" href="#concept-references">As always</a>, check those requirements by applying
+<span class="xref myst">As always</span>, check those requirements by applying
 <em>this spec's</em> definitions.</p>
 <blockquote>
-<div><p>Those definitions (like <a class="reference external" href="#containment">containment</a>) refer back to definitions (like
-<a class="reference external" href="#nullness-subtyping">nullness subtyping</a>) that use the nullness operators of the
+<div><p>Those definitions (like <span class="xref myst">containment</span>) refer back to definitions (like
+<span class="xref myst">nullness subtyping</span>) that use the nullness operators of the
 subcomponents in question.</p>
 </div></blockquote>
 </li>
@@ -956,15 +956,15 @@ subcomponents in question.</p>
 </li>
 <li><p>When the Java array rules require one type to be a <em>direct</em> supertype of
 another, consider the direct supertypes of <code class="docutils literal notranslate"><span class="pre">T</span></code> to be <em>every</em> type that <code class="docutils literal notranslate"><span class="pre">T</span></code>
-is a <a class="reference external" href="#subtyping">subtype</a> of.</p></li>
+is a <span class="xref myst">subtype</span> of.</p></li>
 </ul>
 </section>
 <section id="containment">
 <h2>Containment<a class="headerlink" href="#containment" title="このヘッドラインへのパーマリンク"></a></h2>
 <p>The Java rules are defined in <a class="reference external" href="https://docs.oracle.com/javase/specs/jls/se14/html/jls-4.html#jls-4.5.1">JLS 4.5.1</a>. We add to them as follows:</p>
 <ul>
-<li><p>Disregard the 2 rules that refer to a bare <code class="docutils literal notranslate"><span class="pre">?</span></code>. Instead, treat <code class="docutils literal notranslate"><span class="pre">?</span></code> like <code class="docutils literal notranslate"><span class="pre">?</span> <span class="pre">extends</span> <span class="pre">Object</span></code>, where the <a class="reference external" href="#nullness-operator">nullness operator</a> of the <code class="docutils literal notranslate"><span class="pre">Object</span></code> bound is
-specified by <a class="reference external" href="#unbounded-wildcard">&quot;Bound of an unbounded wildcard.&quot;</a></p>
+<li><p>Disregard the 2 rules that refer to a bare <code class="docutils literal notranslate"><span class="pre">?</span></code>. Instead, treat <code class="docutils literal notranslate"><span class="pre">?</span></code> like <code class="docutils literal notranslate"><span class="pre">?</span> <span class="pre">extends</span> <span class="pre">Object</span></code>, where the <span class="xref myst">nullness operator</span> of the <code class="docutils literal notranslate"><span class="pre">Object</span></code> bound is
+specified by <span class="xref myst">&quot;Bound of an unbounded wildcard.&quot;</span></p>
 <blockquote>
 <div><p>This is just a part of our universal rule to treat a bare <code class="docutils literal notranslate"><span class="pre">?</span></code> like <code class="docutils literal notranslate"><span class="pre">?</span> <span class="pre">extends</span> <span class="pre">Object</span></code>.</p>
 </div></blockquote>
@@ -972,7 +972,7 @@ specified by <a class="reference external" href="#unbounded-wildcard">&quot;Boun
 <li><p>The rule written specifically for <code class="docutils literal notranslate"><span class="pre">?</span> <span class="pre">extends</span> <span class="pre">Object</span></code> applies only if the
 nullness operator of the <code class="docutils literal notranslate"><span class="pre">Object</span></code> bound is <code class="docutils literal notranslate"><span class="pre">UNION_NULL</span></code>.</p></li>
 <li><p>When the JLS refers to the same type <code class="docutils literal notranslate"><span class="pre">T</span></code> on both sides of a rule, the rule
-applies if and only if this spec defines the 2 types to be the <a class="reference external" href="#same-type">same type</a>.</p></li>
+applies if and only if this spec defines the 2 types to be the <span class="xref myst">same type</span>.</p></li>
 </ul>
 <p><strong>Some-world version:</strong> The rules are the same except that the requirement for
 &quot;<code class="docutils literal notranslate"><span class="pre">UNION_NULL</span></code>&quot; is loosened to &quot;<code class="docutils literal notranslate"><span class="pre">UNION_NULL</span></code> or <code class="docutils literal notranslate"><span class="pre">UNSPECIFIED</span></code>.&quot;</p>
@@ -981,25 +981,25 @@ applies if and only if this spec defines the 2 types to be the <a class="referen
 <h2>Substitution<a class="headerlink" href="#substitution" title="このヘッドラインへのパーマリンク"></a></h2>
 <blockquote>
 <div><p>Substitution on Java base types barely requires an explanation: See <a class="reference external" href="https://docs.oracle.com/javase/specs/jls/se14/html/jls-1.html#jls-1.3">JLS 1.3</a>.
-Substitution on <a class="reference external" href="#augmented-type">augmented types</a>, however, is trickier: If <code class="docutils literal notranslate"><span class="pre">Map.get</span></code> returns
+Substitution on <span class="xref myst">augmented types</span>, however, is trickier: If <code class="docutils literal notranslate"><span class="pre">Map.get</span></code> returns
 <code class="docutils literal notranslate"><span class="pre">V</span> <span class="pre">UNION_NULL</span></code>, and if a user has a map whose value type is <code class="docutils literal notranslate"><span class="pre">String</span> <span class="pre">UNSPECIFIED</span></code>, then what does its <code class="docutils literal notranslate"><span class="pre">get</span></code> method return? Naive substitution would
 produce <code class="docutils literal notranslate"><span class="pre">String</span> <span class="pre">UNSPECIFIED</span> <span class="pre">UNION_NULL</span></code>. To reduce that to a proper augmented
 type with a single nullness operator, we define this process.</p>
 </div></blockquote>
 <p>To substitute each type argument <code class="docutils literal notranslate"><span class="pre">Aᵢ</span></code> for each corresponding type parameter
 <code class="docutils literal notranslate"><span class="pre">Pᵢ</span></code>:</p>
-<p>For every type-variable usage <code class="docutils literal notranslate"><span class="pre">V</span></code> whose <a class="reference external" href="#base-type">base type</a> is <code class="docutils literal notranslate"><span class="pre">Pᵢ</span></code>, replace <code class="docutils literal notranslate"><span class="pre">V</span></code> with
+<p>For every type-variable usage <code class="docutils literal notranslate"><span class="pre">V</span></code> whose <span class="xref myst">base type</span> is <code class="docutils literal notranslate"><span class="pre">Pᵢ</span></code>, replace <code class="docutils literal notranslate"><span class="pre">V</span></code> with
 the result of the following operation:</p>
 <ul>
-<li><p>If <code class="docutils literal notranslate"><span class="pre">V</span></code> is <a class="reference external" href="#null-exclusive-under-every-parameterization">null-exclusive under every parameterization</a> in <a class="reference external" href="#multiple-worlds">all worlds</a>,
-then replace it with the result of <a class="reference external" href="#applying-operator">applying</a>
+<li><p>If <code class="docutils literal notranslate"><span class="pre">V</span></code> is <span class="xref myst">null-exclusive under every parameterization</span> in <span class="xref myst">all worlds</span>,
+then replace it with the result of <span class="xref myst">applying</span>
 <code class="docutils literal notranslate"><span class="pre">MINUS_NULL</span></code> to <code class="docutils literal notranslate"><span class="pre">Aᵢ</span></code>.</p>
 <blockquote>
 <div><p>This is the one instance in which a rule specifically refers to the
-<a class="reference external" href="#multiple-worlds">all-worlds</a> version of another rule. Normally,
-<a class="reference external" href="#propagating-multiple-worlds">a rule &quot;propagates&quot; its version to other rules</a>.
+<span class="xref myst">all-worlds</span> version of another rule. Normally,
+<span class="xref myst">a rule &quot;propagates&quot; its version to other rules</span>.
 But in this instance, the null-exclusivity rule (and all rules that it in
-turn applies) are the <a class="reference external" href="#multiple-worlds">all-worlds</a> versions.</p>
+turn applies) are the <span class="xref myst">all-worlds</span> versions.</p>
 </div></blockquote>
 <blockquote>
 <div><p>The purpose of this special case is to improve behavior in &quot;the
@@ -1009,10 +1009,10 @@ throws <code class="docutils literal notranslate"><span class="pre">NullPointerE
 Unfortunately, without this special case, lenient tools could permit
 <code class="docutils literal notranslate"><span class="pre">add(null)</span></code> in unannotated code. For an example, read on.</p>
 <p>Consider an unannotated user of <code class="docutils literal notranslate"><span class="pre">ImmutableList.Builder&lt;Foo&gt;</span> <span class="pre">builder</span></code>. Its
-type argument <code class="docutils literal notranslate"><span class="pre">Foo</span></code> will have a <a class="reference external" href="#nullness-operator">nullness operator</a> of <code class="docutils literal notranslate"><span class="pre">UNSPECIFIED</span></code>.
+type argument <code class="docutils literal notranslate"><span class="pre">Foo</span></code> will have a <span class="xref myst">nullness operator</span> of <code class="docutils literal notranslate"><span class="pre">UNSPECIFIED</span></code>.
 Without this special case, the parameter of <code class="docutils literal notranslate"><span class="pre">builder.add</span></code> would have a
 nullness operator of <code class="docutils literal notranslate"><span class="pre">UNSPECIFIED</span></code>, too. Then, when a lenient tool would
-check whether the <a class="reference external" href="#multiple-worlds">some-world</a> subtyping relation holds for
+check whether the <span class="xref myst">some-world</span> subtyping relation holds for
 <code class="docutils literal notranslate"><span class="pre">builder.add(null)</span></code>, it would find that it does.</p>
 <p>To solve this, we need a special case for substitution for null-exclusive
 type parameters like the one on <code class="docutils literal notranslate"><span class="pre">ImmutableList.Builder</span></code>. That special case
@@ -1034,10 +1034,10 @@ return type would look like it might include <code class="docutils literal notra
 </section>
 <section id="applying-a-nullness-operator-to-an-augmented-type">
 <span id="applying-operator"></span><h2>Applying a nullness operator to an augmented type<a class="headerlink" href="#applying-a-nullness-operator-to-an-augmented-type" title="このヘッドラインへのパーマリンク"></a></h2>
-<p>The process of applying a <a class="reference external" href="#nullness-operator">nullness operator</a> requires 2 inputs:</p>
+<p>The process of applying a <span class="xref myst">nullness operator</span> requires 2 inputs:</p>
 <ul class="simple">
 <li><p>the nullness operator to apply</p></li>
-<li><p>the <a class="reference external" href="#augmented-type">augmented type</a> (which, as always, includes a nullness operator for
+<li><p>the <span class="xref myst">augmented type</span> (which, as always, includes a nullness operator for
 that type) to apply it to</p></li>
 </ul>
 <p>The result of the process is an augmented type.</p>
@@ -1055,7 +1055,7 @@ is <code class="docutils literal notranslate"><span class="pre">UNION_NULL</span
 is <code class="docutils literal notranslate"><span class="pre">UNSPECIFIED</span></code>.</p></li>
 <li><p>The desired nullness operator is <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code>.</p></li>
 </ul>
-<p>Then, if the input augmented type is <em>not</em> an <a class="reference external" href="#intersection-types">intersection type</a>, the output is
+<p>Then, if the input augmented type is <em>not</em> an <span class="xref myst">intersection type</span>, the output is
 the same as the input but with its nullness operator replaced with the desired
 nullness operator.</p>
 <p>Otherwise, the output is an intersection type. For every element <code class="docutils literal notranslate"><span class="pre">Tᵢ</span></code> of the
@@ -1073,9 +1073,9 @@ nullness operator of the intersection type itself is defined to always be
 <p>The Java rules are defined in <a class="reference external" href="https://docs.oracle.com/javase/specs/jls/se14/html/jls-5.html#jls-5.1.10">JLS 5.1.10</a>. We add to them as follows:</p>
 <ul>
 <li><p>The parameterized type that is the output of the conversion has the same
-<a class="reference external" href="#nullness-operator">nullness operator</a> as the parameterized type that is the input type.</p></li>
-<li><p>Disregard the JLS rule about <code class="docutils literal notranslate"><span class="pre">&lt;?&gt;</span></code>. Instead, treat <code class="docutils literal notranslate"><span class="pre">?</span></code> like <code class="docutils literal notranslate"><span class="pre">?</span> <span class="pre">extends</span> <span class="pre">Object</span></code>, where the <a class="reference external" href="#nullness-operator">nullness operator</a> of the <code class="docutils literal notranslate"><span class="pre">Object</span></code> bound is specified by
-<a class="reference external" href="#unbounded-wildcard">&quot;Bound of an unbounded wildcard.&quot;</a></p>
+<span class="xref myst">nullness operator</span> as the parameterized type that is the input type.</p></li>
+<li><p>Disregard the JLS rule about <code class="docutils literal notranslate"><span class="pre">&lt;?&gt;</span></code>. Instead, treat <code class="docutils literal notranslate"><span class="pre">?</span></code> like <code class="docutils literal notranslate"><span class="pre">?</span> <span class="pre">extends</span> <span class="pre">Object</span></code>, where the <span class="xref myst">nullness operator</span> of the <code class="docutils literal notranslate"><span class="pre">Object</span></code> bound is specified by
+<span class="xref myst">&quot;Bound of an unbounded wildcard.&quot;</span></p>
 <blockquote>
 <div><p>This is just a part of our universal rule to treat a bare <code class="docutils literal notranslate"><span class="pre">?</span></code> like <code class="docutils literal notranslate"><span class="pre">?</span> <span class="pre">extends</span> <span class="pre">Object</span></code>.</p>
 </div></blockquote>
@@ -1083,7 +1083,7 @@ nullness operator of the intersection type itself is defined to always be
 <li><p>When a rule generates a lower bound that is the null type, we specify that
 its nullness operator is <code class="docutils literal notranslate"><span class="pre">NO_CHANGE</span></code>.</p>
 <blockquote>
-<div><p>See <a class="reference external" href="#null-types">&quot;Augmented null types.&quot;</a></p>
+<div><p>See <span class="xref myst">&quot;Augmented null types.&quot;</span></p>
 </div></blockquote>
 </li>
 </ul>

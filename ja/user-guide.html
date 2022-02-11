@@ -86,7 +86,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section class="tex2jax_ignore mathjax_ignore" id="jspecify-user-guide">
+  <section id="jspecify-user-guide">
 <h1>JSpecify user guide<a class="headerlink" href="#jspecify-user-guide" title="このヘッドラインへのパーマリンク"></a></h1>
 <p>In Java code, whether an expression may evaluate to null is often documented
 only in natural language, if at all. The goal of JSpecify is to permit
@@ -128,8 +128,8 @@ haven't said whether <code class="docutils literal notranslate"><span class="pre
 <li><p><code class="docutils literal notranslate"><span class="pre">&#64;NullMarked</span></code> applied to a module, package, or class means that a reference
 in that scope can't be null unless its type is explicitly marked
 <code class="docutils literal notranslate"><span class="pre">&#64;Nullable</span></code>. (Below we will see that there are some exceptions to this for
-<a class="reference external" href="#local-variables">local variables</a> and
-<a class="reference external" href="#defining-generics">type variables</a>.)</p></li>
+<span class="xref myst">local variables</span> and
+<span class="xref myst">type variables</span>.)</p></li>
 </ul>
 <p>The notion of &quot;can't be null&quot; should really be read with a footnote that says
 &quot;if all the code in question is <code class="docutils literal notranslate"><span class="pre">&#64;NullMarked</span></code>&quot;. For example, if you have some
@@ -219,7 +219,7 @@ you if you try to pass a &quot;reference to a string object, or null&quot; to
 <code class="docutils literal notranslate"><span class="pre">spaceIndex</span></code>, since its argument can't be null, and indeed it will throw
 NullPointerException if given a null argument.</p>
 <p>As mentioned above, there are some exceptions to this interpretation for local
-variables (as we'll see next) and <a class="reference external" href="#defining-generics">type variables</a>.</p>
+variables (as we'll see next) and <span class="xref myst">type variables</span>.</p>
 </section>
 <section id="a-id-local-variables-local-variables-a">
 <h2><a id="local-variables">Local variables</a><a class="headerlink" href="#a-id-local-variables-local-variables-a" title="このヘッドラインへのパーマリンク"></a></h2>
