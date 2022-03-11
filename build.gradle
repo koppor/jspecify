@@ -41,4 +41,13 @@ java {
     }
 }
 
+sourceSets {
+    samples {
+        java {
+            srcDirs = ["samples"]
+        }
+        compileClasspath = sourceSets.main.output
+    }
+}
+
 defaultTasks 'spotlessApply', 'build'
